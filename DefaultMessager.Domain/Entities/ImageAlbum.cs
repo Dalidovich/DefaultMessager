@@ -11,10 +11,11 @@
         {
             UserId = userId;
         }
-        public ImageAlbum(string[] image, long userId)
+
+        public ImageAlbum(long userId, string[] pathPictures, string title) : this(userId)
         {
-            PathPictures = image;
-            UserId = userId;
+            PathPictures = pathPictures;
+            Title = title;
         }
     }
 }
