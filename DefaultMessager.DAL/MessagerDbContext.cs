@@ -1,6 +1,4 @@
-﻿using DefaultMessager.DAL.Tables;
-using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.Tables;
+﻿using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DefaultMessager.DAL
@@ -51,10 +49,10 @@ namespace DefaultMessager.DAL
                       .HasColumnType("smallint")
                       .HasColumnName("status_account");
 
-                entity.HasOne(d => d.ImageAlbum)
+                entity.HasMany(d => d.ImageAlbum)
                       .WithOne(p => p.User)
-                      .HasPrincipalKey<User>(p => p.UserId)
-                      .HasForeignKey<ImageAlbum>(d => d.UserId);
+                      .HasPrincipalKey(p => p.UserId)
+                      .HasForeignKey(d => d.UserId);
 
                 entity.HasMany(d => d.Posts)
                       .WithOne(p => p.User)
@@ -115,9 +113,9 @@ namespace DefaultMessager.DAL
                       .HasColumnType("character varying")
                       .HasColumnName("describe");
 
-                entity.Property(e => e.DescriptionStatus)
+                entity.Property(e => e.UserStatus)
                       .HasColumnType("character varying")
-                      .HasColumnName("description_status");
+                      .HasColumnName("user_status");
 
                 entity.Property(e => e.PathAvatar)
                       .HasColumnType("character varying")
@@ -137,7 +135,12 @@ namespace DefaultMessager.DAL
                       .HasColumnName("fk_user_id");
 
                 entity.Property(e => e.PathPictures)
+                      .HasColumnType("text[]")
                       .HasColumnName("path_pictures");
+
+                entity.Property(e => e.Title)
+                      .HasColumnType("character varying")
+                      .HasColumnName("title");
             });
 
             modelBuilder.Entity<Message>().ToTable("Messages");
@@ -171,9 +174,9 @@ namespace DefaultMessager.DAL
                       .HasColumnType("smallint")
                       .HasColumnName("message_status");
 
-                entity.Property(e => e.Text)
+                entity.Property(e => e.MessageTextContent)
                       .HasColumnType("character varying")
-                      .HasColumnName("text");
+                      .HasColumnName("message_text_content");
             });
 
             modelBuilder.Entity<Post>().ToTable("Posts");
@@ -199,9 +202,9 @@ namespace DefaultMessager.DAL
                 entity.Property(e => e.SendDateTime)
                       .HasColumnName("send_date_time");
 
-                entity.Property(e => e.Text)
+                entity.Property(e => e.PostTextContent)
                       .HasColumnType("character varying")
-                      .HasColumnName("text");
+                      .HasColumnName("post_text_content");
 
                 entity.Property(e => e.Title)
                       .HasColumnType("character varying")
@@ -246,15 +249,12 @@ namespace DefaultMessager.DAL
                       .HasColumnType("bigint")
                       .HasColumnName("fk_post_id");
 
-                entity.Property(e => e.Text)
+                entity.Property(e => e.CommentTextContent)
                       .HasColumnType("character varying")
-                      .HasColumnName("text");
+                      .HasColumnName("comment_text_content");
 
                 entity.Property(e => e.DatePublicate)
                       .HasColumnName("date_publicate");
-
-                entity.Property(e => e.DateModified)
-                      .HasColumnName("date_modified");
 
                 entity.Property(e => e.CommentStatus)
                       .HasColumnType("smallint")

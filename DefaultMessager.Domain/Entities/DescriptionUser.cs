@@ -8,7 +8,7 @@
         public string? Surname { get; set; } 
         public string? Patronymic { get; set; }
         public string? Describe { get; set; }
-        public string? DescriptionStatus { get; set; } 
+        public string? UserStatus { get; set; } 
         public string? PathAvatar { get; set; }
         public User? User{get; set;} 
         public DescriptionUser(long userId)
@@ -22,7 +22,7 @@
             Surname = surnames;
             Patronymic = patronymic;
             Describe = describe;
-            DescriptionStatus = status;
+            UserStatus = status;
             PathAvatar = pathAvatar;
         }
     }

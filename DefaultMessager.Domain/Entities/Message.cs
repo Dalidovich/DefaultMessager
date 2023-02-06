@@ -9,7 +9,7 @@
         public string[]? PathAudios { get; set; } 
         public DateTime SendDateTime { get; set; }
         public short MessageStatus { get; set; }
-        public string? Text { get; set; }
+        public string? MessageTextContent { get; set; }
         public User? Sender { get; set; }
         public User? Reciever { get; set; }
         public Message() { }
@@ -21,7 +21,7 @@
             PathAudios = audios;
             SendDateTime = sendDateTime;
             MessageStatus = messageStatus;
-            Text = text;
+            MessageTextContent = text;
         }
     }
 }

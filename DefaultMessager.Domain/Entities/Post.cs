@@ -5,7 +5,7 @@
         public long? PostId { get; set; }
         public long UserId { get; set; }
         public string[]? PathPictures { get; set; } 
-        public string? Text { get; set; } 
+        public string? PostTextContent { get; set; } 
         public string? Title { get; set; }
         public string[]? PathAudios { get; set; } 
         public DateTime SendDateTime { get; set; }
@@ -19,7 +19,7 @@
         {
             UserId = userId;
             PathPictures = pathPictures;
-            Text = text;
+            PostTextContent = text;
             Title = title;
             PathAudios = pathAudios;
             SendDateTime = sendDateTime;
