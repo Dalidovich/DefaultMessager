@@ -1,5 +1,6 @@
 ﻿using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DefaultMessager.DAL
 {
@@ -12,10 +13,17 @@ namespace DefaultMessager.DAL
         public DbSet<Message> Messages { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public void CreateDatabase() => Database.EnsureCreated();
-        public void DropDatabase() => Database.EnsureDeleted();
+
+        public static string ConnectionString { get; set; }
+
+        public void UpdateDatabase()
+        {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+        public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;port=5432;Database=my_db;Username=postgres;Password=pGJRF54321");
+            => optionsBuilder.UseNpgsql(ConnectionString);
         public MessagerDbContext()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

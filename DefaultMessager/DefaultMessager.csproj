@@ -4,6 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>3884ece2-fd31-4a34-9745-5c61a98eaf63</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DefaultMessager.DAL\DefaultMessager.DAL.csproj" />
+  </ItemGroup>
 
 </Project>
