@@ -2,8 +2,8 @@
 {
     public class DescriptionUser
     {
-        public long? DescriptionId { get; set; }
-        public long UserId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid UserId { get; set; }
         public string? Name { get; set; } 
         public string? Surname { get; set; } 
         public string? Patronymic { get; set; }
@@ -11,11 +11,7 @@
         public string? UserStatus { get; set; } 
         public string? PathAvatar { get; set; }
         public User? User{get; set;} 
-        public DescriptionUser(long userId)
-        {
-            UserId = userId;
-        }
-        public DescriptionUser(long userId, string name, string surnames, string patronymic, string? describe, string status, string? pathAvatar)
+        public DescriptionUser(Guid userId, string name, string surnames, string patronymic, string? describe, string status, string? pathAvatar)
         {
             UserId = userId;
             Name = name;
@@ -24,6 +20,10 @@
             Describe = describe;
             UserStatus = status;
             PathAvatar = pathAvatar;
+        }
+        public DescriptionUser(Guid userId)
+        {
+            UserId = userId;
         }
     }
 }
