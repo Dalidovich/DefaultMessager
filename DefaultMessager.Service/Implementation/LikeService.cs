@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DefaultMessager.Service.Implementation
 {
-    public class LikeService<T> : BaseService<T>, IPostService where T : Like
+    public class LikeService<T> : BaseService<T>, ILikeService where T : Like
     {
         public LikeService(IBaseRepository<T> repository, ILogger<T> logger) : base(repository, logger)
         {

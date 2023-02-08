@@ -18,11 +18,11 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<bool> createAsync(Comment entity)
+        public async Task<Comment> createAsync(Comment entity)
         {
-            await _db.Comments.AddAsync(entity);
+            var createdEntity = await _db.Comments.AddAsync(entity);
             await _db.SaveChangesAsync();
-            return true;
+            return createdEntity.Entity;
         }
 
         public async Task<bool> deleteAsync(Comment entity)

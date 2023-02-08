@@ -13,10 +13,10 @@ namespace DefaultMessager.Domain.Enums
         EntityDelete = 2,
         EntityRead = 3,
 
-        commentCreate =10,
-        commentUpdate=11,
-        commentDelete=12,
-        commentRead=13,
+        CommentCreate =10,
+        CommentUpdate=11,
+        CommentDelete=12,
+        CommentRead=13,
 
         DescriptionUserCreate=20,
         DescriptionUserUpdate=21,
@@ -49,6 +49,7 @@ namespace DefaultMessager.Domain.Enums
         UserRead = 73,
 
         OK = 200,
+        OKNoContent=204,
         InternalServerError = 500
     }
 }

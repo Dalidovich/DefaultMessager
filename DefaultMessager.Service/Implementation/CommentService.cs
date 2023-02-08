@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DefaultMessager.Service.Implementation
 {
-    public class CommentService<T> : BaseService<T>, IPostService where T : Comment
+    public class CommentService<T> : BaseService<T>, ICommentService where T : Comment
     {
         public CommentService(IBaseRepository<T> repository, ILogger<T> logger) : base(repository, logger)
         {

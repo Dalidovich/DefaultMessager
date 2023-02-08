@@ -12,11 +12,11 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<bool> createAsync(DescriptionUser entity)
+        public async Task<DescriptionUser> createAsync(DescriptionUser entity)
         {
-            await _db.DescriptionUsers.AddAsync(entity);
+            var createdEntity = await _db.DescriptionUsers.AddAsync(entity);
             await _db.SaveChangesAsync();
-            return true;
+            return createdEntity.Entity;
         }
 
         public async Task<bool> deleteAsync(DescriptionUser entity)

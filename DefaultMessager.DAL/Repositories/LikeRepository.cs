@@ -12,11 +12,11 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<bool> createAsync(Like entity)
+        public async Task<Like> createAsync(Like entity)
         {
-            await _db.Likes.AddAsync(entity);
+            var createdEntity = await _db.Likes.AddAsync(entity);
             await _db.SaveChangesAsync();
-            return true;
+            return createdEntity.Entity;
         }
 
         public async Task<bool> deleteAsync(Like entity)

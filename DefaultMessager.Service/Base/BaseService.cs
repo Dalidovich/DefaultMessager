@@ -24,11 +24,11 @@ namespace DefaultMessager.Service.Base
             _logger = logger;
         }
 
-        public async Task<IBaseResponse<bool>> Create(T entity)
+        public async Task<IBaseResponse<T>> Create(T entity)
         {
             try
             {
-                return new BaseResponse<bool>()
+                return new BaseResponse<T>()
                 {
                     Data = await _repository.createAsync(entity),
                     StatusCode = StatusCode.EntityCreate,
@@ -37,7 +37,7 @@ namespace DefaultMessager.Service.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Create] : {ex.Message}");
-                return new BaseResponse<bool>()
+                return new BaseResponse<T>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -49,7 +49,7 @@ namespace DefaultMessager.Service.Base
         {
             try
             {
-                var code = await _repository.GetAll().FirstOrDefaultAsync(expression);
+                var code = await _repository.GetAll().SingleOrDefaultAsync(expression);
                 if (code == null)
                 {
                     return new BaseResponse<bool>()
@@ -108,7 +108,7 @@ namespace DefaultMessager.Service.Base
         {
             try
             {
-                var code = await _repository.GetAll().FirstOrDefaultAsync(expression);
+                var code = await _repository.GetAll().SingleOrDefaultAsync(expression);
                 if (code == null)
                 {
                     return new BaseResponse<T>()
