@@ -31,21 +31,8 @@ namespace DefaultMessager
             
             builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
 
-            builder.Services.AddScoped<IBaseRepository<Comment>, CommentRepository>();
-            builder.Services.AddScoped<IBaseRepository<DescriptionUser>, DescriptionUserRepository>();
-            builder.Services.AddScoped<IBaseRepository<ImageAlbum>, ImageAlbumRepository>();
-            builder.Services.AddScoped<IBaseRepository<Like>, LikeRepository>();
-            builder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
-            builder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
-            builder.Services.AddScoped<IBaseRepository<User>, UserRepository>();
-
-            builder.Services.AddScoped<CommentService<Comment>>();
-            builder.Services.AddScoped<DescriptionUserService<DescriptionUser>>();
-            builder.Services.AddScoped<ImageAlbumService<ImageAlbum>>();
-            builder.Services.AddScoped<LikeService<Like>>();
-            builder.Services.AddScoped<MessageService<Message>>();
-            builder.Services.AddScoped<PostService<Post>>();
-            builder.Services.AddScoped<UserService<User>>();
+            builder.addRepositores();
+            builder.addServices();
 
 
             var app = builder.Build();
