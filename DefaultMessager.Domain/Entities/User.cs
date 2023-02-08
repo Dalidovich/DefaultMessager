@@ -2,7 +2,7 @@
 {
     public class User
     {
-        public long? UserId { get; set; }
+        public Guid? Id { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
@@ -26,5 +26,4 @@
         public List<Like> Likes { get; set; } = new List<Like>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
     }
-
 }

@@ -2,19 +2,18 @@
 {
     public class Like
     {
-        public long? LikeId { get; set; }
-        public long PostId { get; set; }
-        public long UserId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid PostId { get; set; }
+        public Guid UserId { get; set; }
         public User? User { get; set; }
         public Post? Post { get; set; }
-        public Like()
-        {
-        }
-
-        public Like(long postId, long userId)
+        public Like(Guid postId, Guid userId)
         {
             PostId = postId;
             UserId = userId;
+        }
+        public Like()
+        {
         }
     }
 }

@@ -35,14 +35,14 @@ namespace DefaultMessager.Tests
         [Test]
         public void TestDescription()
         {
-            long? idUser;
+            Guid? idUser;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.DescriptionUsers.Add(new DescriptionUser((long)idUser,"dima","surname","pathronomic","1","s","path"));
+                db.DescriptionUsers.Add(new DescriptionUser((Guid)idUser,"dima","surname","pathronomic","1","s","path"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -54,14 +54,14 @@ namespace DefaultMessager.Tests
         [Test]
         public void TestImageAlbum()
         {
-            long? idUser;
+            Guid? idUser;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.ImageAlbums.Add(new ImageAlbum((long)idUser, Array.Empty<string>(),"one"));
+                db.ImageAlbums.Add(new ImageAlbum((Guid)idUser, Array.Empty<string>(),"one"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -73,14 +73,14 @@ namespace DefaultMessager.Tests
         [Test]
         public void TestPost()
         {
-            long? idUser;
+            Guid? idUser;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.Posts.Add(new Post((long)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
+                db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -91,18 +91,18 @@ namespace DefaultMessager.Tests
         [Test]
         public void TestComment()
         {
-            long? idUser;
+            Guid? idUser;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.Posts.Add(new Post((long)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
+                db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
-                long? idPost = db.Posts.OrderBy(x => x.PostId).Last().PostId;
+                Guid? idPost = db.Posts.OrderBy(x => x.Id).Last().Id;
 
-                db.Comments.Add(new Comment((long)idPost, (long)idUser, "1", DateTime.Now, 1));
+                db.Comments.Add(new Comment((Guid)idPost, (Guid)idUser, "1", DateTime.Now, 1));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -114,41 +114,41 @@ namespace DefaultMessager.Tests
         [Test]
         public void TestLike()
         {
-            long? idPost, idUser;
+            Guid? idPost, idUser;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.Posts.Add(new Post((long)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
+                db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
-                idPost = db.Posts.OrderBy(x => x.PostId).Last().PostId;
+                idPost = db.Posts.OrderBy(x => x.Id).Last().Id;
 
-                db.Likes.Add(new Like((long)idPost,(long)idUser));
+                db.Likes.Add(new Like((Guid)idPost,(Guid)idUser));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That(db.Likes.Any(x => x.PostId == (long)idPost), Is.True);
+                Assert.That(db.Likes.Any(x => x.PostId == (Guid)idPost), Is.True);
             }
         }
 
         [Test]
         public void TestMessage()
         {
-            long? idSender, idReciever;
+            Guid? idSender, idReciever;
             using (var db = new MessagerDbContext())
             {
                 db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idSender = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idSender = db.Users.OrderBy(x => x.Id).Last().Id;
 
                 db.Users.Add(new User("email1", "login1", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idReciever = db.Users.OrderBy(x => x.UserId).Last().UserId;
+                idReciever = db.Users.OrderBy(x => x.Id).Last().Id;
 
-                db.Messages.Add(new Message((long)idReciever,(long)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,1,"text"));
+                db.Messages.Add(new Message((Guid)idReciever,(Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,1,"text"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())

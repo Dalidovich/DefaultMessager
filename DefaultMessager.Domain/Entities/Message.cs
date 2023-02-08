@@ -2,9 +2,9 @@
 {
     public class Message
     {
-        public long? MessageId { get; set; }
-        public long RecieveId { get; set; }
-        public long SenderId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid RecieveId { get; set; }
+        public Guid SenderId { get; set; }
         public string[]? PathPictures { get; set; } 
         public string[]? PathAudios { get; set; } 
         public DateTime SendDateTime { get; set; }
@@ -12,8 +12,7 @@
         public string? MessageTextContent { get; set; }
         public User? Sender { get; set; }
         public User? Reciever { get; set; }
-        public Message() { }
-        public Message(long recieveId, long senderId, string[] pictures, string[] audios, DateTime sendDateTime, short messageStatus, string text)
+        public Message(Guid recieveId, Guid senderId, string[] pictures, string[] audios, DateTime sendDateTime, short messageStatus, string text)
         {
             RecieveId = recieveId;
             SenderId = senderId;
@@ -23,5 +22,6 @@
             MessageStatus = messageStatus;
             MessageTextContent = text;
         }
+        public Message() { }
     }
 }
