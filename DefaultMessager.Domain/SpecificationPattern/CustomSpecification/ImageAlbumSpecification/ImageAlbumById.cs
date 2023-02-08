@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.ImageA
 {
     public class ImageAlbumById<T> : Specification<ImageAlbum>
     {
-        private readonly int _imageAlbumId;
-        public ImageAlbumById(int id)
+        private readonly Guid _imageAlbumId;
+        public ImageAlbumById(Guid id)
         {
             _imageAlbumId = id;
-            expression = post => post.ImageAlbumId == _imageAlbumId;
+            expression = post => post.Id == _imageAlbumId;
         }
         public override Expression<Func<ImageAlbum, bool>> ToExpression()
         {

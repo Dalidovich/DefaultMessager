@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.Messag
 {
     public class MessageById<T> : Specification<Message>
     {
-        private readonly int _MessageId;
-        public MessageById(int id)
+        private readonly Guid _MessageId;
+        public MessageById(Guid id)
         {
             _MessageId = id;
-            expression = post => post.MessageId == _MessageId;
+            expression = post => post.Id == _MessageId;
         }
         public override Expression<Func<Message, bool>> ToExpression()
         {

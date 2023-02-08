@@ -12,11 +12,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSp
 {
     public class PostByCreaterId<T> : Specification<Post>
     {
-        private readonly int _creatorId;
-        public PostByCreaterId(int creatorId)
+        private readonly Guid _creatorId;
+        public PostByCreaterId(Guid creatorId)
         {
             _creatorId = creatorId;
-            expression = post => post.UserId == _creatorId;
+            expression = post => post.Id == _creatorId;
         }
         public override Expression<Func<Post, bool>> ToExpression()
         {

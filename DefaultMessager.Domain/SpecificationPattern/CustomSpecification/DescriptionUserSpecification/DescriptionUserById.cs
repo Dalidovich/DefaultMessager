@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.Descri
 {
     public class DescriptionUserById<T> : Specification<DescriptionUser>
     {
-        private readonly int _descriptionUserId;
-        public DescriptionUserById(int id)
+        private readonly Guid _descriptionUserId;
+        public DescriptionUserById(Guid id)
         {
             _descriptionUserId = id;
-            expression = post => post.DescriptionId == _descriptionUserId;
+            expression = post => post.Id == _descriptionUserId;
         }
         public override Expression<Func<DescriptionUser, bool>> ToExpression()
         {

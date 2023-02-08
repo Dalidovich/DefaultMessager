@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.LikeSp
 {
     public class LikeById<T> : Specification<Like>
     {
-        private readonly int _likeId;
-        public LikeById(int id)
+        private readonly Guid _likeId;
+        public LikeById(Guid id)
         {
             _likeId = id;
-            expression = post => post.LikeId == _likeId;
+            expression = post => post.Id == _likeId;
         }
         public override Expression<Func<Like, bool>> ToExpression()
         {

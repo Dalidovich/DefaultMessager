@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSp
 {
     public class UserById<T> : Specification<User>
     {
-        private readonly int _userId;
-        public UserById(int id)
+        private readonly Guid _userId;
+        public UserById(Guid id)
         {
             _userId = id;
-            expression = post => post.UserId == _userId;
+            expression = post => post.Id == _userId;
         }
         public override Expression<Func<User, bool>> ToExpression()
         {
