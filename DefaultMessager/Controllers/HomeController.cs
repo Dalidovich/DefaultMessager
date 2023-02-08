@@ -1,4 +1,8 @@
-﻿using DefaultMessager.Models;
+﻿using DefaultMessager.DAL.Interfaces;
+using DefaultMessager.Domain.Entities;
+using DefaultMessager.Models;
+using DefaultMessager.Service.Implementation;
+using DefaultMessager.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +11,22 @@ namespace DefaultMessager.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly PostService<Post> _postService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, PostService<Post> postService)
         {
             _logger = logger;
+            _postService = postService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var response = await _postService.GetAll();
+            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
+            {
+                return View(response.Data);
+            }
+            return RedirectToAction("Error");
         }
 
         public IActionResult Privacy()

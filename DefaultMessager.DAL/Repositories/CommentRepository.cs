@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository : IBaseRepository<Comment>
     {
         private readonly MessagerDbContext _db;
 

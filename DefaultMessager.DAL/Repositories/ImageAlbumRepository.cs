@@ -3,7 +3,7 @@ using DefaultMessager.Domain.Entities;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class ImageAlbumRepository : IImageAlbumRepository
+    public class ImageAlbumRepository : IBaseRepository<ImageAlbum>
     {
         private readonly MessagerDbContext _db;
 

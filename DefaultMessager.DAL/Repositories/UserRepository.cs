@@ -3,7 +3,7 @@ using DefaultMessager.Domain.Entities;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IBaseRepository<User>
     {
         private readonly MessagerDbContext _db;
 
@@ -30,5 +30,6 @@ namespace DefaultMessager.DAL.Repositories
         {
             return _db.Users;
         }
+
     }
 }

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DefaultMessager.DAL\DefaultMessager.DAL.csproj" />
+    <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.Service.csproj" />
   </ItemGroup>
 
 </Project>

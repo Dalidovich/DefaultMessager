@@ -3,7 +3,7 @@ using DefaultMessager.Domain.Entities;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class MessageRepository : IMessageRepository
+    public class MessageRepository : IBaseRepository<Message>
     {
         private readonly MessagerDbContext _db;
 

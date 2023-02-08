@@ -1,6 +1,9 @@
 using DefaultMessager.DAL;
 using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
+using DefaultMessager.Domain.Entities;
+using DefaultMessager.Service.Implementation;
+using DefaultMessager.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -28,13 +31,21 @@ namespace DefaultMessager
             
             builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
 
-            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-            builder.Services.AddScoped<IDescriptionUserRepository, DescriptionUserRepository>();
-            builder.Services.AddScoped<IImageAlbumRepository, ImageAlbumRepository>();
-            builder.Services.AddScoped<ILikeRepository, LikeRepository>();
-            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-            builder.Services.AddScoped<IPostRepository, PostRepository>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IBaseRepository<Comment>, CommentRepository>();
+            builder.Services.AddScoped<IBaseRepository<DescriptionUser>, DescriptionUserRepository>();
+            builder.Services.AddScoped<IBaseRepository<ImageAlbum>, ImageAlbumRepository>();
+            builder.Services.AddScoped<IBaseRepository<Like>, LikeRepository>();
+            builder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
+            builder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
+            builder.Services.AddScoped<IBaseRepository<User>, UserRepository>();
+
+            builder.Services.AddScoped<CommentService<Comment>>();
+            builder.Services.AddScoped<DescriptionUserService<DescriptionUser>>();
+            builder.Services.AddScoped<ImageAlbumService<ImageAlbum>>();
+            builder.Services.AddScoped<LikeService<Like>>();
+            builder.Services.AddScoped<MessageService<Message>>();
+            builder.Services.AddScoped<PostService<Post>>();
+            builder.Services.AddScoped<UserService<User>>();
 
 
             var app = builder.Build();
