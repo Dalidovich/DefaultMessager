@@ -1,6 +1,6 @@
 ﻿namespace DefaultMessager.Domain.Entities
 {
-    public class User
+    public class Account
     {
         public Guid? Id { get; set; }
         public string Email { get; set; }
@@ -9,8 +9,8 @@
         public short Role { get; set; }
         public DateTime CreateDate { get; set; }
         public short StatusAccount { get; set; }
-        public DescriptionUser? Description {get ;set;}
-        public User(string email, string login, string password, short role, DateTime createDate, short statusAccount)
+        public DescriptionAccount? Description {get ;set;}
+        public Account(string email, string login, string password, short role, DateTime createDate, short statusAccount)
         {
             Email = email;
             Login = login;

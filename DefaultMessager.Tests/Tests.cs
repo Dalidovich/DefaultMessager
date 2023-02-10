@@ -10,12 +10,10 @@ namespace DefaultMessager.Tests
         [SetUp]
         public void Setup()
         {
-            MessagerDbContext.ConnectionString = "Server=localhost;Database=defaultMessager;Port=5432;User Id=postgres;Password=pg";
-            using (var db = new MessagerDbContext())
-            {
-                
-                db.UpdateDatabase();
-            }
+            MessagerDbContext.ConnectionString = "Host=localhost;Port=5432;Database=my_db;Username=postgres;Password=pGJRF54321";
+            using var db = new MessagerDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.Migrate();
         }
 
         [Test]
@@ -23,12 +21,17 @@ namespace DefaultMessager.Tests
         {
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                var user1 = new Account("email1", "login1", "password1", 1, DateTime.Now, 1);
+                var user3 = new Account("email3", "login2", "password2", 2, DateTime.Now, 2);
+                db.AddRange(user1, user3);
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That(db.Users.AsNoTracking().Any(x => x.StatusAccount == 1), Is.True);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(db.Accounts.AsNoTracking().GroupBy(x => x.Id).Any(x=> x.Count() < 1), Is.False);
+                });
             }
         }
 
@@ -38,11 +41,11 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email13", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
+                idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.DescriptionUsers.Add(new DescriptionUser((Guid)idUser,"dima","surname","pathronomic","1","s","path"));
+                db.DescriptionUsers.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic","1","s","path"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -57,9 +60,9 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email14", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
+                idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
                 db.ImageAlbums.Add(new ImageAlbum((Guid)idUser, Array.Empty<string>(),"one"));
                 db.SaveChanges();
@@ -76,9 +79,9 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email15", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
+                idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
                 db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
@@ -94,9 +97,9 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email16", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
+                idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
                 db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
@@ -117,9 +120,9 @@ namespace DefaultMessager.Tests
             Guid? idPost, idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email17", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idUser = db.Users.OrderBy(x => x.Id).Last().Id;
+                idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
                 db.Posts.Add(new Post((Guid)idUser, new string[0], "text", "title", new string[0], DateTime.Now));
                 db.SaveChanges();
@@ -140,13 +143,13 @@ namespace DefaultMessager.Tests
             Guid? idSender, idReciever;
             using (var db = new MessagerDbContext())
             {
-                db.Users.Add(new User("email1", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email18", "login", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idSender = db.Users.OrderBy(x => x.Id).Last().Id;
+                idSender = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.Users.Add(new User("email1", "login1", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email19", "login1", "password", 1, DateTime.Now, 1));
                 db.SaveChanges();
-                idReciever = db.Users.OrderBy(x => x.Id).Last().Id;
+                idReciever = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
                 db.Messages.Add(new Message((Guid)idReciever,(Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,1,"text"));
                 db.SaveChanges();

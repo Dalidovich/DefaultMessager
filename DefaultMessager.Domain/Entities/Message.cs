@@ -10,8 +10,8 @@
         public DateTime SendDateTime { get; set; }
         public short MessageStatus { get; set; }
         public string? MessageTextContent { get; set; }
-        public User? Sender { get; set; }
-        public User? Reciever { get; set; }
+        public Account? Sender { get; set; }
+        public Account? Reciever { get; set; }
         public Message(Guid recieveId, Guid senderId, string[] pictures, string[] audios, DateTime sendDateTime, short messageStatus, string text)
         {
             RecieveId = recieveId;

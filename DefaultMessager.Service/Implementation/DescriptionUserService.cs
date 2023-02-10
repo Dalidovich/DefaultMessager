@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DefaultMessager.Service.Implementation
 {
-    public class DescriptionUserService<T> : BaseService<T>, IDescriptionUserService where T : DescriptionUser
+    public class DescriptionUserService<T> : BaseService<T>, IDescriptionUserService where T : DescriptionAccount
     {
         public DescriptionUserService(IBaseRepository<T> repository, ILogger<T> logger) : base(repository, logger)
         {

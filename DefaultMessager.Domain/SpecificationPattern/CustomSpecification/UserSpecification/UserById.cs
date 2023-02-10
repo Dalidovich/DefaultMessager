@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSpecification
 {
-    public class UserById<T> : Specification<User>
+    public class UserById<T> : Specification<Account>
     {
         private readonly Guid _userId;
         public UserById(Guid id)
@@ -12,7 +12,7 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSp
             _userId = id;
             expression = post => post.Id == _userId;
         }
-        public override Expression<Func<User, bool>> ToExpression()
+        public override Expression<Func<Account, bool>> ToExpression()
         {
             return expression;
         }

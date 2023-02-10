@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DefaultMessager.DAL.EntityConfigurations
 {
-    public class DescriptionUserConfig : IEntityTypeConfiguration<DescriptionUser>
+    public class DescriptionAccountConfig : IEntityTypeConfiguration<DescriptionAccount>
     {
-        public void Configure(EntityTypeBuilder<DescriptionUser> builder)
+        public void Configure(EntityTypeBuilder<DescriptionAccount> builder)
         {
-            builder.ToTable("Descriptions_users");
+            builder.ToTable("descriptions_accounts");
 
             builder.HasKey(e => e.Id);
 
@@ -17,9 +17,9 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Guid)
                    .HasColumnName("pk_description_id");
 
-            builder.Property(e => e.UserId)
+            builder.Property(e => e.AccountId)
                    .HasColumnType(EntityDataTypes.Guid)
-                   .HasColumnName("fk_user_id");
+                   .HasColumnName("fk_account_id");
 
             builder.Property(e => e.Name)
                    .HasColumnType(EntityDataTypes.Character_varying)
@@ -39,7 +39,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
 
             builder.Property(e => e.UserStatus)
                    .HasColumnType(EntityDataTypes.Character_varying)
-                   .HasColumnName("user_status");
+                   .HasColumnName("description_status");
 
             builder.Property(e => e.PathAvatar)
                    .HasColumnType(EntityDataTypes.Character_varying)

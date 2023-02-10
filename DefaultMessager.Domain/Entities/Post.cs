@@ -3,25 +3,25 @@
     public class Post
     {
         public Guid? Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid AccountId { get; set; }
         public string[]? PathPictures { get; set; } 
         public string? PostTextContent { get; set; } 
         public string? Title { get; set; }
         public string[]? PathAudios { get; set; } 
         public DateTime SendDateTime { get; set; }
-        public User? User { get; set; }
-        public Post(Guid userId, string[] pathPictures, string text, string title, string[] pathAudios, DateTime sendDateTime)
+        public Account? User { get; set; }
+        public Post(Guid accountId, string[] pathPictures, string text, string title, string[] pathAudios, DateTime sendDateTime)
         {
-            UserId = userId;
+            AccountId = accountId;
             PathPictures = pathPictures;
             PostTextContent = text;
             Title = title;
             PathAudios = pathAudios;
             SendDateTime = sendDateTime;
         }
-        public Post(Guid userId)
+        public Post(Guid accountId)
         {
-            UserId = userId;
+            AccountId = accountId;
         }
         public List<Like> Likes { get; set; } = new List<Like>();
         public List<Comment> Comments { get; set; } = new List<Comment>();

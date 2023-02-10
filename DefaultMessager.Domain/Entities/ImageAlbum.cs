@@ -3,18 +3,18 @@
     public class ImageAlbum
     {
         public Guid? Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid AccountId { get; set; }
         public string[] PathPictures { get; set; } = null!;
         public string Title { get; set; } = null!;
-        public User? User { get; set; }
-        public ImageAlbum(Guid userId, string[] pathPictures, string title) : this(userId)
+        public Account? User { get; set; }
+        public ImageAlbum(Guid accountId, string[] pathPictures, string title) : this(accountId)
         {
             PathPictures = pathPictures;
             Title = title;
         }
-        public ImageAlbum(Guid userId)
+        public ImageAlbum(Guid accountId)
         {
-            UserId = userId;
+            AccountId = accountId;
         }
     }
 }
