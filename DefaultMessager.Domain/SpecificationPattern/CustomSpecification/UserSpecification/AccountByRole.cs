@@ -1,16 +1,17 @@
 ﻿using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.SpecificationPattern.Base;
 using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSpecification
 {
-    public class UserById<T> : Specification<Account>
+    public class AccountByRole<T> : Specification<Account>
     {
-        private readonly Guid _userId;
-        public UserById(Guid id)
+        private readonly Role _role;
+        public AccountByRole(Role role)
         {
-            _userId = id;
-            expression = post => post.Id == _userId;
+            _role = role;
+            expression = x => x.Role == _role;
         }
         public override Expression<Func<Account, bool>> ToExpression()
         {

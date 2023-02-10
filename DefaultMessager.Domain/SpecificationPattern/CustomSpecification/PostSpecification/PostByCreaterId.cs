@@ -16,7 +16,7 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSp
         public PostByCreaterId(Guid creatorId)
         {
             _creatorId = creatorId;
-            expression = post => post.Id == _creatorId;
+            expression = x => x.Id == _creatorId;
         }
         public override Expression<Func<Post, bool>> ToExpression()
         {

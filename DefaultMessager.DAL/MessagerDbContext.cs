@@ -20,7 +20,7 @@ namespace DefaultMessager.DAL
         public void UpdateDatabase()
         {
             Database.EnsureDeleted();
-            Database.EnsureCreated();
+            Database.Migrate();
         }
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

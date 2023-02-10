@@ -1,5 +1,6 @@
 using DefaultMessager.DAL;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace DefaultMessager.Tests
@@ -10,7 +11,7 @@ namespace DefaultMessager.Tests
         [SetUp]
         public void Setup()
         {
-            MessagerDbContext.ConnectionString = "Host=localhost;Port=5432;Database=my_db;Username=postgres;Password=pGJRF54321";
+            MessagerDbContext.ConnectionString = "Server=localhost;Database=defaultMessager;Port=5432;User Id=postgres;Password=pg";
             using var db = new MessagerDbContext();
             db.Database.EnsureDeleted();
             db.Database.Migrate();
@@ -21,8 +22,8 @@ namespace DefaultMessager.Tests
         {
             using (var db = new MessagerDbContext())
             {
-                var user1 = new Account("email1", "login1", "password1", 1, DateTime.Now, 1);
-                var user3 = new Account("email3", "login2", "password2", 2, DateTime.Now, 2);
+                var user1 = new Account("email1", "login1", "password1", Role.admin, DateTime.Now, StatusAccount.normal);
+                var user3 = new Account("email3", "login2", "password2", Role.standart, DateTime.Now, StatusAccount.normal);
                 db.AddRange(user1, user3);
                 db.SaveChanges();
             }
@@ -41,7 +42,7 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email13", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email13", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
@@ -60,7 +61,7 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email14", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email14", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
@@ -79,7 +80,7 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email15", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email15", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
@@ -97,7 +98,7 @@ namespace DefaultMessager.Tests
             Guid? idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email16", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email16", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
@@ -105,7 +106,7 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 Guid? idPost = db.Posts.OrderBy(x => x.Id).Last().Id;
 
-                db.Comments.Add(new Comment((Guid)idPost, (Guid)idUser, "1", DateTime.Now, 1));
+                db.Comments.Add(new Comment((Guid)idPost, (Guid)idUser, "1", DateTime.Now, StatusComment.normal));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -120,7 +121,7 @@ namespace DefaultMessager.Tests
             Guid? idPost, idUser;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email17", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email17", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
@@ -143,15 +144,15 @@ namespace DefaultMessager.Tests
             Guid? idSender, idReciever;
             using (var db = new MessagerDbContext())
             {
-                db.Accounts.Add(new Account("email18", "login", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email18", "login", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idSender = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.Accounts.Add(new Account("email19", "login1", "password", 1, DateTime.Now, 1));
+                db.Accounts.Add(new Account("email19", "login1", "password", Role.standart, DateTime.Now, StatusAccount.normal));
                 db.SaveChanges();
                 idReciever = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.Messages.Add(new Message((Guid)idReciever,(Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,1,"text"));
+                db.Messages.Add(new Message((Guid)idReciever,(Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,StatusMessage.normal,"text"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())

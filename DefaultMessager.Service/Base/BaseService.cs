@@ -49,8 +49,8 @@ namespace DefaultMessager.Service.Base
         {
             try
             {
-                var code = await _repository.GetAll().SingleOrDefaultAsync(expression);
-                if (code == null)
+                var entity = await _repository.GetAll().SingleOrDefaultAsync(expression);
+                if (entity == null)
                 {
                     return new BaseResponse<bool>()
                     {
@@ -60,7 +60,7 @@ namespace DefaultMessager.Service.Base
 
                 return new BaseResponse<bool>()
                 {
-                    Data = await _repository.deleteAsync(code),
+                    Data = await _repository.deleteAsync(entity),
                     StatusCode = StatusCode.EntityDelete
                 };
             }
@@ -108,8 +108,8 @@ namespace DefaultMessager.Service.Base
         {
             try
             {
-                var code = await _repository.GetAll().SingleOrDefaultAsync(expression);
-                if (code == null)
+                var entity = await _repository.GetAll().SingleOrDefaultAsync(expression);
+                if (entity == null)
                 {
                     return new BaseResponse<T>()
                     {
@@ -118,7 +118,7 @@ namespace DefaultMessager.Service.Base
                 }
                 return new BaseResponse<T>()
                 {
-                    Data = code,
+                    Data = entity,
                     StatusCode = StatusCode.EntityRead
                 };
             }
@@ -126,6 +126,34 @@ namespace DefaultMessager.Service.Base
             {
                 _logger.LogError(ex, $"[GetOne] : {ex.Message}");
                 return new BaseResponse<T>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+        public async Task<IBaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                var entites = await _repository.GetAll().Where(expression).ToListAsync();
+                if (entites == null)
+                {
+                    return new BaseResponse<IEnumerable<T>>()
+                    {
+                        Description = "satisfactory entity not found"
+                    };
+                }
+                return new BaseResponse<IEnumerable<T>>()
+                {
+                    Data = entites,
+                    StatusCode = StatusCode.EntityRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetAllSatisfactory] : {ex.Message}");
+                return new BaseResponse<IEnumerable<T>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
