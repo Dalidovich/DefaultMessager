@@ -25,7 +25,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<LikeService<Like>>();
             webApplicationBuilder.Services.AddScoped<MessageService<Message>>();
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
-            webApplicationBuilder.Services.AddScoped<UserService<Account>>();
+            webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
         }
     }
 }
