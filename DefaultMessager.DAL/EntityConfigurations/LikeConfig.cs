@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class LikeConfig : IEntityTypeConfiguration<Like>
     {
+        public const string Table_name = "likes";
         public void Configure(EntityTypeBuilder<Like> builder)
         {
-            builder.ToTable("likes");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

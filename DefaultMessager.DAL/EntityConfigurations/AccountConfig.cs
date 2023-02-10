@@ -76,6 +76,16 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .WithOne(p => p.User)
                    .HasPrincipalKey<Account>(p => p.Id)
                    .HasForeignKey<DescriptionAccount>(d => d.AccountId);
+
+            builder.HasMany(d => d.RelationsFrom)
+                   .WithOne(p => p.Account1)
+                   .HasPrincipalKey(p => p.Id)
+                   .HasForeignKey(d => d.AccountId1);
+
+            builder.HasMany(d => d.RelationsTo)
+                   .WithOne(p => p.Account2)
+                   .HasPrincipalKey(p => p.Id)
+                   .HasForeignKey(d => d.AccountId2);
         }
     }
 }

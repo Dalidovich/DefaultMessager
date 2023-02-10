@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class DescriptionAccountConfig : IEntityTypeConfiguration<DescriptionAccount>
     {
+        public const string Table_name = "descriptions_accounts";
         public void Configure(EntityTypeBuilder<DescriptionAccount> builder)
         {
-            builder.ToTable("descriptions_accounts");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

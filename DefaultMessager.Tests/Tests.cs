@@ -11,7 +11,7 @@ namespace DefaultMessager.Tests
         [SetUp]
         public void Setup()
         {
-            MessagerDbContext.ConnectionString = "Server=localhost;Database=defaultMessager;Port=5432;User Id=postgres;Password=pg";
+            MessagerDbContext.ConnectionString = "Host=localhost;Port=5432;Database=my_db;Username=postgres;Password=pGJRF54321";
             using var db = new MessagerDbContext();
             db.Database.EnsureDeleted();
             db.Database.Migrate();

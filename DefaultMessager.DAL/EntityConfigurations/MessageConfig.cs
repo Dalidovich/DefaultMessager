@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class MessageConfig : IEntityTypeConfiguration<Message>
     {
+        public const string Table_name = "messages";
         public void Configure(EntityTypeBuilder<Message> builder)
         {
-            builder.ToTable("messages");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

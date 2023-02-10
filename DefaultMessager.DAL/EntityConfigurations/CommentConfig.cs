@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     internal class CommentConfig : IEntityTypeConfiguration<Comment>
     {
+        public const string Table_name = "comments";
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("comments");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

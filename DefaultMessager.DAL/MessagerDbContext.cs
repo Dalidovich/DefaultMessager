@@ -1,6 +1,5 @@
 using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Reflection;
 
 namespace DefaultMessager.DAL
@@ -14,7 +13,7 @@ namespace DefaultMessager.DAL
         public DbSet<Message> Messages { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
+        public DbSet<RelationAccount> Relations { get; set; }
         public static string ConnectionString { get; set; }
 
         public void UpdateDatabase()

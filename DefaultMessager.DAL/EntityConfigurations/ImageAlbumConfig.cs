@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class ImageAlbumConfig : IEntityTypeConfiguration<ImageAlbum>
     {
+        public const string Table_name = "image_albums";
         public void Configure(EntityTypeBuilder<ImageAlbum> builder)
         {
-            builder.ToTable("image_albums");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

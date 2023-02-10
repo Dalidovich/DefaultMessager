@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class PostConfig : IEntityTypeConfiguration<Post>
     {
+        public const string Table_name = "posts";
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.ToTable("posts");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

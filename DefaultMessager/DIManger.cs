@@ -20,7 +20,7 @@ namespace DefaultMessager
         public static void addServices(this WebApplicationBuilder webApplicationBuilder)
         {
             webApplicationBuilder.Services.AddScoped<CommentService<Comment>>();
-            webApplicationBuilder.Services.AddScoped<DescriptionUserService<DescriptionAccount>>();
+            webApplicationBuilder.Services.AddScoped<DescriptionAccountService<DescriptionAccount>>();
             webApplicationBuilder.Services.AddScoped<ImageAlbumService<ImageAlbum>>();
             webApplicationBuilder.Services.AddScoped<LikeService<Like>>();
             webApplicationBuilder.Services.AddScoped<MessageService<Message>>();
