@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.ImageAlbumSpecification
 {
-    public class ImageAlbumById<T> : Specification<ImageAlbum>
+    public class ImageAlbumByTitle<T> : Specification<ImageAlbum>
     {
-        private readonly Guid _imageAlbumId;
-        public ImageAlbumById(Guid id)
+        private readonly string _title;
+        public ImageAlbumByTitle(string title)
         {
-            _imageAlbumId = id;
-            expression = x => x.Id == _imageAlbumId;
+            _title = title;
+            expression = x => x.Title == _title;
         }
         public override Expression<Func<ImageAlbum, bool>> ToExpression()
         {

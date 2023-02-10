@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.LikeSpecification
 {
-    public class LikeById<T> : Specification<Like>
+    public class LikeByPostId<T> : Specification<Like>
     {
-        private readonly Guid _likeId;
-        public LikeById(Guid id)
+        private readonly Guid _postId;
+        public LikeByPostId(Guid id)
         {
-            _likeId = id;
-            expression = x => x.Id == _likeId;
+            _postId = id;
+            expression = x => x.PostId == _postId;
         }
         public override Expression<Func<Like, bool>> ToExpression()
         {
