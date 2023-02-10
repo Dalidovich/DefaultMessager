@@ -2,8 +2,9 @@
 {
     public enum StatusAccount
     {
-        deleted = 0,
-        postBaned = 1,
-        commentBaned = 2
+        normal=0,
+        deleted = 1,
+        postBaned = 2,
+        commentBaned = 3
     }
 }
