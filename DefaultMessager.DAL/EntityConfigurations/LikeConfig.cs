@@ -9,7 +9,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Like> builder)
         {
-            builder.ToTable("Likes");
+            builder.ToTable("likes");
 
             builder.HasKey(e => e.Id);
 
@@ -21,9 +21,9 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Guid)
                    .HasColumnName("fk_post_id");
 
-            builder.Property(e => e.UserId)
+            builder.Property(e => e.AccountId)
                    .HasColumnType(EntityDataTypes.Guid)
-                   .HasColumnName("fk_user_id");
+                   .HasColumnName("fk_account_id");
 
             builder.HasOne(d => d.Post)
                    .WithMany(p => p.Likes)

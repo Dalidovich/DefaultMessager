@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification
 {
-    public class CommentById<T> : Specification<Comment>
+    public class CommentByPostId<T> : Specification<Comment>
     {
-        private readonly Guid _commentId;
-        public CommentById(Guid id)
+        private readonly Guid _postId;
+        public CommentByPostId(Guid id)
         {
-            _commentId = id;
-            expression = x => x.Id == _commentId;
+            _postId = id;
+            expression = x => x.PostId == _postId;
         }
         public override Expression<Func<Comment, bool>> ToExpression()
         {

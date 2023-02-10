@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification
 {
-    public class DescriptionUserById<T> : Specification<DescriptionAccount>
+    public class DescriptionUserByAnyFullName<T> : Specification<DescriptionAccount>
     {
-        private readonly Guid _descriptionUserId;
-        public DescriptionUserById(Guid id)
+        private readonly string _personalInfo;
+        public DescriptionUserByAnyFullName(string personalInfo)
         {
-            _descriptionUserId = id;
-            expression = x => x.Id == _descriptionUserId;
+            _personalInfo = personalInfo;
+            expression = x => x.Name == _personalInfo || x.Surname==_personalInfo || x.Patronymic== _personalInfo;
         }
         public override Expression<Func<DescriptionAccount, bool>> ToExpression()
         {

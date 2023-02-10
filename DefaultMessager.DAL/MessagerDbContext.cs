@@ -7,8 +7,8 @@ namespace DefaultMessager.DAL
 {
     public partial class MessagerDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<DescriptionUser> DescriptionUsers { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<DescriptionAccount> DescriptionUsers { get; set; }
         public DbSet<ImageAlbum> ImageAlbums { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
@@ -20,7 +20,7 @@ namespace DefaultMessager.DAL
         public void UpdateDatabase()
         {
             Database.EnsureDeleted();
-            Database.EnsureCreated();
+            Database.Migrate();
         }
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

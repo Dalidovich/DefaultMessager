@@ -9,7 +9,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.ToTable("Posts");
+            builder.ToTable("posts");
 
             builder.HasKey(e => e.Id);
 
@@ -17,9 +17,9 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Guid)
                    .HasColumnName("pk_post_id");
 
-            builder.Property(e => e.UserId)
+            builder.Property(e => e.AccountId)
                    .HasColumnType(EntityDataTypes.Guid)
-                   .HasColumnName("fk_user_id");
+                   .HasColumnName("fk_account_id");
 
             builder.Property(e => e.PathPictures)
                    .HasColumnType(EntityDataTypes.Text_array)

@@ -3,7 +3,7 @@ using DefaultMessager.Domain.Entities;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class DescriptionUserRepository : IBaseRepository<DescriptionUser>
+    public class DescriptionUserRepository : IBaseRepository<DescriptionAccount>
     {
         private readonly MessagerDbContext _db;
 
@@ -12,21 +12,21 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<DescriptionUser> createAsync(DescriptionUser entity)
+        public async Task<DescriptionAccount> createAsync(DescriptionAccount entity)
         {
             var createdEntity = await _db.DescriptionUsers.AddAsync(entity);
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
 
-        public async Task<bool> deleteAsync(DescriptionUser entity)
+        public async Task<bool> deleteAsync(DescriptionAccount entity)
         {
             _db.DescriptionUsers.Remove(entity);
             await _db.SaveChangesAsync();
             return true;
         }
 
-        public IQueryable<DescriptionUser> GetAll()
+        public IQueryable<DescriptionAccount> GetAll()
         {
             return _db.DescriptionUsers;
         }

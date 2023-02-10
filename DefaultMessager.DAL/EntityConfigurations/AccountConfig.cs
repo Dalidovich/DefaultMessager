@@ -5,17 +5,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DefaultMessager.DAL.EntityConfigurations
 {
-    public class UserConfig : IEntityTypeConfiguration<User>
+    public class AccountConfig : IEntityTypeConfiguration<Account>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public const string Table_name = "users";
+        public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.ToTable("users");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => new { e.Id });
+            builder.HasIndex(e => e.Login);
 
             builder.Property(e => e.Id)
                    .HasColumnType(EntityDataTypes.Guid)
-                   .HasColumnName("pk_user_id");
+                   .HasColumnName("pk_account_id");
 
             builder.Property(e => e.Email)
                    .HasColumnType(EntityDataTypes.Character_varying)
@@ -43,12 +45,12 @@ namespace DefaultMessager.DAL.EntityConfigurations
             builder.HasMany(d => d.ImageAlbum)
                    .WithOne(p => p.User)
                    .HasPrincipalKey(p => p.Id)
-                   .HasForeignKey(d => d.UserId);
+                   .HasForeignKey(d => d.AccountId);
 
             builder.HasMany(d => d.Posts)
                    .WithOne(p => p.User)
                    .HasPrincipalKey(p => p.Id)
-                   .HasForeignKey(d => d.UserId);
+                   .HasForeignKey(d => d.AccountId);
 
             builder.HasMany(d => d.SendMessages)
                    .WithOne(p => p.Sender)
@@ -63,17 +65,17 @@ namespace DefaultMessager.DAL.EntityConfigurations
             builder.HasMany(d => d.Likes)
                    .WithOne(p => p.User)
                    .HasPrincipalKey(p => p.Id)
-                   .HasForeignKey(d => d.UserId);
+                   .HasForeignKey(d => d.AccountId);
 
             builder.HasMany(d => d.Comments)
                    .WithOne(p => p.User)
                    .HasPrincipalKey(p => p.Id)
-                   .HasForeignKey(d => d.UserId);
+                   .HasForeignKey(d => d.AccountId);
              
             builder.HasOne(d => d.Description)
                    .WithOne(p => p.User)
-                   .HasPrincipalKey<User>(p => p.Id)
-                   .HasForeignKey<DescriptionUser>(d => d.UserId);
+                   .HasPrincipalKey<Account>(p => p.Id)
+                   .HasForeignKey<DescriptionAccount>(d => d.AccountId);
         }
     }
 }

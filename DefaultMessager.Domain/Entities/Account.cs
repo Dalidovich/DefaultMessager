@@ -1,16 +1,18 @@
-﻿namespace DefaultMessager.Domain.Entities
+﻿using DefaultMessager.Domain.Enums;
+
+namespace DefaultMessager.Domain.Entities
 {
-    public class User
+    public class Account
     {
         public Guid? Id { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public short Role { get; set; }
+        public Role Role { get; set; }
         public DateTime CreateDate { get; set; }
-        public short StatusAccount { get; set; }
-        public DescriptionUser? Description {get ;set;}
-        public User(string email, string login, string password, short role, DateTime createDate, short statusAccount)
+        public StatusAccount StatusAccount { get; set; }
+        public DescriptionAccount? Description {get ;set;}
+        public Account(string email, string login, string password, Role role, DateTime createDate, StatusAccount statusAccount)
         {
             Email = email;
             Login = login;

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Service.Interfaces
 {
-    public interface IDescriptionUserService
+    public interface IAccountService
     {
     }
 }

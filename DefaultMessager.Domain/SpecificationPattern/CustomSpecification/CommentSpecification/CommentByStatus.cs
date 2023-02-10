@@ -1,16 +1,17 @@
 ﻿using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.SpecificationPattern.Base;
 using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification
 {
-    public class CommentById<T> : Specification<Comment>
+    public class CommentByStatus<T> : Specification<Comment>
     {
-        private readonly Guid _commentId;
-        public CommentById(Guid id)
+        private readonly StatusComment _status;
+        public CommentByStatus(StatusComment status)
         {
-            _commentId = id;
-            expression = x => x.Id == _commentId;
+            _status = status;
+            expression = x => x.CommentStatus == _status;
         }
         public override Expression<Func<Comment, bool>> ToExpression()
         {

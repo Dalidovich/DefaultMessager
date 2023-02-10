@@ -1,19 +1,19 @@
 ﻿namespace DefaultMessager.Domain.Entities
 {
-    public class DescriptionUser
+    public class DescriptionAccount
     {
         public Guid? Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid AccountId { get; set; }
         public string? Name { get; set; } 
         public string? Surname { get; set; } 
         public string? Patronymic { get; set; }
         public string? Describe { get; set; }
         public string? UserStatus { get; set; } 
         public string? PathAvatar { get; set; }
-        public User? User{get; set;} 
-        public DescriptionUser(Guid userId, string name, string surnames, string patronymic, string? describe, string status, string? pathAvatar)
+        public Account? User{get; set;} 
+        public DescriptionAccount(Guid accountId, string name, string surnames, string patronymic, string? describe, string status, string? pathAvatar)
         {
-            UserId = userId;
+            AccountId = accountId;
             Name = name;
             Surname = surnames;
             Patronymic = patronymic;
@@ -21,9 +21,9 @@
             UserStatus = status;
             PathAvatar = pathAvatar;
         }
-        public DescriptionUser(Guid userId)
+        public DescriptionAccount(Guid accountId)
         {
-            UserId = userId;
+            AccountId = accountId;
         }
     }
 }

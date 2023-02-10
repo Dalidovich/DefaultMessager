@@ -9,7 +9,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("Comments");
+            builder.ToTable("comments");
 
             builder.HasKey(e => e.Id);
 
@@ -17,9 +17,9 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Guid)
                    .HasColumnName("pk_comment_id");
 
-            builder.Property(e => e.UserId)
+            builder.Property(e => e.AccountId)
                    .HasColumnType(EntityDataTypes.Guid)
-                   .HasColumnName("fk_user_id");
+                   .HasColumnName("fk_account_id");
 
             builder.Property(e => e.PostId)
                    .HasColumnType(EntityDataTypes.Guid)
