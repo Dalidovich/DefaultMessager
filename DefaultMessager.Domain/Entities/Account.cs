@@ -27,7 +27,7 @@ namespace DefaultMessager.Domain.Entities
         public List<Message> ReciveMessages { get; set; } = new List<Message>();
         public List<Like> Likes { get; set; } = new List<Like>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
-        public List<RelationAccount> RelationsFrom { get; set; } = new List<RelationAccount>();
-        public List<RelationAccount> RelationsTo { get; set; } = new List<RelationAccount>();
+        public List<Relations> RelationsFrom { get; set; } = new List<Relations>();
+        public List<Relations> RelationsTo { get; set; } = new List<Relations>();
     }
 }

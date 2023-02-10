@@ -8,9 +8,9 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSp
     public class AccountByStatus<T> : Specification<Account>
     {
         private readonly StatusAccount _status;
-        public AccountByStatus(StatusAccount staus)
+        public AccountByStatus(StatusAccount status)
         {
-            _status = staus;
+            _status = status;
             expression = x => x.StatusAccount == _status;
         }
         public override Expression<Func<Account, bool>> ToExpression()

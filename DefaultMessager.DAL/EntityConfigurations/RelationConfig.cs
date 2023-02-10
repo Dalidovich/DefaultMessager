@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace DefaultMessager.DAL.EntityConfigurations
 {
-    public class RelationAccountConfig : IEntityTypeConfiguration<RelationAccount>
+    public class RelationAccountConfig : IEntityTypeConfiguration<Relations>
     {
         public const string Table_name = "relations";
-        public void Configure(EntityTypeBuilder<RelationAccount> builder)
+        public void Configure(EntityTypeBuilder<Relations> builder)
         {
             builder.ToTable(Table_name);
 
