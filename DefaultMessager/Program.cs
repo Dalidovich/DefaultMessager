@@ -22,12 +22,12 @@ namespace DefaultMessager
 
             MessagerDbContext.ConnectionString = builder.Configuration["ConnectionStrings"];
 
-            //DbContextOptions<MessagerDbContext> dbContextOptions = new DbContextOptions<MessagerDbContext>();
-            //DbContextOptionsBuilder<MessagerDbContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<MessagerDbContext>().UseNpgsql(
-            //    MessagerDbContext.ConnectionString);
-            //MessagerDbContext appDBContext = new MessagerDbContext();
-            //appDBContext.UpdateDatabase();
-            
+            DbContextOptions<MessagerDbContext> dbContextOptions = new DbContextOptions<MessagerDbContext>();
+            DbContextOptionsBuilder<MessagerDbContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<MessagerDbContext>().UseNpgsql(
+                MessagerDbContext.ConnectionString);
+            MessagerDbContext appDBContext = new MessagerDbContext();
+            appDBContext.UpdateDatabase();
+
             builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
 
             builder.addRepositores();

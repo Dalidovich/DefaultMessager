@@ -14,6 +14,6 @@ namespace DefaultMessager.Service.Base
         Task<IBaseResponse<T>> GetOne(Expression<Func<T, bool>> expression);
         Task<IBaseResponse<IEnumerable<T>>> GetAll();
         Task<IBaseResponse<bool>> Delete(Expression<Func<T, bool>> expression);
-        Task<IBaseResponse<T>> Create(T post);
+        Task<IBaseResponse<T>> Create(T entity);
     }
 }

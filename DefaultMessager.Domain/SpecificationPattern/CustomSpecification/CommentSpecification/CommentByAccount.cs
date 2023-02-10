@@ -6,11 +6,11 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.Commen
 {
     public class CommentByAccount<T> : Specification<Comment>
     {
-        private readonly Guid _commentId;
+        private readonly Guid _accountId;
         public CommentByAccount(Guid id)
         {
-            _commentId = id;
-            expression = x => x.AccountId == _commentId;
+            _accountId = id;
+            expression = x => x.AccountId == _accountId;
         }
         public override Expression<Func<Comment, bool>> ToExpression()
         {

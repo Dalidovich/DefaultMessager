@@ -1,4 +1,6 @@
-﻿namespace DefaultMessager.Domain.Entities
+﻿using DefaultMessager.Domain.Enums;
+
+namespace DefaultMessager.Domain.Entities
 {
     public class Message
     {
@@ -8,11 +10,11 @@
         public string[]? PathPictures { get; set; } 
         public string[]? PathAudios { get; set; } 
         public DateTime SendDateTime { get; set; }
-        public short MessageStatus { get; set; }
+        public StatusMessage MessageStatus { get; set; }
         public string? MessageTextContent { get; set; }
         public Account? Sender { get; set; }
         public Account? Reciever { get; set; }
-        public Message(Guid recieveId, Guid senderId, string[] pictures, string[] audios, DateTime sendDateTime, short messageStatus, string text)
+        public Message(Guid recieveId, Guid senderId, string[] pictures, string[] audios, DateTime sendDateTime, StatusMessage messageStatus, string text)
         {
             RecieveId = recieveId;
             SenderId = senderId;
