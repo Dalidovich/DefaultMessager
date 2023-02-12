@@ -1,5 +1,7 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DefaultMessager.DAL.Repositories
 {
@@ -18,7 +20,10 @@ namespace DefaultMessager.DAL.Repositories
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
-
+        public async Task<Post> getPostWithAccount(Guid postId)
+        {
+            return await _db.Posts.Include(a => a.Account).SingleAsync();
+        }
         public async Task<bool> deleteAsync(Post entity)
         {
             _db.Posts.Remove(entity);
@@ -28,7 +33,7 @@ namespace DefaultMessager.DAL.Repositories
 
         public IQueryable<Post> GetAll()
         {
-            return _db.Posts;
+            return  _db.Posts;
         }
     }
 }

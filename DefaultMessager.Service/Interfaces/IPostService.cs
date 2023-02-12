@@ -1,5 +1,6 @@
 ﻿using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Response.Base;
+using DefaultMessager.Domain.ViewModel.PostModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace DefaultMessager.Service.Interfaces
 {
     public interface IPostService
     {
+        Task<IBaseResponse<IEnumerable<PostIconView>>> GetAllPostIconRandom();
     }
 }

@@ -10,12 +10,12 @@ namespace DefaultMessager
         public static void addRepositores(this WebApplicationBuilder webApplicationBuilder)
         {
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Comment>, CommentRepository>();
-            webApplicationBuilder.Services.AddScoped<IBaseRepository<DescriptionAccount>, DescriptionUserRepository>();
+            webApplicationBuilder.Services.AddScoped<IBaseRepository<DescriptionAccount>, DescriptionAccountRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<ImageAlbum>, ImageAlbumRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Like>, LikeRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
-            webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, UserRepository>();
+            webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, AccountRepository>();
         }
         public static void addServices(this WebApplicationBuilder webApplicationBuilder)
         {

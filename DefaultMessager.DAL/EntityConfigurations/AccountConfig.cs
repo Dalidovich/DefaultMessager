@@ -43,12 +43,12 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnName("status_account");
 
             builder.HasMany(d => d.ImageAlbum)
-                   .WithOne(p => p.User)
+                   .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
                    .HasForeignKey(d => d.AccountId);
 
             builder.HasMany(d => d.Posts)
-                   .WithOne(p => p.User)
+                   .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
                    .HasForeignKey(d => d.AccountId);
 
@@ -63,17 +63,17 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasForeignKey(d => d.RecieveId);
 
             builder.HasMany(d => d.Likes)
-                   .WithOne(p => p.User)
+                   .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
                    .HasForeignKey(d => d.AccountId);
 
             builder.HasMany(d => d.Comments)
-                   .WithOne(p => p.User)
+                   .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
                    .HasForeignKey(d => d.AccountId);
              
             builder.HasOne(d => d.Description)
-                   .WithOne(p => p.User)
+                   .WithOne(p => p.Account)
                    .HasPrincipalKey<Account>(p => p.Id)
                    .HasForeignKey<DescriptionAccount>(d => d.AccountId);
 

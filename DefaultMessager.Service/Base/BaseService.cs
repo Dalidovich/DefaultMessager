@@ -15,8 +15,8 @@ namespace DefaultMessager.Service.Base
 {
     public abstract class BaseService<T> : IBaseService<T>
     {
-        private readonly IBaseRepository<T> _repository;
-        private readonly ILogger<T> _logger;
+        protected readonly IBaseRepository<T> _repository;
+        protected readonly ILogger<T> _logger;
 
         public BaseService(IBaseRepository<T> repository, ILogger<T> logger)
         {
