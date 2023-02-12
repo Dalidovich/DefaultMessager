@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DefaultMessager.Service.Implementation
 {
-    public class RelationService<T> : BaseService<T>, IPostService where T : Relations
+    public class RelationService<T> : BaseService<T>, IRelationService where T : Relations
     {
         public RelationService(IBaseRepository<T> repository, ILogger<T> logger) : base(repository, logger)
         {

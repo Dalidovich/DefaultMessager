@@ -11,22 +11,15 @@ namespace DefaultMessager.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly PostService<Post> _postService;
 
-        public HomeController(ILogger<HomeController> logger, PostService<Post> postService)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _postService = postService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _postService.GetAll();
-            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
-            {
-                return View(response.Data);
-            }
-            return RedirectToAction("Error");
+            return RedirectToAction("RandomPostIcons", "Post");
         }
 
         public IActionResult Privacy()

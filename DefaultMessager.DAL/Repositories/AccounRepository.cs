@@ -3,11 +3,11 @@ using DefaultMessager.Domain.Entities;
 
 namespace DefaultMessager.DAL.Repositories
 {
-    public class UserRepository : IBaseRepository<Account>
+    public class AccountRepository : IBaseRepository<Account>
     {
         private readonly MessagerDbContext _db;
 
-        public UserRepository(MessagerDbContext db)
+        public AccountRepository(MessagerDbContext db)
         {
             _db = db;
         }

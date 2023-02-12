@@ -6,7 +6,7 @@
         public Guid AccountId { get; set; }
         public string[] PathPictures { get; set; } = null!;
         public string Title { get; set; } = null!;
-        public Account? User { get; set; }
+        public Account? Account { get; set; }
         public ImageAlbum(Guid accountId, string[] pathPictures, string title) : this(accountId)
         {
             PathPictures = pathPictures;
