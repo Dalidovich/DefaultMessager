@@ -5,7 +5,7 @@
 namespace DefaultMessager.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class RenameTableUsersToAccounts : Migration
+    public partial class FixUsers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -110,6 +110,10 @@ namespace DefaultMessager.DAL.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("fk_account_id");
 
+                    b.Property<string>("AccountStatus")
+                        .HasColumnType("character varying")
+                        .HasColumnName("description_status");
+
                     b.Property<string>("Describe")
                         .HasColumnType("character varying")
                         .HasColumnName("describe");
@@ -129,10 +133,6 @@ namespace DefaultMessager.DAL.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("character varying")
                         .HasColumnName("surname");
-
-                    b.Property<string>("UserStatus")
-                        .HasColumnType("character varying")
-                        .HasColumnName("description_status");
 
                     b.HasKey("Id");
 
@@ -306,7 +306,7 @@ namespace DefaultMessager.DAL.Migrations
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Comment", b =>
                 {
-                    b.HasOne("DefaultMessager.Domain.Entities.Account", "User")
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
                         .WithMany("Comments")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -318,36 +318,36 @@ namespace DefaultMessager.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("Account");
 
-                    b.Navigation("User");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.DescriptionAccount", b =>
                 {
-                    b.HasOne("DefaultMessager.Domain.Entities.Account", "User")
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
                         .WithOne("Description")
                         .HasForeignKey("DefaultMessager.Domain.Entities.DescriptionAccount", "AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.ImageAlbum", b =>
                 {
-                    b.HasOne("DefaultMessager.Domain.Entities.Account", "User")
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
                         .WithMany("ImageAlbum")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Like", b =>
                 {
-                    b.HasOne("DefaultMessager.Domain.Entities.Account", "User")
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
                         .WithMany("Likes")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -359,9 +359,9 @@ namespace DefaultMessager.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("Account");
 
-                    b.Navigation("User");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Message", b =>
@@ -385,13 +385,13 @@ namespace DefaultMessager.DAL.Migrations
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("DefaultMessager.Domain.Entities.Account", "User")
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
                         .WithMany("Posts")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Relations", b =>
