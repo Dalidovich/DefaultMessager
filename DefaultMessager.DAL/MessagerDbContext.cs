@@ -25,8 +25,10 @@ namespace DefaultMessager.DAL
         }
         private void standartFill()
         {
-            var account = new Account("email_1", "123", "Ilia", Role.admin, DateTime.Now, StatusAccount.normal);
+            var account = new Account("email_1", "Ilia", "456", Role.admin, DateTime.Now, StatusAccount.normal);
             this.Accounts.Add(account);
+            var account2 = new Account("email_2", "Dima", "123", Role.admin, DateTime.Now, StatusAccount.normal);
+            this.Accounts.Add(account2);
             this.SaveChanges();
             List<Post> posts = new List<Post>();
             posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 2", new[] { "none" }, DateTime.Now));

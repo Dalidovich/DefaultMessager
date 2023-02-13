@@ -24,7 +24,7 @@ namespace DefaultMessager.Service.Implementation
         {
         }
         
-        public async Task<IBaseResponse<IEnumerable<PostIconView>>> GetAllPostIconRandom()
+        public async Task<IBaseResponse<IEnumerable<PostIconViewModel>>> GetAllPostIconRandom()
         {
             try
             {
@@ -33,12 +33,12 @@ namespace DefaultMessager.Service.Implementation
                 //contents = (IQueryable<PostIconView>)contents.OrderBy(n => rnd.Next()).ToList();
                 if (contents == null)
                 {
-                    return new BaseResponse<IEnumerable<PostIconView>>()
+                    return new BaseResponse<IEnumerable<PostIconViewModel>>()
                     {
                         Description = "post not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<PostIconView>>()
+                return new BaseResponse<IEnumerable<PostIconViewModel>>()
                 {
                     Data = contents,
                     StatusCode = StatusCode.PostRead
@@ -47,7 +47,7 @@ namespace DefaultMessager.Service.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetAllRandom] : {ex.Message}");
-                return new BaseResponse<IEnumerable<PostIconView>>()
+                return new BaseResponse<IEnumerable<PostIconViewModel>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

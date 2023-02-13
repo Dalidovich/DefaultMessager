@@ -13,6 +13,6 @@ namespace DefaultMessager.Service.Interfaces
 {
     public interface IPostService
     {
-        Task<IBaseResponse<IEnumerable<PostIconView>>> GetAllPostIconRandom();
+        Task<IBaseResponse<IEnumerable<PostIconViewModel>>> GetAllPostIconRandom();
     }
 }

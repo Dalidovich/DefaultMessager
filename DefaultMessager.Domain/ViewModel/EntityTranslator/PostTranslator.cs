@@ -11,9 +11,9 @@ namespace DefaultMessager.Domain.ViewModel.EntityTranslator
     public static class PostTranslator
     {
 
-        public static IQueryable<PostIconView> PostListToPostIconViewList(this IQueryable<Post> queryable)
+        public static IQueryable<PostIconViewModel> PostListToPostIconViewList(this IQueryable<Post> queryable)
         {
-            return queryable.Select(x => new { x.Id, x.AccountId, x.Title, x.PathPictures }).Select(x=>new PostIconView(x.Id,x.AccountId,x.Title,x.PathPictures));
+            return queryable.Select(x => new { x.Id, x.AccountId, x.Title, x.PathPictures }).Select(x=>new PostIconViewModel(x.Id,x.AccountId,x.Title,x.PathPictures));
         }
     }
 }

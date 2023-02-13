@@ -1,0 +1,18 @@
+﻿@using DefaultMessager.Domain.ViewModel.AccountModel;
+@model RegisterAccountViewModel
+@{
+    ViewData["Title"] = "registration";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>welcome</p>
+<form method="post" asp-controller="Account" asp-action="Resgistration">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Login" placeholder="login" type="text" />
+    <input asp-for="Password" placeholder="password" type="text" />
+    <input asp-for="passwordConfirm" placeholder="repit password" type="text" />
+    <button type="submit">send</button>
+</form>
+
+
+
