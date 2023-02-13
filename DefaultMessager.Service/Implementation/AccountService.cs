@@ -90,7 +90,7 @@ namespace DefaultMessager.Service.Implementation
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, account.Login));
-            claims.Add(new Claim("Хэш пароля", $"{account.Password}"));
+            claims.Add(new Claim("password", $"{account.Password}"));
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
 
