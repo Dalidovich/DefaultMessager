@@ -21,19 +21,24 @@ namespace DefaultMessager.Controllers
         }
 
         [HttpGet]
-        public ActionResult Registration() => View();
+        public IActionResult Registration() => View();
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterAccountViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //var responce = await _accountService.Registration(model);
-                //if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
-                //{
-
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //ModelState.AddModelError("", responce.Description);
+                var responce = await _accountService.Registration(model);
+                if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = responce.Data.Expires
+                    };
+                    Response.Cookies.Append("JWTToken", responce.Data.Token, cookieOptions);
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", responce.Description);
             }
             return View(model);
         }

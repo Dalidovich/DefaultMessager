@@ -1,7 +1,11 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.JWT;
 using DefaultMessager.Service.Implementation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DefaultMessager
 {
@@ -26,6 +30,38 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<MessageService<Message>>();
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
+        }
+
+        public static void addJWT(this WebApplicationBuilder webApplicationBuilder)
+        {
+            webApplicationBuilder.Services.Configure<JWTSettings>(webApplicationBuilder.Configuration.GetSection("JWTSettings"));
+            var secretKey = webApplicationBuilder.Configuration.GetSection("JWTSettings:SecretKey").Value;
+            var issuer = webApplicationBuilder.Configuration.GetSection("JWTSettings:Issuer").Value;
+            var audience = webApplicationBuilder.Configuration.GetSection("JWTSettings:Audience").Value;
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+            webApplicationBuilder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = signingKey,
+                    ValidateIssuerSigningKey = true
+
+                };
+            });
         }
     }
 }

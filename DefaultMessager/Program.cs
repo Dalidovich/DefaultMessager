@@ -30,8 +30,11 @@ namespace DefaultMessager
 
             builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
 
+            
+
             builder.addRepositores();
             builder.addServices();
+            builder.addJWT();
 
 
             var app = builder.Build();
@@ -48,6 +51,9 @@ namespace DefaultMessager
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
+
 
             app.MapControllerRoute(
                 name: "default",

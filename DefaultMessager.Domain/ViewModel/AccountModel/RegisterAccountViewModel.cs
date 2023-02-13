@@ -29,7 +29,7 @@ namespace DefaultMessager.Domain.ViewModel.AccountModel
 
         [Required(ErrorMessage = "confirm password")]
         [DataType(DataType.Password)]
-        [Compare("password", ErrorMessage = "passwords not compare")]
-        public string passwordConfirm { get; set; }
+        [Compare("Password", ErrorMessage = "passwords not compare")]
+        public string PasswordConfirm { get; set; }
     }
 }

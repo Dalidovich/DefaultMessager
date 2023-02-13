@@ -1,4 +1,5 @@
 ﻿using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.ViewModel.AccountModel;
 
 namespace DefaultMessager.Domain.Entities
 {
@@ -20,6 +21,15 @@ namespace DefaultMessager.Domain.Entities
             Role = role;
             CreateDate = createDate;
             StatusAccount = statusAccount;
+        }
+        public Account(RegisterAccountViewModel model)
+        {
+            Email= model.Email;
+            Login= model.Login;
+            Password= model.Password;
+            Role = Role.standart;
+            CreateDate=DateTime.Now;
+            StatusAccount = StatusAccount.normal;
         }
         public List<Post> Posts { get; set; } = new List<Post>();
         public List<ImageAlbum> ImageAlbum { get; set; } = new List<ImageAlbum>();

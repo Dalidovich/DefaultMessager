@@ -1,14 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DefaultMessager.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace DefaultMessager.Domain.ViewModel.AccountModel
 {
     public class LogInAccountViewModel
     {
+
         [Required(ErrorMessage = "input login")]
-        public string login { get; set; }
+        public string Login { get; set; }
 
         [Required(ErrorMessage = "input password")]
         [DataType(DataType.Password)]
-        public string password { get; set; }
+        public string Password { get; set; }
+
+        public LogInAccountViewModel(Account account)
+        {
+            Login = account.Login;
+            Password = account.Password;
+        }
     }
 }

@@ -47,6 +47,7 @@ namespace DefaultMessager.Domain.Enums
         AccountUpdate=71,
         AccountDelete=72,
         AccountRead = 73,
+        AccountAuthenticate = 74,
 
         OK = 200,
         OKNoContent=204,
