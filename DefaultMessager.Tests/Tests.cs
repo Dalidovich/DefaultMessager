@@ -11,7 +11,7 @@ namespace DefaultMessager.Tests
         [SetUp]
         public void Setup()
         {
-            MessagerDbContext.ConnectionString = "Host=localhost;Port=5432;Database=my_db;Username=postgres;Password=pGJRF54321";
+            MessagerDbContext.ConnectionString = "Host=localhost;Port=5432;Database=my_db1;Username=postgres;Password=pGJRF54321";
             using var db = new MessagerDbContext();
             db.Database.EnsureDeleted();
             db.Database.Migrate();
@@ -46,7 +46,7 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.DescriptionAccounts.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic","1","s","path"));
+                db.DescriptionAccounts.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic",DateTime.Now,"1","s","path"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())

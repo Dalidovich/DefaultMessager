@@ -38,6 +38,9 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Character_varying)
                    .HasColumnName("describe");
 
+            builder.Property(e => e.Birthday)
+                   .HasColumnName("birthday");
+
             builder.Property(e => e.AccountStatus)
                    .HasColumnType(EntityDataTypes.Character_varying)
                    .HasColumnName("description_status");

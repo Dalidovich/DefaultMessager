@@ -7,7 +7,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class AccountConfig : IEntityTypeConfiguration<Account>
     {
-        public const string Table_name = "users";
+        public const string Table_name = "accounts";
         public void Configure(EntityTypeBuilder<Account> builder)
         {
             builder.ToTable(Table_name);

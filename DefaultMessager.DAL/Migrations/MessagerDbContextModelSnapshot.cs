@@ -60,7 +60,7 @@ namespace DefaultMessager.DAL.Migrations
 
                     b.HasIndex("Login");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("accounts", (string)null);
                 });
 
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Comment", b =>
@@ -113,6 +113,10 @@ namespace DefaultMessager.DAL.Migrations
                     b.Property<string>("AccountStatus")
                         .HasColumnType("character varying")
                         .HasColumnName("description_status");
+
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("birthday");
 
                     b.Property<string>("Describe")
                         .HasColumnType("character varying")

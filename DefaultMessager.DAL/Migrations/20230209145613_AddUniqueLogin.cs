@@ -13,13 +13,13 @@ namespace DefaultMessager.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddUniqueConstraint("unique_login", AccountConfig.Table_name, "login");
+            migrationBuilder.AddUniqueConstraint("unique_login", "users", "login");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropUniqueConstraint("unique_login", AccountConfig.Table_name);
+            migrationBuilder.DropUniqueConstraint("unique_login", "users");
         }
     }
 }
