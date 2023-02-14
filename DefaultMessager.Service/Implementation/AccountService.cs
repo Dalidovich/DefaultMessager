@@ -26,21 +26,21 @@ namespace DefaultMessager.Service.Implementation
         {
             _options = options.Value;
         }
-        public async Task<IBaseResponse<RefreshToken>> Registration(RegisterAccountViewModel viewModel)
+        public async Task<IBaseResponse<string>> Registration(RegisterAccountViewModel viewModel)
         {
             try
             {
                 var accountOnRegistration = await GetOne(x => x.Login == viewModel.Login);
                 if (accountOnRegistration.Data != null)
                 {
-                    return new BaseResponse<RefreshToken>()
+                    return new BaseResponse<string>()
                     {
                         Description = "Account with that login alredy exist"
                     };
                 }
                 var newAccount = new Account(viewModel);
                 newAccount = await _repository.createAsync((T)newAccount);
-                return new BaseResponse<RefreshToken>()
+                return new BaseResponse<string>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(newAccount))).Data,
                     StatusCode = StatusCode.AccountCreate
@@ -49,37 +49,37 @@ namespace DefaultMessager.Service.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Registration] : {ex.Message}");
-                return new BaseResponse<RefreshToken>()
+                return new BaseResponse<string>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public async Task<IBaseResponse<RefreshToken>> Authenticate(LogInAccountViewModel viewModel)
+        public async Task<IBaseResponse<string>> Authenticate(LogInAccountViewModel viewModel)
         {
             try
             {
                 var account = (await GetOne(x => x.Login == viewModel.Login&& x.Password== viewModel.Password)).Data;
                 if (account == null)
                 {
-                    return new BaseResponse<RefreshToken>()
+                    return new BaseResponse<string>()
                     {
                         Description = "account not found"
                     };
                 }
                 string token = GetToken(account);
                 var refreshToken = GetRefreshToken();
-                return new BaseResponse<RefreshToken>()
+                return new BaseResponse<string>()
                 {
-                    Data=refreshToken,
+                    Data= token,
                     StatusCode = StatusCode.AccountAuthenticate
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Authenticate] : {ex.Message}");
-                return new BaseResponse<RefreshToken>()
+                return new BaseResponse<string>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -88,9 +88,11 @@ namespace DefaultMessager.Service.Implementation
         }
         public string GetToken(Account account)
         {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, account.Login));
-            claims.Add(new Claim("password", $"{account.Password}"));
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, account.Login),
+                new Claim(ClaimTypes.Role, account.Role.ToString())
+            };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
 
@@ -98,7 +100,7 @@ namespace DefaultMessager.Service.Implementation
                     issuer: _options.Issuer,
                     audience: _options.Audience,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(20)),
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(10)),
                     notBefore: DateTime.UtcNow,
                     signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );

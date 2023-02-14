@@ -58,8 +58,8 @@ namespace DefaultMessager
                     ValidAudience = audience,
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
-                    ValidateIssuerSigningKey = true
-
+                    ValidateIssuerSigningKey = true,
+                    LifetimeValidator = CustomLifeTime.CustomLifeTimeValidator
                 };
             });
         }

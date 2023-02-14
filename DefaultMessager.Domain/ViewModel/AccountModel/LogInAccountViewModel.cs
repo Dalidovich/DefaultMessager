@@ -18,5 +18,9 @@ namespace DefaultMessager.Domain.ViewModel.AccountModel
             Login = account.Login;
             Password = account.Password;
         }
+
+        public LogInAccountViewModel()
+        {
+        }
     }
 }

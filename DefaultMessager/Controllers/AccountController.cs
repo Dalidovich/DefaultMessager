@@ -6,6 +6,8 @@ using System.Security.Claims;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Service.Implementation;
 using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace DefaultMessager.Controllers
 {
@@ -33,9 +35,8 @@ namespace DefaultMessager.Controllers
                     var cookieOptions = new CookieOptions
                     {
                         HttpOnly = true,
-                        Expires = responce.Data.Expires
                     };
-                    Response.Cookies.Append("JWTToken", responce.Data.Token, cookieOptions);
+                    Response.Cookies.Append("JWTToken", responce.Data, cookieOptions);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -50,15 +51,47 @@ namespace DefaultMessager.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var responce = await _accountService.Authentication(model);
-                //if (responce.StatusCode == Domain.Enums.StatusCode.AccountRead)
-                //{
+                var responce = await _accountService.Authenticate(model);
+                if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
+                {
 
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //ModelState.AddModelError("", responce.Description);
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                    };
+                    Response.Cookies.Append("JWTToken", responce.Data, cookieOptions);
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", responce.Description);
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            Response.Cookies.Delete("JWTToken");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> test()
+        {
+            var u = User.IsInRole("standart");
+            Console.WriteLine("ok");
+            return View();
+        }
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> testAdmin()
+        {
+            Console.WriteLine("ok");
+            return View();
+        }
+
+        [Authorize(Roles = "standart")]
+        public async Task<IActionResult> testStandart()
+        {
+            Console.WriteLine("ok");
+            return View();
         }
     }
 }
