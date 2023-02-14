@@ -28,7 +28,7 @@ namespace DefaultMessager.Domain.Entities
             Login= model.Login;
             Password= model.Password;
             Role = Role.standart;
-            CreateDate=DateTime.Now;
+            CreateDate=DateTime.UtcNow;
             StatusAccount = StatusAccount.normal;
         }
         public List<Post> Posts { get; set; } = new List<Post>();
