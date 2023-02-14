@@ -4,10 +4,10 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification
 {
-    public class DescriptionUserByAccount<T> : Specification<DescriptionAccount>
+    public class DescriptionAccountByAccountId<T> : Specification<DescriptionAccount>
     {
         private readonly Guid _accountId;
-        public DescriptionUserByAccount(Guid id)
+        public DescriptionAccountByAccountId(Guid id)
         {
             _accountId = id;
             expression = x => x.AccountId == _accountId;

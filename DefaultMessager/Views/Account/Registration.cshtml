@@ -10,11 +10,10 @@
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                <p class="text-center h1 fw-bold mb-5 mt-4 text-white">Sign up</p>
+                                <p class="text-center h1 fw-bold mb-5 mt-4 text-white">Registartion</p>
 
                                 <form class="mx-0" method="post" asp-controller="Account" asp-action="Registration">
-
-                                    <div asp-validation-summary="All"></div>
+                                    <div asp-validation-summary="All" style="color:aliceblue"></div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label text-white" asp-for="Login">Login</label>
@@ -52,7 +51,7 @@
                                         <p class="text-center text-white mt-5 mb-0">
                                             Have already an account?
                                             <br>
-                                            <a href="#!" class="fw-bold text-secondary"><u>Login here</u></a>
+                                            <a asp-controller="Account" asp-action="logIn" class="fw-bold text-secondary"><u>Login here</u></a>
                                         </p>
                                     </div>
                                 </form>

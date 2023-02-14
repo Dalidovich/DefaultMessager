@@ -12,10 +12,10 @@
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-								<p class="text-center h1 fw-bold mb-3 mt-4 text-white">Login</p>
+								<p class="text-center h1 fw-bold mb-3 mt-4 text-white">Log in</p>
 
 								<form class="mx-0" method="post" asp-controller="Account" asp-action="LogIn">
-
+									<div asp-validation-summary="All" style="color:aliceblue"></div>
 									<div class="d-flex flex-row align-items-center mb-4">
 										<div class="form-outline flex-fill mb-0">
 											<label class="form-label text-white" asp-for="Login">Login</label>
@@ -38,10 +38,9 @@
 										<p class="text-center text-white mt-3 mb-0">
 											Don't have an account yet?
 											<br>
-											<a href="#!" class="fw-bold text-secondary"><u>Register here</u></a>
+											<a asp-controller="Account" asp-action="Registration" class="fw-bold text-secondary"><u>Register here</u></a>
 										</p>
 									</div>
-
 								</form>
 
 							</div>

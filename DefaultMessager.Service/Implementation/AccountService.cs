@@ -16,15 +16,19 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification;
 
 namespace DefaultMessager.Service.Implementation
 {
     public class AccountService<T> : BaseService<T>, IAccountService where T : Account
     {
         private readonly JWTSettings _options;
-        public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options) : base(repository, logger)
+        private readonly IBaseRepository<DescriptionAccount> _descriptionAccountRepository;
+        public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
+            , IBaseRepository<DescriptionAccount> descriptionAccountRepository) : base(repository, logger)
         {
             _options = options.Value;
+            _descriptionAccountRepository = descriptionAccountRepository;
         }
         public async Task<IBaseResponse<string>> Registration(RegisterAccountViewModel viewModel)
         {
@@ -40,6 +44,8 @@ namespace DefaultMessager.Service.Implementation
                 }
                 var newAccount = new Account(viewModel);
                 newAccount = await _repository.createAsync((T)newAccount);
+                var newDescriptionAccount = new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png");
+                await _descriptionAccountRepository.createAsync(newDescriptionAccount);
                 return new BaseResponse<string>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(newAccount))).Data,
@@ -68,7 +74,9 @@ namespace DefaultMessager.Service.Implementation
                         Description = "account not found"
                     };
                 }
-                string token = GetToken(account);
+                var descriptionByAccountId = new DescriptionAccountByAccountId<DescriptionAccount>((Guid)account.Id);
+                var description =await _descriptionAccountRepository.GetAll().Where(descriptionByAccountId.ToExpression()).SingleOrDefaultAsync();
+                string token = GetToken(account,description.PathAvatar);
                 var refreshToken = GetRefreshToken();
                 return new BaseResponse<string>()
                 {
@@ -86,12 +94,13 @@ namespace DefaultMessager.Service.Implementation
                 };
             }
         }
-        public string GetToken(Account account)
+        public string GetToken(Account account,string pathAvatar)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Login),
-                new Claim(ClaimTypes.Role, account.Role.ToString())
+                new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim("pathAvatar", pathAvatar)
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));

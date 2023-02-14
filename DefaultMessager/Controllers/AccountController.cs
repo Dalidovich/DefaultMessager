@@ -76,7 +76,6 @@ namespace DefaultMessager.Controllers
         [Authorize]
         public async Task<IActionResult> test()
         {
-            var u = User.IsInRole("standart");
             Console.WriteLine("ok");
             return View();
         }
