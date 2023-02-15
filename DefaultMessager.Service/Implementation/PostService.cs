@@ -30,7 +30,6 @@ namespace DefaultMessager.Service.Implementation
             {
                 Random rnd = new Random();
                 var contents = _repository.GetAll().PostListToPostIconViewList();                
-                //contents = (IQueryable<PostIconView>)contents.OrderBy(n => rnd.Next()).ToList();
                 if (contents == null)
                 {
                     return new BaseResponse<IEnumerable<PostIconViewModel>>()

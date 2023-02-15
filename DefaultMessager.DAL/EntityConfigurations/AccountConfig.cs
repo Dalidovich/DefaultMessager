@@ -42,10 +42,6 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Smallint)
                    .HasColumnName("status_account");
 
-            builder.Property(e => e.RefreshToken)
-                   .HasColumnType(EntityDataTypes.Character_varying)
-                   .HasColumnName("refresh_token");
-
             builder.HasMany(d => d.ImageAlbum)
                    .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
@@ -80,6 +76,11 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .WithOne(p => p.Account)
                    .HasPrincipalKey<Account>(p => p.Id)
                    .HasForeignKey<DescriptionAccount>(d => d.AccountId);
+
+            builder.HasOne(d => d.RefreshToken)
+                   .WithOne(p => p.Account)
+                   .HasPrincipalKey<Account>(p => p.Id)
+                   .HasForeignKey<RefreshToken>(d => d.AccountId);
 
             builder.HasMany(d => d.RelationsFrom)
                    .WithOne(p => p.Account1)

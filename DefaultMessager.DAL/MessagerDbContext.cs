@@ -15,6 +15,7 @@ namespace DefaultMessager.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Relations> Relations { get; set; }
+        public DbSet<RefreshToken> RefreshTokens{ get; set; }
         public static string ConnectionString { get; set; }
 
         public void UpdateDatabase()

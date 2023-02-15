@@ -24,14 +24,14 @@ namespace DefaultMessager.Controllers
             _accountService = service;
         }
 
-        private void setJWTTokenComponentInCookie((string, RefreshToken,Guid) jwtComponent)
+        private void setJWTTokenComponentInCookie((string, string,Guid) jwtComponent)
         {
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
             };
             Response.Cookies.Append("JWTToken", jwtComponent.Item1, cookieOptions);
-            Response.Cookies.Append("RefreshToken", jwtComponent.Item2.Token, cookieOptions);
+            Response.Cookies.Append("RefreshToken", jwtComponent.Item2, cookieOptions);
             Response.Cookies.Append("Id", jwtComponent.Item3.ToString(), cookieOptions);
 
         }

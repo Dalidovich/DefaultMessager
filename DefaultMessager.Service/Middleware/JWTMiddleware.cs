@@ -13,12 +13,10 @@ namespace DefaultMessager.Domain.JWT
     public class JWTMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly AccountService<Account> _accountService;
 
-        public JWTMiddleware(RequestDelegate next/*, AccountService<Account> accountService*/)
+        public JWTMiddleware(RequestDelegate next)
         {
             _next = next;
-            //_accountService = accountService;
         }
         public async Task InvokeAsync(HttpContext context, AccountService<Account> accountService)
         {
@@ -34,13 +32,19 @@ namespace DefaultMessager.Domain.JWT
                     {
                         HttpOnly = true,
                     };
-                    context.Response.Cookies.Append("JWTToken", response.Item1,cookieOptions);
+                    context.Response.Cookies.Append("JWTToken", response.Item1, cookieOptions);
                     context.Response.Cookies.Append("RefreshToken", response.Item2, cookieOptions);
                     context.Response.Cookies.Append("Id", response.Item3.ToString(), cookieOptions);
                     token = response.Item1;
                 }
+                else
+                {
+                    context.Response.Cookies.Delete("Id");
+                    context.Response.Cookies.Delete("JWTToken");
+                    context.Response.Cookies.Delete("RefreshToken");
+                }
             }
-            
+
             if (token != null)
             {
                 context.Request.Headers.Add("Authorization", "Bearer " + token);

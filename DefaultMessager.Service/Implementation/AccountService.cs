@@ -17,18 +17,22 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.RefreshTokenSpecification;
+using System.Security.Principal;
 
 namespace DefaultMessager.Service.Implementation
 {
     public class AccountService<T> : BaseService<T>, IAccountService where T : Account
     {
         private readonly JWTSettings _options;
-        private readonly IBaseRepository<DescriptionAccount> _descriptionAccountRepository;
+        private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
+        private readonly RefreshTokenService<RefreshToken> _refreshTokenService;
         public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
-            , IBaseRepository<DescriptionAccount> descriptionAccountRepository) : base(repository, logger)
+            , DescriptionAccountService<DescriptionAccount> descriptionAccountService, RefreshTokenService<RefreshToken> refreshTokenService) : base(repository, logger)
         {
             _options = options.Value;
-            _descriptionAccountRepository = descriptionAccountRepository;
+            _descriptionAccountService = descriptionAccountService;
+            _refreshTokenService = refreshTokenService;
         }
         public async Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
@@ -45,7 +49,8 @@ namespace DefaultMessager.Service.Implementation
                 var newAccount = new Account(viewModel);
                 newAccount = await _repository.createAsync((T)newAccount);
                 var newDescriptionAccount = new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png");
-                await _descriptionAccountRepository.createAsync(newDescriptionAccount);
+                await _descriptionAccountService.Create(newDescriptionAccount);
+                await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new BaseResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(newAccount))).Data,
@@ -75,14 +80,17 @@ namespace DefaultMessager.Service.Implementation
                     };
                 }
                 var descriptionByAccountId = new DescriptionAccountByAccountId<DescriptionAccount>((Guid)account.Id);
-                var description =await _descriptionAccountRepository.GetAll().Where(descriptionByAccountId.ToExpression()).SingleOrDefaultAsync();
+                var description = (await _descriptionAccountService.GetOne(descriptionByAccountId.ToExpression())).Data;
                 string token = GetToken(account,description.PathAvatar);
-                var refreshToken = GetRefreshToken();
-                account.RefreshToken = refreshToken;
-                account = (await Update(account)).Data;
+                var refreshTokenStr = GetRefreshToken();
+                var refreshTokenByAccountId = new RefreshTokenByAccountId<RefreshToken>((Guid)account.Id);
+                var refreshToken = (await _refreshTokenService.GetOne(refreshTokenByAccountId.ToExpression())).Data;
+                //var refreshToken = new RefreshToken((Guid)account.Id,refreshTokenStr);
+                refreshToken.Token = refreshTokenStr;
+                await _refreshTokenService.Update(refreshToken);
                 return new BaseResponse<(string, string, Guid)>()
                 {
-                    Data = (token, refreshToken, (Guid)account.Id),
+                    Data = (token, refreshTokenStr, (Guid)account.Id),
                     StatusCode = StatusCode.AccountAuthenticate
                 };
             }
@@ -100,15 +108,17 @@ namespace DefaultMessager.Service.Implementation
         {
             try
             {
-                var account = (await GetOne(x => x.Id==accountId && x.RefreshToken== refreshTokenStr)).Data;
-                if (account == null)
+                var refreshToken = (await _refreshTokenService.GetOne(x => x.AccountId == accountId && x.Token == refreshTokenStr)).Data;
+                if (refreshToken == null)
                 {
                     return new BaseResponse<(string, string, Guid)>()
                     {
-                        Description = "account not found"
+                        Description = "token not found"
                     };
                 }
-                LogInAccountViewModel viewModel= new LogInAccountViewModel(account);
+
+                var account = (await GetOne(x => x.Id == accountId)).Data;
+                LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
                 return new BaseResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(viewModel)).Data,

@@ -20,6 +20,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, AccountRepository>();
+            webApplicationBuilder.Services.AddScoped<IBaseRepository<RefreshToken>, RefreshTokenRepository>();
         }
         public static void addServices(this WebApplicationBuilder webApplicationBuilder)
         {
@@ -30,6 +31,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<MessageService<Message>>();
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
+            webApplicationBuilder.Services.AddScoped<RefreshTokenService<RefreshToken>>();
         }
 
         public static void addJWT(this WebApplicationBuilder webApplicationBuilder)
