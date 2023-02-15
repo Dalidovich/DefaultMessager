@@ -30,5 +30,12 @@ namespace DefaultMessager.DAL.Repositories
         {
             return _db.ImageAlbums;
         }
+
+        public async Task<ImageAlbum> updateAsync(ImageAlbum entity)
+        {
+            var updatedEntity = _db.ImageAlbums.Update(entity);
+            await _db.SaveChangesAsync();
+            return updatedEntity.Entity;
+        }
     }
 }

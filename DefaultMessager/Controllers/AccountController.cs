@@ -8,6 +8,8 @@ using DefaultMessager.Service.Implementation;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DefaultMessager.Domain.JWT;
+using Microsoft.AspNetCore.Http;
 
 namespace DefaultMessager.Controllers
 {
@@ -22,6 +24,18 @@ namespace DefaultMessager.Controllers
             _accountService = service;
         }
 
+        private void setJWTTokenComponentInCookie((string, RefreshToken,Guid) jwtComponent)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+            };
+            Response.Cookies.Append("JWTToken", jwtComponent.Item1, cookieOptions);
+            Response.Cookies.Append("RefreshToken", jwtComponent.Item2.Token, cookieOptions);
+            Response.Cookies.Append("Id", jwtComponent.Item3.ToString(), cookieOptions);
+
+        }
+
         [HttpGet]
         public IActionResult Registration() => View();
         [HttpPost]
@@ -32,11 +46,7 @@ namespace DefaultMessager.Controllers
                 var responce = await _accountService.Registration(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
                 {
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                    };
-                    Response.Cookies.Append("JWTToken", responce.Data, cookieOptions);
+                    setJWTTokenComponentInCookie(responce.Data);                    
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -54,43 +64,19 @@ namespace DefaultMessager.Controllers
                 var responce = await _accountService.Authenticate(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
                 {
-
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                    };
-                    Response.Cookies.Append("JWTToken", responce.Data, cookieOptions);
+                    setJWTTokenComponentInCookie(responce.Data);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
             }
             return View(model);
         }
-
         public async Task<IActionResult> LogOut()
         {
             Response.Cookies.Delete("JWTToken");
+            Response.Cookies.Delete("RefreshToken");
+            Response.Cookies.Delete("Id");
             return RedirectToAction("Index", "Home");
-        }
-
-        [Authorize]
-        public async Task<IActionResult> test()
-        {
-            Console.WriteLine("ok");
-            return View();
-        }
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> testAdmin()
-        {
-            Console.WriteLine("ok");
-            return View();
-        }
-
-        [Authorize(Roles = "standart")]
-        public async Task<IActionResult> testStandart()
-        {
-            Console.WriteLine("ok");
-            return View();
         }
     }
 }

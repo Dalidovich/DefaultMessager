@@ -160,5 +160,26 @@ namespace DefaultMessager.Service.Base
                 };
             }
         }
+
+        public async Task<IBaseResponse<T>> Update(T entity)
+        {
+            try
+            {
+                return new BaseResponse<T>()
+                {
+                    Data = await _repository.updateAsync(entity),
+                    StatusCode = StatusCode.EntityUpdate,
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[Create] : {ex.Message}");
+                return new BaseResponse<T>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
     }
 }

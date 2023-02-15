@@ -30,14 +30,14 @@ namespace DefaultMessager.Service.Implementation
             _options = options.Value;
             _descriptionAccountRepository = descriptionAccountRepository;
         }
-        public async Task<IBaseResponse<string>> Registration(RegisterAccountViewModel viewModel)
+        public async Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
             try
             {
                 var accountOnRegistration = await GetOne(x => x.Login == viewModel.Login);
                 if (accountOnRegistration.Data != null)
                 {
-                    return new BaseResponse<string>()
+                    return new BaseResponse<(string, string, Guid)>()
                     {
                         Description = "Account with that login alredy exist"
                     };
@@ -46,7 +46,7 @@ namespace DefaultMessager.Service.Implementation
                 newAccount = await _repository.createAsync((T)newAccount);
                 var newDescriptionAccount = new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png");
                 await _descriptionAccountRepository.createAsync(newDescriptionAccount);
-                return new BaseResponse<string>()
+                return new BaseResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(newAccount))).Data,
                     StatusCode = StatusCode.AccountCreate
@@ -55,21 +55,21 @@ namespace DefaultMessager.Service.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Registration] : {ex.Message}");
-                return new BaseResponse<string>()
+                return new BaseResponse<(string, string, Guid)>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public async Task<IBaseResponse<string>> Authenticate(LogInAccountViewModel viewModel)
+        public async Task<IBaseResponse<(string,string,Guid)>> Authenticate(LogInAccountViewModel viewModel)
         {
             try
             {
                 var account = (await GetOne(x => x.Login == viewModel.Login&& x.Password== viewModel.Password)).Data;
                 if (account == null)
                 {
-                    return new BaseResponse<string>()
+                    return new BaseResponse<(string, string, Guid)>()
                     {
                         Description = "account not found"
                     };
@@ -78,16 +78,47 @@ namespace DefaultMessager.Service.Implementation
                 var description =await _descriptionAccountRepository.GetAll().Where(descriptionByAccountId.ToExpression()).SingleOrDefaultAsync();
                 string token = GetToken(account,description.PathAvatar);
                 var refreshToken = GetRefreshToken();
-                return new BaseResponse<string>()
+                account.RefreshToken = refreshToken;
+                account = (await Update(account)).Data;
+                return new BaseResponse<(string, string, Guid)>()
                 {
-                    Data= token,
+                    Data = (token, refreshToken, (Guid)account.Id),
                     StatusCode = StatusCode.AccountAuthenticate
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Authenticate] : {ex.Message}");
-                return new BaseResponse<string>()
+                return new BaseResponse<(string, string, Guid)>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+        public async Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId,string refreshTokenStr)
+        {
+            try
+            {
+                var account = (await GetOne(x => x.Id==accountId && x.RefreshToken== refreshTokenStr)).Data;
+                if (account == null)
+                {
+                    return new BaseResponse<(string, string, Guid)>()
+                    {
+                        Description = "account not found"
+                    };
+                }
+                LogInAccountViewModel viewModel= new LogInAccountViewModel(account);
+                return new BaseResponse<(string, string, Guid)>()
+                {
+                    Data = (await Authenticate(viewModel)).Data,
+                    StatusCode = StatusCode.AccountAuthenticate
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[RefreshJWTToken] : {ex.Message}");
+                return new BaseResponse<(string, string, Guid)>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -100,6 +131,7 @@ namespace DefaultMessager.Service.Implementation
             {
                 new Claim(ClaimTypes.Name, account.Login),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim("id", account.Id.ToString()),
                 new Claim("pathAvatar", pathAvatar)
             };
 
@@ -109,22 +141,16 @@ namespace DefaultMessager.Service.Implementation
                     issuer: _options.Issuer,
                     audience: _options.Audience,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(10)),
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(1)),
                     notBefore: DateTime.UtcNow,
                     signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
-        private RefreshToken GetRefreshToken()
+        public string GetRefreshToken()
         {
-            RefreshToken refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddDays(7),
-                Created = DateTime.Now
-            };
-
+            var refreshToken=Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             return refreshToken;
         }
     }
