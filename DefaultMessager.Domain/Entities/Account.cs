@@ -13,9 +13,10 @@ namespace DefaultMessager.Domain.Entities
         public Role Role { get; set; }
         public DateTime CreateDate { get; set; }
         public StatusAccount StatusAccount { get; set; }
+        public string Salt { get; set; }
         public DescriptionAccount? Description {get ;set;}
         public RefreshToken? RefreshToken{get ;set;}
-        public Account(string email, string login, string password, Role role, DateTime createDate, StatusAccount statusAccount)
+        public Account(string email, string login, string password, Role role, DateTime createDate, StatusAccount statusAccount,string salt="none")
         {
             Email = email;
             Login = login;
@@ -23,15 +24,17 @@ namespace DefaultMessager.Domain.Entities
             Role = role;
             CreateDate = createDate;
             StatusAccount = statusAccount;
+            Salt = salt;
         }
-        public Account(RegisterAccountViewModel model)
+        public Account(RegisterAccountViewModel model,string salt,string password)
         {
             Email= model.Email;
             Login= model.Login;
-            Password= model.Password;
+            Password= password;
             Role = Role.standart;
             CreateDate=DateTime.UtcNow;
             StatusAccount = StatusAccount.normal;
+            Salt = salt;
         }
         public List<Post> Posts { get; set; } = new List<Post>();
         public List<ImageAlbum> ImageAlbum { get; set; } = new List<ImageAlbum>();

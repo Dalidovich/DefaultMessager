@@ -11,7 +11,7 @@ namespace DefaultMessager.Service.Interfaces
         public string GetRefreshToken();
         public string GetToken(Account account, string pathAvatar);
         public Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr);
-        public Task<IBaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel);
+        public Task<IBaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel,bool forRefresh);
         public Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel);
     }
 }

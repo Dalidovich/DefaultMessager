@@ -38,6 +38,7 @@ namespace DefaultMessager.Service.Implementation
         {
             try
             {
+                string a = viewModel.Password;
                 var accountOnRegistration = await GetOne(x => x.Login == viewModel.Login);
                 if (accountOnRegistration.Data != null)
                 {
@@ -46,14 +47,15 @@ namespace DefaultMessager.Service.Implementation
                         Description = "Account with that login alredy exist"
                     };
                 }
-                var newAccount = new Account(viewModel);
+                CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
                 newAccount = await _repository.createAsync((T)newAccount);
                 var newDescriptionAccount = new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png");
                 await _descriptionAccountService.Create(newDescriptionAccount);
                 await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new BaseResponse<(string, string, Guid)>()
                 {
-                    Data = (await Authenticate(new LogInAccountViewModel(newAccount))).Data,
+                    Data = (await Authenticate(new LogInAccountViewModel(viewModel))).Data,
                     StatusCode = StatusCode.AccountCreate
                 };
             }
@@ -67,17 +69,20 @@ namespace DefaultMessager.Service.Implementation
                 };
             }
         }
-        public async Task<IBaseResponse<(string,string,Guid)>> Authenticate(LogInAccountViewModel viewModel)
+        public async Task<IBaseResponse<(string,string,Guid)>> Authenticate(LogInAccountViewModel viewModel,bool forRefresh=false)
         {
             try
             {
-                var account = (await GetOne(x => x.Login == viewModel.Login&& x.Password== viewModel.Password)).Data;
-                if (account == null)
+                var account = (await GetOne(x => x.Login == viewModel.Login)).Data;
+                if (account == null||!VerifyPasswordHash(viewModel.Password,Convert.FromBase64String(account.Password),Convert.FromBase64String(account.Salt)))
                 {
-                    return new BaseResponse<(string, string, Guid)>()
+                    if (!forRefresh)
                     {
-                        Description = "account not found"
-                    };
+                        return new BaseResponse<(string, string, Guid)>()
+                        {
+                            Description = "account not found"
+                        };
+                    }
                 }
                 var descriptionByAccountId = new DescriptionAccountByAccountId<DescriptionAccount>((Guid)account.Id);
                 var description = (await _descriptionAccountService.GetOne(descriptionByAccountId.ToExpression())).Data;
@@ -85,7 +90,6 @@ namespace DefaultMessager.Service.Implementation
                 var refreshTokenStr = GetRefreshToken();
                 var refreshTokenByAccountId = new RefreshTokenByAccountId<RefreshToken>((Guid)account.Id);
                 var refreshToken = (await _refreshTokenService.GetOne(refreshTokenByAccountId.ToExpression())).Data;
-                //var refreshToken = new RefreshToken((Guid)account.Id,refreshTokenStr);
                 refreshToken.Token = refreshTokenStr;
                 await _refreshTokenService.Update(refreshToken);
                 return new BaseResponse<(string, string, Guid)>()
@@ -121,7 +125,7 @@ namespace DefaultMessager.Service.Implementation
                 LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
                 return new BaseResponse<(string, string, Guid)>()
                 {
-                    Data = (await Authenticate(viewModel)).Data,
+                    Data = (await Authenticate(viewModel,true)).Data,
                     StatusCode = StatusCode.AccountAuthenticate
                 };
             }
@@ -162,6 +166,23 @@ namespace DefaultMessager.Service.Implementation
         {
             var refreshToken=Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             return refreshToken;
+        }
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyPasswordHash(string Password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace DefaultMessager.Domain.ViewModel.AccountModel
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public LogInAccountViewModel(Account account)
+        public LogInAccountViewModel(RegisterAccountViewModel account)
         {
             Login = account.Login;
             Password = account.Password;

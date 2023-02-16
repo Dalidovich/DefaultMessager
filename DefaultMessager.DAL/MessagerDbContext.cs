@@ -22,7 +22,7 @@ namespace DefaultMessager.DAL
         {
             Database.EnsureDeleted();
             Database.Migrate();
-            standartFill();
+            //standartFill();
         }
         private void standartFill()
         {
