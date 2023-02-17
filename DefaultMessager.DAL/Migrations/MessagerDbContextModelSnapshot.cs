@@ -52,6 +52,11 @@ namespace DefaultMessager.DAL.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("role");
 
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("character varying")
+                        .HasColumnName("salt");
+
                     b.Property<short>("StatusAccount")
                         .HasColumnType("smallint")
                         .HasColumnName("status_account");
@@ -280,6 +285,32 @@ namespace DefaultMessager.DAL.Migrations
                     b.ToTable("posts", (string)null);
                 });
 
+            modelBuilder.Entity("DefaultMessager.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("pk_refresh_token_id");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("fk_account_id");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("character varying")
+                        .HasColumnName("refresh_token");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("refresh_tokens", (string)null);
+                });
+
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Relations", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -398,6 +429,17 @@ namespace DefaultMessager.DAL.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("DefaultMessager.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("DefaultMessager.Domain.Entities.Account", "Account")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("DefaultMessager.Domain.Entities.RefreshToken", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("DefaultMessager.Domain.Entities.Relations", b =>
                 {
                     b.HasOne("DefaultMessager.Domain.Entities.Account", "Account1")
@@ -430,6 +472,8 @@ namespace DefaultMessager.DAL.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("ReciveMessages");
+
+                    b.Navigation("RefreshToken");
 
                     b.Navigation("RelationsFrom");
 

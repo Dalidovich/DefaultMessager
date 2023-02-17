@@ -15,18 +15,21 @@ namespace DefaultMessager.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Relations> Relations { get; set; }
+        public DbSet<RefreshToken> RefreshTokens{ get; set; }
         public static string ConnectionString { get; set; }
 
         public void UpdateDatabase()
         {
             Database.EnsureDeleted();
             Database.Migrate();
-            standartFill();
+            //standartFill();
         }
         private void standartFill()
         {
-            var account = new Account("email_1", "123", "Ilia", Role.admin, DateTime.Now, StatusAccount.normal);
+            var account = new Account("email_1", "Ilia", "456", Role.admin, DateTime.Now, StatusAccount.normal);
             this.Accounts.Add(account);
+            var account2 = new Account("email_2", "Dima", "123", Role.admin, DateTime.Now, StatusAccount.normal);
+            this.Accounts.Add(account2);
             this.SaveChanges();
             List<Post> posts = new List<Post>();
             posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 2", new[] { "none" }, DateTime.Now));
@@ -84,7 +87,10 @@ namespace DefaultMessager.DAL
         }
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(ConnectionString);
+        {
+            optionsBuilder.UseNpgsql(ConnectionString);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
         public MessagerDbContext()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

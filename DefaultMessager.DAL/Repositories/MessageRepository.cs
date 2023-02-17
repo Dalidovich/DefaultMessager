@@ -30,5 +30,12 @@ namespace DefaultMessager.DAL.Repositories
         {
             return _db.Messages;
         }
+
+        public async Task<Message> updateAsync(Message entity)
+        {
+            var updatedEntity = _db.Messages.Update(entity);
+            await _db.SaveChangesAsync();
+            return updatedEntity.Entity;
+        }
     }
 }

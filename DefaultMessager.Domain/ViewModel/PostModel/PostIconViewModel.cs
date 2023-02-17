@@ -8,7 +8,7 @@ using DefaultMessager.Domain.ViewModel.AccountModel;
 
 namespace DefaultMessager.Domain.ViewModel.PostModel
 {
-    public class PostIconView
+    public class PostIconViewModel
     {
         public Guid? Id { get; set; }
         public Guid AccountId { get; set; }
@@ -16,7 +16,7 @@ namespace DefaultMessager.Domain.ViewModel.PostModel
         public string[]? PathPictures { get; set; }
         public string PathAvatar { get; set; }
         public string Login { get; set; }
-        public PostIconView(Guid? id, Guid accountId, string? title, string[]? pathPictures)
+        public PostIconViewModel(Guid? id, Guid accountId, string? title, string[]? pathPictures)
         {
             Id = id;
             AccountId = accountId;

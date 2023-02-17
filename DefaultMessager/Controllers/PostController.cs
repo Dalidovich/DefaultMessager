@@ -11,10 +11,10 @@ namespace DefaultMessager.Controllers
         private readonly ILogger<PostController> _logger;
         private readonly PostService<Post> _postService;
 
-        public PostController(ILogger<PostController> logger, PostService<Post> postService)
+        public PostController(ILogger<PostController> logger, PostService<Post> service)
         {
             _logger = logger;
-            _postService = postService;
+            _postService = service;
         }
         public async Task<IActionResult> RandomPostIcons()
         {

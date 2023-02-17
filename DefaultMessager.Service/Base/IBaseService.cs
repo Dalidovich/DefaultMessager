@@ -16,5 +16,6 @@ namespace DefaultMessager.Service.Base
         Task<IBaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression);
         Task<IBaseResponse<bool>> Delete(Expression<Func<T, bool>> expression);
         Task<IBaseResponse<T>> Create(T entity);
+        Task<IBaseResponse<T>> Update(T entity);
     }
 }
