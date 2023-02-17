@@ -15,13 +15,14 @@ namespace DefaultMessager.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Relations> Relations { get; set; }
+        public DbSet<RefreshToken> RefreshTokens{ get; set; }
         public static string ConnectionString { get; set; }
 
         public void UpdateDatabase()
         {
             Database.EnsureDeleted();
             Database.Migrate();
-            standartFill();
+            //standartFill();
         }
         private void standartFill()
         {
@@ -86,7 +87,10 @@ namespace DefaultMessager.DAL
         }
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(ConnectionString);
+        {
+            optionsBuilder.UseNpgsql(ConnectionString);
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
         public MessagerDbContext()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

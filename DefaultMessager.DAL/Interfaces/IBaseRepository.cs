@@ -9,6 +9,7 @@ namespace DefaultMessager.DAL.Interfaces
     public interface IBaseRepository<T>
     {
         public Task<T> createAsync(T entity);
+        public Task<T> updateAsync(T entity);
         public Task<bool> deleteAsync(T entity);
         public IQueryable<T> GetAll();
     }

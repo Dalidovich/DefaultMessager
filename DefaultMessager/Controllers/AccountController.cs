@@ -6,6 +6,10 @@ using System.Security.Claims;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Service.Implementation;
 using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DefaultMessager.Domain.JWT;
+using Microsoft.AspNetCore.Http;
 
 namespace DefaultMessager.Controllers
 {
@@ -20,20 +24,32 @@ namespace DefaultMessager.Controllers
             _accountService = service;
         }
 
+        private void setJWTTokenComponentInCookie((string, string,Guid) jwtComponent)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+            };
+            Response.Cookies.Append("JWTToken", jwtComponent.Item1, cookieOptions);
+            Response.Cookies.Append("RefreshToken", jwtComponent.Item2, cookieOptions);
+            Response.Cookies.Append("Id", jwtComponent.Item3.ToString(), cookieOptions);
+
+        }
+
         [HttpGet]
-        public ActionResult Registration() => View();
+        public IActionResult Registration() => View();
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterAccountViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //var responce = await _accountService.Registration(model);
-                //if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
-                //{
-
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //ModelState.AddModelError("", responce.Description);
+                var responce = await _accountService.Registration(model);
+                if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
+                {
+                    setJWTTokenComponentInCookie(responce.Data);                    
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", responce.Description);
             }
             return View(model);
         }
@@ -45,15 +61,22 @@ namespace DefaultMessager.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var responce = await _accountService.Authentication(model);
-                //if (responce.StatusCode == Domain.Enums.StatusCode.AccountRead)
-                //{
-
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //ModelState.AddModelError("", responce.Description);
+                var responce = await _accountService.Authenticate(model);
+                if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
+                {
+                    setJWTTokenComponentInCookie(responce.Data);
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", responce.Description);
             }
             return View(model);
+        }
+        public async Task<IActionResult> LogOut()
+        {
+            Response.Cookies.Delete("JWTToken");
+            Response.Cookies.Delete("RefreshToken");
+            Response.Cookies.Delete("Id");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

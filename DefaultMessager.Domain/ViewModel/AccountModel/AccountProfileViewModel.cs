@@ -15,6 +15,6 @@ namespace DefaultMessager.Domain.ViewModel.AccountModel
         const int firstLoadPostCount = 36;
         public List<PostIconViewModel> Posts { get; set; } = new List<PostIconViewModel>();
         public List<Guid> PostsId { get; set; } = new List<Guid>();
-        public List<RelationViewModel> RelationsFrom { get; set; } = new List<Relations>();
+        public List<RelationViewModel> RelationsFrom { get; set; } = new List<RelationViewModel>();
     }
 }

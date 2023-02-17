@@ -1,18 +1,68 @@
 ﻿@using DefaultMessager.Domain.ViewModel.AccountModel;
 @model RegisterAccountViewModel
-@{
-    ViewData["Title"] = "registration";
-}
-<h1>@ViewData["Title"]</h1>
 
-<p>welcome</p>
-<form method="post" asp-controller="Account" asp-action="Resgistration">
-    <div asp-validation-summary="All"></div>
-    <input asp-for="Login" placeholder="login" type="text" />
-    <input asp-for="Password" placeholder="password" type="text" />
-    <input asp-for="passwordConfirm" placeholder="repit password" type="text" />
-    <button type="submit">send</button>
-</form>
+<section class="vh-100 my-2" style="background: #383B40">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-12 col-xl-11 w-50">
+                <div class="card text-black bg-dark" style="border-radius: 25px;">
+                    <div class="card-body py-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
+                                <p class="text-center h1 fw-bold mb-5 mt-4 text-white">Registartion</p>
 
+                                <form class="mx-0" method="post" asp-controller="Account" asp-action="Registration">
+                                    <div asp-validation-summary="All" style="color:aliceblue"></div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label class="form-label text-white" asp-for="Login">Login</label>
+                                            <input asp-for="Login" placeholder="login" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label class="form-label text-white" asp-for="Email">Email</label>
+                                            <input asp-for="Email" placeholder="email" type="email" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label class="form-label text-white" asp-for="Password">Password</label>
+                                            <input asp-for="Password" placeholder="Password" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label class="form-label text-white" asp-for="PasswordConfirm">Confirm password</label>
+                                            <input asp-for="PasswordConfirm"  placeholder="Repit password" class="form-control" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                        <button type="submit" class="btn btn-secondary btn-lg">Register</button>
+                                    </div>
+
+                                    <div class="">
+                                        <p class="text-center text-white mt-5 mb-0">
+                                            Have already an account?
+                                            <br>
+                                            <a asp-controller="Account" asp-action="logIn" class="fw-bold text-secondary"><u>Login here</u></a>
+                                        </p>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 

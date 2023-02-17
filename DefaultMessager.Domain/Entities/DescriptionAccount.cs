@@ -24,7 +24,10 @@
             AccountStatus = accountStatus;
             PathAvatar = pathAvatar;
         }
-
+        public DescriptionAccount(Guid accountId,string pathAvatar): this(accountId)
+        {
+            PathAvatar = pathAvatar;
+        }
         public DescriptionAccount(Guid accountId)
         {
             AccountId = accountId;
