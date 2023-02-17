@@ -1,9 +1,10 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace DefaultMessager.DAL.Repositories
+namespace DefaultMessager.DAL.Repositories.PostRepositories
 {
     public class PostRepository : IBaseRepository<Post>
     {
@@ -29,7 +30,7 @@ namespace DefaultMessager.DAL.Repositories
 
         public IQueryable<Post> GetAll()
         {
-            return  _db.Posts;
+            return _db.Posts;
         }
 
         public async Task<Post> updateAsync(Post entity)

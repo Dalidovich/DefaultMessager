@@ -1,6 +1,6 @@
 ﻿using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
-using DefaultMessager.Service.Implementation;
+using DefaultMessager.BLL.Implementation;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

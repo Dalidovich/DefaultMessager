@@ -9,7 +9,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefaultMessager.Service.Interfaces
+namespace DefaultMessager.BLL.Interfaces
 {
     public interface IPostService
     {

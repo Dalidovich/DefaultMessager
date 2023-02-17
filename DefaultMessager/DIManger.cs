@@ -1,11 +1,14 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
+using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.Service.Implementation;
+using DefaultMessager.BLL.Implementation;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DefaultMessager.DAL.Repositories.PostRepositories;
 
 namespace DefaultMessager
 {
@@ -19,7 +22,9 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Like>, LikeRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
+            webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, AccountRepository>();
+            webApplicationBuilder.Services.AddScoped<AccountNavRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<RefreshToken>, RefreshTokenRepository>();
         }
         public static void addServices(this WebApplicationBuilder webApplicationBuilder)
@@ -65,5 +70,9 @@ namespace DefaultMessager
                 };
             });
         }
+        //public static void addMapster(this WebApplicationBuilder webApplicationBuilder)
+        //{
+        //    webApplicationBuilder.Services.AddScoped<IMapper, ServiceMapper>();
+        //}
     }
 }

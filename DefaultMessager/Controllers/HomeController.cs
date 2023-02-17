@@ -1,8 +1,8 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Models;
-using DefaultMessager.Service.Implementation;
-using DefaultMessager.Service.Interfaces;
+using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

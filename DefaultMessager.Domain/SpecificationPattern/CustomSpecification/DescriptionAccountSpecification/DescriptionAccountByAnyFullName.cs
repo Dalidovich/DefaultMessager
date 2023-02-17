@@ -2,7 +2,7 @@
 using DefaultMessager.Domain.SpecificationPattern.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification
+namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification
 {
     public class DescriptionAccountByAnyFullName<T> : Specification<DescriptionAccount>
     {
@@ -10,7 +10,7 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.Descri
         public DescriptionAccountByAnyFullName(string personalInfo)
         {
             _personalInfo = personalInfo;
-            expression = x => x.Name == _personalInfo || x.Surname==_personalInfo || x.Patronymic== _personalInfo;
+            expression = x => x.Name == _personalInfo || x.Surname == _personalInfo || x.Patronymic == _personalInfo;
         }
         public override Expression<Func<DescriptionAccount, bool>> ToExpression()
         {

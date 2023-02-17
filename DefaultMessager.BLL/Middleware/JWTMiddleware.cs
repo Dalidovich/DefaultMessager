@@ -1,5 +1,5 @@
-﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Service.Implementation;
+﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefaultMessager.Domain.JWT
+namespace DefaultMessager.BLL.Middleware
 {
     public class JWTMiddleware
     {

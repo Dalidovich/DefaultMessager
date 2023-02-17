@@ -2,7 +2,7 @@
 using DefaultMessager.Domain.Response.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Service.Interfaces
+namespace DefaultMessager.BLL.Interfaces
 {
     public interface ILikeService
     {

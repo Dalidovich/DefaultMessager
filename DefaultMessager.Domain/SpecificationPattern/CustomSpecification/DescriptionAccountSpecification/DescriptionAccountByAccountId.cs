@@ -2,7 +2,7 @@
 using DefaultMessager.Domain.SpecificationPattern.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification
+namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification
 {
     public class DescriptionAccountByAccountId<T> : Specification<DescriptionAccount>
     {

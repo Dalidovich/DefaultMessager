@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Claims;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.Service.Implementation;
+using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -76,6 +76,11 @@ namespace DefaultMessager.Controllers
             Response.Cookies.Delete("JWTToken");
             Response.Cookies.Delete("RefreshToken");
             Response.Cookies.Delete("Id");
+            return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> test1(string a="test1")
+        {
+            var acc=(await _accountService.GetOne(x => x.Login == a)).Data;
             return RedirectToAction("Index", "Home");
         }
     }

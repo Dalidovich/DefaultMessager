@@ -1,10 +1,10 @@
-﻿using DefaultMessager.DAL.Interfaces;
+﻿using DefaultMessager.BLL.Base;
+using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.Service.Base;
-using DefaultMessager.Service.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace DefaultMessager.Service.Implementation
+namespace DefaultMessager.BLL.Implementation
 {
     public class DescriptionAccountService<T> : BaseService<T>, IDescriptionAccountService where T : DescriptionAccount
     {

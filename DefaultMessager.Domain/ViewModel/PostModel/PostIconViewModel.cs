@@ -11,17 +11,18 @@ namespace DefaultMessager.Domain.ViewModel.PostModel
     public class PostIconViewModel
     {
         public Guid? Id { get; set; }
-        public Guid AccountId { get; set; }
         public string? Title { get; set; }
         public string[]? PathPictures { get; set; }
-        public string PathAvatar { get; set; }
-        public string Login { get; set; }
-        public PostIconViewModel(Guid? id, Guid accountId, string? title, string[]? pathPictures)
+        public AccountIconViewModel? AccountViewModel { get; set; }
+        public PostIconViewModel(Guid? id, string? title, string[]? pathPictures)
         {
             Id = id;
-            AccountId = accountId;
             Title = title;
             PathPictures = pathPictures;
+        }
+
+        public PostIconViewModel()
+        {
         }
     }
 }

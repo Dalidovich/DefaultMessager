@@ -17,8 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DefaultMessager.BLL\DefaultMessager.BLL.csproj" />
     <ProjectReference Include="..\DefaultMessager.DAL\DefaultMessager.DAL.csproj" />
-    <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.Service.csproj" />
+    <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.BLL.csproj" />
   </ItemGroup>
 
 </Project>

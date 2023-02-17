@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefaultMessager.Service.Base
+namespace DefaultMessager.BLL.Base
 {
     public abstract class BaseService<T> : IBaseService<T>
     {

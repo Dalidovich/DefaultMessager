@@ -1,10 +1,9 @@
+using DefaultMessager.BLL.Middleware;
 using DefaultMessager.DAL;
 using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.Service.Implementation;
-using DefaultMessager.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;

@@ -3,7 +3,7 @@ using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.SpecificationPattern.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.UserSpecification
+namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification
 {
     public class AccountByStatus<T> : Specification<Account>
     {

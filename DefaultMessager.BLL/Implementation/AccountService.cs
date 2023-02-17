@@ -1,46 +1,45 @@
 ﻿using DefaultMessager.DAL.Interfaces;
-using DefaultMessager.DAL.Repositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.Response.Base;
 using DefaultMessager.Domain.ViewModel.AccountModel;
-using DefaultMessager.Service.Base;
-using DefaultMessager.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionUserSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.RefreshTokenSpecification;
-using System.Security.Principal;
+using DefaultMessager.DAL.Repositories.AccountRepositores;
+using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.BLL.Base;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
 
-namespace DefaultMessager.Service.Implementation
+namespace DefaultMessager.BLL.Implementation
 {
     public class AccountService<T> : BaseService<T>, IAccountService where T : Account
     {
         private readonly JWTSettings _options;
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
         private readonly RefreshTokenService<RefreshToken> _refreshTokenService;
+        private readonly AccountNavRepository _navAccountRepository;
         public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
-            , DescriptionAccountService<DescriptionAccount> descriptionAccountService, RefreshTokenService<RefreshToken> refreshTokenService) : base(repository, logger)
+            , DescriptionAccountService<DescriptionAccount> descriptionAccountService
+            , RefreshTokenService<RefreshToken> refreshTokenService, AccountNavRepository navAccountRepository) : base(repository, logger)
         {
             _options = options.Value;
             _descriptionAccountService = descriptionAccountService;
             _refreshTokenService = refreshTokenService;
+            _navAccountRepository = navAccountRepository;
+            _navAccountRepository = navAccountRepository;
         }
         public async Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
             try
             {
-                string a = viewModel.Password;
-                var accountOnRegistration = await GetOne(x => x.Login == viewModel.Login);
-                if (accountOnRegistration.Data != null)
+                var accountOnRegistration = (await GetOne(x => x.Login == viewModel.Login)).Data;
+                if (accountOnRegistration != null)
                 {
                     return new BaseResponse<(string, string, Guid)>()
                     {
@@ -50,8 +49,7 @@ namespace DefaultMessager.Service.Implementation
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
                 newAccount = await _repository.createAsync((T)newAccount);
-                var newDescriptionAccount = new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png");
-                await _descriptionAccountService.Create(newDescriptionAccount);
+                await _descriptionAccountService.Create(new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png"));
                 await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new BaseResponse<(string, string, Guid)>()
                 {
@@ -69,12 +67,13 @@ namespace DefaultMessager.Service.Implementation
                 };
             }
         }
-        public async Task<IBaseResponse<(string,string,Guid)>> Authenticate(LogInAccountViewModel viewModel,bool forRefresh=false)
+        public async Task<IBaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh = false)
         {
             try
             {
-                var account = (await GetOne(x => x.Login == viewModel.Login)).Data;
-                if (account == null||!VerifyPasswordHash(viewModel.Password,Convert.FromBase64String(account.Password),Convert.FromBase64String(account.Salt)))
+                var accountByLogin = new AccountAuthByLogin<Account>(viewModel.Login);
+                var account = _navAccountRepository.GetIncludeDescribeAndRefreshToken(accountByLogin.ToExpression()).FirstOrDefault();
+                if (account == null || !VerifyPasswordHash(viewModel.Password, Convert.FromBase64String(account.Password), Convert.FromBase64String(account.Salt)))
                 {
                     if (!forRefresh && account != null)
                     {
@@ -84,14 +83,10 @@ namespace DefaultMessager.Service.Implementation
                         };
                     }
                 }
-                var descriptionByAccountId = new DescriptionAccountByAccountId<DescriptionAccount>((Guid)account.Id);
-                var description = (await _descriptionAccountService.GetOne(descriptionByAccountId.ToExpression())).Data;
-                string token = GetToken(account,description.PathAvatar);
+                string token = GetToken(account, account.Description.PathAvatar);
                 var refreshTokenStr = GetRefreshToken();
-                var refreshTokenByAccountId = new RefreshTokenByAccountId<RefreshToken>((Guid)account.Id);
-                var refreshToken = (await _refreshTokenService.GetOne(refreshTokenByAccountId.ToExpression())).Data;
-                refreshToken.Token = refreshTokenStr;
-                await _refreshTokenService.Update(refreshToken);
+                account.RefreshToken.Token = refreshTokenStr;
+                await _refreshTokenService.Update(account.RefreshToken);
                 return new BaseResponse<(string, string, Guid)>()
                 {
                     Data = (token, refreshTokenStr, (Guid)account.Id),
@@ -108,7 +103,7 @@ namespace DefaultMessager.Service.Implementation
                 };
             }
         }
-        public async Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId,string refreshTokenStr)
+        public async Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr)
         {
             try
             {
@@ -125,7 +120,7 @@ namespace DefaultMessager.Service.Implementation
                 LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
                 return new BaseResponse<(string, string, Guid)>()
                 {
-                    Data = (await Authenticate(viewModel,true)).Data,
+                    Data = (await Authenticate(viewModel, true)).Data,
                     StatusCode = StatusCode.AccountAuthenticate
                 };
             }
@@ -139,7 +134,7 @@ namespace DefaultMessager.Service.Implementation
                 };
             }
         }
-        public string GetToken(Account account,string pathAvatar)
+        public string GetToken(AccountAuthenticateViewModel account, string pathAvatar)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -164,7 +159,7 @@ namespace DefaultMessager.Service.Implementation
         }
         public string GetRefreshToken()
         {
-            var refreshToken=Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             return refreshToken;
         }
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -172,7 +167,7 @@ namespace DefaultMessager.Service.Implementation
             using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
 
@@ -180,7 +175,7 @@ namespace DefaultMessager.Service.Implementation
         {
             using (var hmac = new HMACSHA512(passwordSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(Password));
                 return computedHash.SequenceEqual(passwordHash);
             }
         }

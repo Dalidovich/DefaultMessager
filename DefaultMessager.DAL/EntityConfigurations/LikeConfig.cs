@@ -1,4 +1,4 @@
-﻿using DefaultMessager.DAL.EntityConfigurations.EntityTypes;
+﻿using DefaultMessager.DAL.EntityConfigurations.DataType;
 using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

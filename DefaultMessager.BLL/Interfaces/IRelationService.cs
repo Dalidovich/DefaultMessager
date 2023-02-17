@@ -1,4 +1,4 @@
-﻿namespace DefaultMessager.Service.Interfaces
+﻿namespace DefaultMessager.BLL.Interfaces
 {
     public interface IRelationService
     {
