@@ -76,7 +76,7 @@ namespace DefaultMessager.Service.Implementation
                 var account = (await GetOne(x => x.Login == viewModel.Login)).Data;
                 if (account == null||!VerifyPasswordHash(viewModel.Password,Convert.FromBase64String(account.Password),Convert.FromBase64String(account.Salt)))
                 {
-                    if (!forRefresh)
+                    if (!forRefresh && account != null)
                     {
                         return new BaseResponse<(string, string, Guid)>()
                         {
