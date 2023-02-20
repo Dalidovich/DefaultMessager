@@ -49,7 +49,7 @@ namespace DefaultMessager.BLL.Implementation
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
                 newAccount = await _repository.createAsync((T)newAccount);
-                await _descriptionAccountService.Create(new DescriptionAccount((Guid)newAccount.Id, "/img/cover 1.png"));
+                await _descriptionAccountService.Create(new DescriptionAccount((Guid)newAccount.Id, StandartPath.defaultAvatarImage));
                 await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new BaseResponse<(string, string, Guid)>()
                 {

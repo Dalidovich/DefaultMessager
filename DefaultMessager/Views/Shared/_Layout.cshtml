@@ -45,7 +45,7 @@
                     <div class="d-flex">
                         <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="LogIn">Log in</a>
                         <a class="btn btn-outline-secondary ms-3" asp-controller="Account" asp-action="Registration">Register</a>
-                      </div>
+                    </div>
                 }
           </div>
             @if (User.Identity is not null && User.Identity.IsAuthenticated)
@@ -74,14 +74,7 @@
             @RenderBody()
         </main>
     </div>
-
     @RenderSection("modalWindow",false)
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - DefaultMessager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

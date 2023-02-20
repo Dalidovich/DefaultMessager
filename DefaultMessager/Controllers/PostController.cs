@@ -3,6 +3,7 @@ using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecif
 using DefaultMessager.BLL.Implementation;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DefaultMessager.Controllers
 {
@@ -16,12 +17,24 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _postService = service;
         }
-        public async Task<IActionResult> RandomPostIcons()
+        public async Task<IActionResult> PostIcons(int? id)
         {
-            var response = await _postService.GetAllPostIconRandom();
+            var page = id ?? 0;
+            var response = await _postService.GetPostIcons(page);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
                 return View(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetPartialPostIcons(int? id)
+        {
+            var page = id ?? 0;
+            var response = await _postService.GetPostIcons(page);
+            if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
+            {
+                return PartialView("_posts",response.Data);
             }
             return RedirectToAction("Error");
         }

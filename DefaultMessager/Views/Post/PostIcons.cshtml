@@ -1,0 +1,22 @@
+﻿@using DefaultMessager.Domain.Enums;
+@using DefaultMessager.Domain.ViewModel.PostModel;
+@model IEnumerable<PostIconViewModel>
+
+<div class="container-fluid">
+    <div class="row" id="scrolPostList">
+        @await Html.PartialAsync("_posts")
+        <div id="loading">
+            <img src='@Url.Content(StandartPath.loadGif)'>
+        </div>
+    </div>
+</div>
+
+@section modalWindow {
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="~/js/infinityScroll.js"></script>
+<script src="~/js/modalWindow.js"></script>

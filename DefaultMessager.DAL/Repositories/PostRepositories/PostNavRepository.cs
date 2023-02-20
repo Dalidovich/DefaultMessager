@@ -23,6 +23,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
                 Id = c.Id,
                 PathPictures = c.PathPictures,
                 Title = c.Title,
+                SendDateTime= c.SendDateTime,
                 AccountViewModel = new AccountIconViewModel()
                 {
                     Id = c.Account.Id,

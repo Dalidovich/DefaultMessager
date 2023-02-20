@@ -79,10 +79,5 @@ namespace DefaultMessager.Controllers
             Response.Cookies.Delete(CookieNames.AccountId);
             return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> test1(string a="test1")
-        {
-            var acc=(await _accountService.GetOne(x => x.Login == a)).Data;
-            return RedirectToAction("Index", "Home");
-        }
     }
 }
