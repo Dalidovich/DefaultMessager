@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefaultMessager.DAL.EntityConfigurations.EntityTypes
+namespace DefaultMessager.DAL.EntityConfigurations.DataType
 {
     public static class EntityDataTypes
     {
@@ -13,6 +13,6 @@ namespace DefaultMessager.DAL.EntityConfigurations.EntityTypes
         public const string Text = "text";
         public const string Character_varying = "character varying";
         public const string Text_array = "text[]";
-        public static string GetCharacterVaryingLens(short lens) => string.Concat("character varying(", lens, ")");  
+        public static string GetCharacterVaryingLens(short lens) => string.Concat("character varying(", lens, ")");
     }
 }

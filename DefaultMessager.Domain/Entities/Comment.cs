@@ -12,7 +12,7 @@ namespace DefaultMessager.Domain.Entities
         public DateTime DatePublicate { get; set; }
         public StatusComment CommentStatus { get; set; }
         public Post? Post { get; set; }  
-        public Account? User { get; set; }
+        public Account? Account { get; set; }
         public Comment(Guid postId, Guid accountId, string commentText, DateTime datePublicate, StatusComment status)
         {
             PostId = postId;

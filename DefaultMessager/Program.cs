@@ -1,9 +1,9 @@
+using DefaultMessager.BLL.Middleware;
 using DefaultMessager.DAL;
 using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.Service.Implementation;
-using DefaultMessager.Service.Interfaces;
+using DefaultMessager.Domain.JWT;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -30,11 +30,16 @@ namespace DefaultMessager
 
             builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
 
+            
+
             builder.addRepositores();
             builder.addServices();
+            builder.addJWT();
 
 
             var app = builder.Build();
+            app.UseCookiePolicy();
+            app.UseMiddleware<JWTMiddleware>();
 
             if (!app.Environment.IsDevelopment())
             {
@@ -47,7 +52,10 @@ namespace DefaultMessager
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.MapControllerRoute(
                 name: "default",

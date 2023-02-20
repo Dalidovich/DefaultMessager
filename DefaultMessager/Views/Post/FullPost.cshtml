@@ -1,0 +1,25 @@
+﻿@using DefaultMessager.Domain.Entities;
+@model Post
+
+
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="staticBackdropLabel">@Model.Title</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex position-relative">
+                    <img src="@Model.PathPictures[0]" class="flex-shrink-0 me-3" alt="...">
+                    <div>
+                        <img src="@Model.PathPictures[0]" class="rounded-circle me-auto ms-2 my-1 mb-2" alt="avatar image" height="25" width="25">
+                        <p class="h6 ms-1 mt-2 text-white" style="display: inline-block">Sasha</p>
+                        <!-- <h5 class="mt-0 text-white">Post name</h5> -->
+                        <p class="text-white">@Model.PostTextContent</p>
+                        <p class="h6 ms-2 mt-2 text-white">1000 Likes</p>
+                        <p class="h6 ms-2 mt-2 text-start text-white">@Model.SendDateTime</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

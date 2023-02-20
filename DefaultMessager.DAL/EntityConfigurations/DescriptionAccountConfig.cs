@@ -1,4 +1,4 @@
-﻿using DefaultMessager.DAL.EntityConfigurations.EntityTypes;
+﻿using DefaultMessager.DAL.EntityConfigurations.DataType;
 using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class DescriptionAccountConfig : IEntityTypeConfiguration<DescriptionAccount>
     {
+        public const string Table_name = "descriptions_accounts";
         public void Configure(EntityTypeBuilder<DescriptionAccount> builder)
         {
-            builder.ToTable("descriptions_accounts");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 
@@ -37,7 +38,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .HasColumnType(EntityDataTypes.Character_varying)
                    .HasColumnName("describe");
 
-            builder.Property(e => e.UserStatus)
+            builder.Property(e => e.Birthday)
+                   .HasColumnName("birthday");
+
+            builder.Property(e => e.AccountStatus)
                    .HasColumnType(EntityDataTypes.Character_varying)
                    .HasColumnName("description_status");
 

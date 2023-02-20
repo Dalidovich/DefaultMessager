@@ -30,5 +30,10 @@ namespace DefaultMessager.DAL.Repositories
         {
             return _db.Likes;
         }
+
+        public Task<Like> updateAsync(Like entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

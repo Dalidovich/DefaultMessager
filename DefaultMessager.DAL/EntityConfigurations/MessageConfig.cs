@@ -1,4 +1,4 @@
-﻿using DefaultMessager.DAL.EntityConfigurations.EntityTypes;
+﻿using DefaultMessager.DAL.EntityConfigurations.DataType;
 using DefaultMessager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,9 +7,10 @@ namespace DefaultMessager.DAL.EntityConfigurations
 {
     public class MessageConfig : IEntityTypeConfiguration<Message>
     {
+        public const string Table_name = "messages";
         public void Configure(EntityTypeBuilder<Message> builder)
         {
-            builder.ToTable("messages");
+            builder.ToTable(Table_name);
 
             builder.HasKey(e => e.Id);
 

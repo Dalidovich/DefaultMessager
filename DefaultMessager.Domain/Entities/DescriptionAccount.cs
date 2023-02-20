@@ -7,18 +7,25 @@
         public string? Name { get; set; } 
         public string? Surname { get; set; } 
         public string? Patronymic { get; set; }
+        public DateTime? Birthday { get; set; }
         public string? Describe { get; set; }
-        public string? UserStatus { get; set; } 
+        public string? AccountStatus { get; set; } 
         public string? PathAvatar { get; set; }
-        public Account? User{get; set;} 
-        public DescriptionAccount(Guid accountId, string name, string surnames, string patronymic, string? describe, string status, string? pathAvatar)
+        public Account? Account{get; set;}
+
+        public DescriptionAccount(Guid accountId, string? name, string? surname, string? patronymic, DateTime? birthday, string? describe, string? accountStatus, string? pathAvatar)
         {
             AccountId = accountId;
             Name = name;
-            Surname = surnames;
+            Surname = surname;
             Patronymic = patronymic;
+            Birthday = birthday;
             Describe = describe;
-            UserStatus = status;
+            AccountStatus = accountStatus;
+            PathAvatar = pathAvatar;
+        }
+        public DescriptionAccount(Guid accountId,string pathAvatar): this(accountId)
+        {
             PathAvatar = pathAvatar;
         }
         public DescriptionAccount(Guid accountId)

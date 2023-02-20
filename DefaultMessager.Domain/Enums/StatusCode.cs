@@ -43,10 +43,11 @@ namespace DefaultMessager.Domain.Enums
         PostDelete=62,
         PostRead = 63,
 
-        UserCreate=70,
-        UserUpdate=71,
-        UserDelete=72,
-        UserRead = 73,
+        AccountCreate=70,
+        AccountUpdate=71,
+        AccountDelete=72,
+        AccountRead = 73,
+        AccountAuthenticate = 74,
 
         OK = 200,
         OKNoContent=204,

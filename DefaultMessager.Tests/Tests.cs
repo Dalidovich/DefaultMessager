@@ -46,12 +46,12 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.DescriptionUsers.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic","1","s","path"));
+                db.DescriptionAccounts.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic",DateTime.Now,"1","s","path"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That( db.DescriptionUsers.AsNoTracking().Any(x => x.Name == "dima"), Is.True);
+                Assert.That( db.DescriptionAccounts.AsNoTracking().Any(x => x.Name == "dima"), Is.True);
             }
         }
 

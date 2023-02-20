@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,8 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DefaultMessager.BLL\DefaultMessager.BLL.csproj" />
     <ProjectReference Include="..\DefaultMessager.DAL\DefaultMessager.DAL.csproj" />
-    <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.Service.csproj" />
+    <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.BLL.csproj" />
   </ItemGroup>
 
 </Project>
