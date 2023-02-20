@@ -140,8 +140,7 @@ namespace DefaultMessager.BLL.Implementation
             {
                 new Claim(ClaimTypes.Name, account.Login),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
-                new Claim("id", account.Id.ToString()),
-                new Claim("pathAvatar", pathAvatar)
+                new Claim(CustomClaimType.AccountPathAvatar, pathAvatar)
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));

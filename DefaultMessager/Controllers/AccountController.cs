@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
+using DefaultMessager.Domain.Enums;
 
 namespace DefaultMessager.Controllers
 {
@@ -30,9 +31,9 @@ namespace DefaultMessager.Controllers
             {
                 HttpOnly = true,
             };
-            Response.Cookies.Append("JWTToken", jwtComponent.Item1, cookieOptions);
-            Response.Cookies.Append("RefreshToken", jwtComponent.Item2, cookieOptions);
-            Response.Cookies.Append("Id", jwtComponent.Item3.ToString(), cookieOptions);
+            Response.Cookies.Append(CookieNames.JWTToken, jwtComponent.Item1, cookieOptions);
+            Response.Cookies.Append(CookieNames.RefreshToken, jwtComponent.Item2, cookieOptions);
+            Response.Cookies.Append(CookieNames.AccountId, jwtComponent.Item3.ToString(), cookieOptions);
 
         }
 
@@ -73,9 +74,9 @@ namespace DefaultMessager.Controllers
         }
         public async Task<IActionResult> LogOut()
         {
-            Response.Cookies.Delete("JWTToken");
-            Response.Cookies.Delete("RefreshToken");
-            Response.Cookies.Delete("Id");
+            Response.Cookies.Delete(CookieNames.JWTToken);
+            Response.Cookies.Delete(CookieNames.RefreshToken);
+            Response.Cookies.Delete(CookieNames.AccountId);
             return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> test1(string a="test1")

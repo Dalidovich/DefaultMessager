@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using DefaultMessager.Domain.Enums;
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -49,7 +50,7 @@
           </div>
             @if (User.Identity is not null && User.Identity.IsAuthenticated)
             {
-                <img src="@User.Identities.First().FindFirst("pathAvatar").Value" class="rounded-circle ms-auto ms-1" alt="avatar image" height="40" width="40">
+                <img src="@User.Identities.First().FindFirst(CustomClaimType.AccountPathAvatar).Value" class="rounded-circle ms-auto ms-1" alt="avatar image" height="40" width="40">
                 <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
