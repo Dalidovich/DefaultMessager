@@ -11,6 +11,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using Microsoft.AspNetCore.Routing;
+using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
 
 namespace DefaultMessager.Controllers
 {
@@ -18,11 +24,13 @@ namespace DefaultMessager.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly AccountService<Account> _accountService;
+        private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
 
-        public AccountController(ILogger<AccountController> logger, AccountService<Account> service)
+        public AccountController(ILogger<AccountController> logger, AccountService<Account> service, DescriptionAccountService<DescriptionAccount> descriptionAccountService)
         {
             _logger = logger;
             _accountService = service;
+            _descriptionAccountService = descriptionAccountService;
         }
 
         private void setJWTTokenComponentInCookie((string, string,Guid) jwtComponent)
@@ -78,6 +86,50 @@ namespace DefaultMessager.Controllers
             Response.Cookies.Delete(CookieNames.RefreshToken);
             Response.Cookies.Delete(CookieNames.AccountId);
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> Index(string? login=null)
+        {
+            login = login ?? User.Identity.Name;
+            var accountByLogin = new AccountProfileByLogin<AccountProfileViewModel>(login);
+            var response = await _accountService.GetProfile(accountByLogin.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return View(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditDescription(DescriptionAccount model,Guid id)
+        {
+            var descriptionById = new DescriptionAccountById<DescriptionAccount>(id);
+            var descriptionAccount=await _descriptionAccountService.GetOne(descriptionById.ToExpression());
+            var forUpdate = descriptionAccount.Data;
+
+            forUpdate.Name=model.Name;
+            forUpdate.Surname=model.Surname;
+            forUpdate.Patronymic=model.Patronymic;
+            forUpdate.Describe=model.Describe;
+            forUpdate.AccountStatus=model.AccountStatus;
+            forUpdate.Birthday=model.Birthday;
+
+
+            var response = await _descriptionAccountService.Update(forUpdate);
+            if (response.StatusCode == Domain.Enums.StatusCode.EntityUpdate)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Error");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditDescription(Guid descriptionId)
+        {
+            var postById = new DescriptionAccountById<DescriptionAccount>(descriptionId);
+            var response = await _descriptionAccountService.GetOne(postById.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
+            {
+                return PartialView(response.Data);
+            }
+            return RedirectToAction("Error");
         }
     }
 }

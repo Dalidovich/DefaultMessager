@@ -12,7 +12,7 @@ namespace DefaultMessager.Controllers
         private readonly ILogger<PostController> _logger;
         private readonly PostService<Post> _postService;
 
-        public PostController(ILogger<PostController> logger, PostService<Post> service)
+        public PostController(ILogger<PostController> logger, PostService<Post> service, PostService<Post> navPostService)
         {
             _logger = logger;
             _postService = service;
@@ -42,10 +42,10 @@ namespace DefaultMessager.Controllers
         public async Task<ActionResult> FullPost(Guid postId)
         {
             var postById = new PostById<Post>(postId);
-            var response = await _postService.GetOne(postById.ToExpression());
-            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
+            var response = await _postService.GetFullPosts(postById.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
-                return PartialView(response.Data);
+                return PartialView(response.Data.First());
             }
             return RedirectToAction("Error");
         }

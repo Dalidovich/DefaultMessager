@@ -13,11 +13,12 @@
                     <img src="@Model.PathPictures[0]" class="flex-shrink-0 me-3" alt="...">
                     <div>
                         <img src="@Model.PathPictures[0]" class="rounded-circle me-auto ms-2 my-1 mb-2" alt="avatar image" height="25" width="25">
-                        <p class="h6 ms-1 mt-2 text-white" style="display: inline-block">Sasha</p>
-                        <!-- <h5 class="mt-0 text-white">Post name</h5> -->
+                        <p class="h6 ms-1 mt-2 text-white" style="display: inline-block">
+                            <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-accountId="@Model.Account.Id">@Model.Account.Login</a>
+                        </p>
                         <p class="text-white">@Model.PostTextContent</p>
-                        <p class="h6 ms-2 mt-2 text-white">1000 Likes</p>
-                        <p class="h6 ms-2 mt-2 text-start text-white">@Model.SendDateTime</p>
+                        <p class="h6 ms-2 mt-2 text-white">@Model.Likes.Count likes</p>
+                        <p class="h6 ms-2 mt-2 text-start text-white">@Model.SendDateTime.ToString()</p>
                     </div>
                 </div>
             </div>

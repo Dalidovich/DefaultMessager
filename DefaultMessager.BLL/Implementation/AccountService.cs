@@ -15,6 +15,8 @@ using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.BLL.Base;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -31,7 +33,6 @@ namespace DefaultMessager.BLL.Implementation
             _options = options.Value;
             _descriptionAccountService = descriptionAccountService;
             _refreshTokenService = refreshTokenService;
-            _navAccountRepository = navAccountRepository;
             _navAccountRepository = navAccountRepository;
         }
         public async Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
@@ -140,6 +141,7 @@ namespace DefaultMessager.BLL.Implementation
             {
                 new Claim(ClaimTypes.Name, account.Login),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
+                new Claim(CustomClaimType.AccountId, account.Id.ToString()),
                 new Claim(CustomClaimType.AccountPathAvatar, pathAvatar)
             };
 
@@ -169,13 +171,40 @@ namespace DefaultMessager.BLL.Implementation
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
-
         private bool VerifyPasswordHash(string Password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(Password));
                 return computedHash.SequenceEqual(passwordHash);
+            }
+        }
+        public async Task<IBaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression)
+        {
+            try
+            {
+                var entity = await _navAccountRepository.GetProfiles(expression).SingleOrDefaultAsync();
+                if (entity == null)
+                {
+                    return new BaseResponse<AccountProfileViewModel>()
+                    {
+                        Description = "entity not found"
+                    };
+                }
+                return new BaseResponse<AccountProfileViewModel>()
+                {
+                    Data = entity,
+                    StatusCode = StatusCode.AccountRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetOne] : {ex.Message}");
+                return new BaseResponse<AccountProfileViewModel>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
             }
         }
     }

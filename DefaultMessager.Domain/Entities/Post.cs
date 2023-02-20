@@ -23,6 +23,11 @@
         {
             AccountId = accountId;
         }
+
+        public Post()
+        {
+        }
+
         public List<Like> Likes { get; set; } = new List<Like>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
     }

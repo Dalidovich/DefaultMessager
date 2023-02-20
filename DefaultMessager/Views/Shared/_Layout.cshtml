@@ -58,7 +58,7 @@
                             @User.Identity.Name
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item">Profile</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Index">Profile</a></li>
                             <li><a class="dropdown-item">Settings</a></li>
                             <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="LogOut">Sign out</a></li>
                         </ul>
@@ -79,6 +79,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/modalWindow.js" asp-append-version="true"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="~/js/infinityScroll.js"></script>
+    <script src="~/js/modalWindow.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

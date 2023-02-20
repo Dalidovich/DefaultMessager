@@ -30,7 +30,6 @@ namespace DefaultMessager.BLL.Implementation
         {
             try
             {
-                Random rnd = new Random();
                 var contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x=>x.SendDateTime)
                     .Skip(skipCount*countPost).Take(countPost).ToListAsync();
                 if (contents == null)
@@ -48,8 +47,37 @@ namespace DefaultMessager.BLL.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"[GetAllRandom] : {ex.Message}");
+                _logger.LogError(ex, $"[GetIncludePostIconViewModel] : {ex.Message}");
                 return new BaseResponse<IEnumerable<PostIconViewModel>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
+        public async Task<IBaseResponse<IEnumerable<Post>>> GetFullPosts(Expression<Func<Post, bool>>? whereExpression)
+        {
+            try
+            {
+                var contents = await _navPostRepository.getFullPosts(whereExpression).ToListAsync();
+                if (contents == null)
+                {
+                    return new BaseResponse<IEnumerable<Post>>()
+                    {
+                        Description = "post not found"
+                    };
+                }
+                return new BaseResponse<IEnumerable<Post>>()
+                {
+                    Data = contents,
+                    StatusCode = StatusCode.PostRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetFullPosts] : {ex.Message}");
+                return new BaseResponse<IEnumerable<Post>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

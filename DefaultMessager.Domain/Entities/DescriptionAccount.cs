@@ -1,4 +1,8 @@
-﻿namespace DefaultMessager.Domain.Entities
+﻿using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
+using System.Xml.Linq;
+
+namespace DefaultMessager.Domain.Entities
 {
     public class DescriptionAccount
     {
@@ -31,6 +35,20 @@
         public DescriptionAccount(Guid accountId)
         {
             AccountId = accountId;
+        }
+        public void Update(DescriptionAccount description)
+        {
+            AccountId = description.AccountId;
+            Name = description.Name;
+            Surname = description.Surname;
+            Patronymic = description.Patronymic;
+            Birthday = description.Birthday;
+            Describe = description.Describe;
+            AccountStatus = description.AccountStatus;
+            PathAvatar = description.PathAvatar;
+        }
+        public DescriptionAccount()
+        {
         }
     }
 }
