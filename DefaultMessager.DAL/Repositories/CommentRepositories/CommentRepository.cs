@@ -7,7 +7,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefaultMessager.DAL.Repositories
+namespace DefaultMessager.DAL.Repositories.CommentRepositories
 {
     public class CommentRepository : IBaseRepository<Comment>
     {

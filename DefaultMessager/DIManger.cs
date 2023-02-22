@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DefaultMessager.DAL.Repositories.PostRepositories;
+using DefaultMessager.DAL.Repositories.CommentRepositories;
 
 namespace DefaultMessager
 {
@@ -22,10 +23,12 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Like>, LikeRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Message>, MessageRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
-            webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, AccountRepository>();
-            webApplicationBuilder.Services.AddScoped<AccountNavRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<RefreshToken>, RefreshTokenRepository>();
+
+            webApplicationBuilder.Services.AddScoped<AccountNavRepository>();
+            webApplicationBuilder.Services.AddScoped<PostNavRepository>();
+            webApplicationBuilder.Services.AddScoped<CommentNavRepositories>();
         }
         public static void addServices(this WebApplicationBuilder webApplicationBuilder)
         {

@@ -34,4 +34,8 @@
     <None Include="Views\Post\_posts.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Comment\" />
+  </ItemGroup>
+
 </Project>
