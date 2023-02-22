@@ -51,6 +51,16 @@ namespace DefaultMessager.DAL
             }
             this.Posts.AddRange(posts);
             this.SaveChanges();
+            List<Comment> comments = new List<Comment>();
+            for (int i = 0; i < countFill; i++)
+            {
+                for (int k = 0; k < countFill; k++)
+                {
+                    comments.Add(new Comment((Guid)posts[i].Id, (Guid)accounts[i].Id, new string('a', i * k), DateTime.UtcNow, StatusComment.normal));
+                }
+            }
+            this.Comments.AddRange(comments);
+            this.SaveChanges();
         }
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

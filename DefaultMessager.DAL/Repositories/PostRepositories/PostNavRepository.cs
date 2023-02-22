@@ -37,7 +37,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
         }
         public IQueryable<Post> getFullPosts(Expression<Func<Post, bool>>? whereExpression = null)
         {
-            var content = _db.Posts.Include(x => x.Account).Include(x => x.Likes).Include(x => x.Comments);
+            var content = _db.Posts.Include(x => x.Account).ThenInclude(x => x.Description).Include(x => x.Likes).Include(x => x.Comments);
             return whereExpression is null ? content : content.Where(whereExpression);
         }
     }
