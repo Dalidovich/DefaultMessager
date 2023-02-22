@@ -14,6 +14,7 @@ namespace DefaultMessager.Domain.ViewModel.PostModel
         public string? Title { get; set; }
         public string[]? PathPictures { get; set; }
         public AccountIconViewModel? AccountViewModel { get; set; }
+        public DateTime SendDateTime { get; set; }
         public PostIconViewModel(Guid? id, string? title, string[]? pathPictures)
         {
             Id = id;

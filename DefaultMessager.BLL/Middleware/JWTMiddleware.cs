@@ -1,5 +1,6 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace DefaultMessager.BLL.Middleware
         }
         public async Task InvokeAsync(HttpContext context, AccountService<Account> accountService)
         {
-            string? token = context.Request.Cookies["JWTToken"];
-            string? refreshToken = context.Request.Cookies["RefreshToken"];
-            string? id = context.Request.Cookies["Id"];
+            string? token = context.Request.Cookies[CookieNames.JWTToken];
+            string? refreshToken = context.Request.Cookies[CookieNames.RefreshToken];
+            string? id = context.Request.Cookies[CookieNames.AccountId];
             if (!context.User.Identity.IsAuthenticated && refreshToken != null && id != null)
             {
                 var response = (await accountService.RefreshJWTToken(new Guid(id), refreshToken)).Data;
@@ -32,16 +33,16 @@ namespace DefaultMessager.BLL.Middleware
                     {
                         HttpOnly = true,
                     };
-                    context.Response.Cookies.Append("JWTToken", response.Item1, cookieOptions);
-                    context.Response.Cookies.Append("RefreshToken", response.Item2, cookieOptions);
-                    context.Response.Cookies.Append("Id", response.Item3.ToString(), cookieOptions);
+                    context.Response.Cookies.Append(CookieNames.JWTToken, response.Item1, cookieOptions);
+                    context.Response.Cookies.Append(CookieNames.RefreshToken, response.Item2, cookieOptions);
+                    context.Response.Cookies.Append(CookieNames.AccountId,response.Item3.ToString(), cookieOptions);
                     token = response.Item1;
                 }
                 else
                 {
-                    context.Response.Cookies.Delete("Id");
-                    context.Response.Cookies.Delete("JWTToken");
-                    context.Response.Cookies.Delete("RefreshToken");
+                    context.Response.Cookies.Delete(CookieNames.AccountId);
+                    context.Response.Cookies.Delete(CookieNames.JWTToken);
+                    context.Response.Cookies.Delete(CookieNames.RefreshToken);
                 }
             }
 

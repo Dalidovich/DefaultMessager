@@ -3,6 +3,7 @@ using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecif
 using DefaultMessager.BLL.Implementation;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DefaultMessager.Controllers
 {
@@ -11,14 +12,15 @@ namespace DefaultMessager.Controllers
         private readonly ILogger<PostController> _logger;
         private readonly PostService<Post> _postService;
 
-        public PostController(ILogger<PostController> logger, PostService<Post> service)
+        public PostController(ILogger<PostController> logger, PostService<Post> service, PostService<Post> navPostService)
         {
             _logger = logger;
             _postService = service;
         }
-        public async Task<IActionResult> RandomPostIcons()
+        public async Task<IActionResult> PostIcons(int? id)
         {
-            var response = await _postService.GetAllPostIconRandom();
+            var page = id ?? 0;
+            var response = await _postService.GetPostIcons(page);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
                 return View(response.Data);
@@ -26,13 +28,24 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("Error");
         }
         [HttpGet]
+        public async Task<ActionResult> GetPartialPostIcons(int? id)
+        {
+            var page = id ?? 0;
+            var response = await _postService.GetPostIcons(page);
+            if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
+            {
+                return PartialView("_posts",response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+        [HttpGet]
         public async Task<ActionResult> FullPost(Guid postId)
         {
             var postById = new PostById<Post>(postId);
-            var response = await _postService.GetOne(postById.ToExpression());
-            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
+            var response = await _postService.GetFullPosts(postById.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
-                return PartialView(response.Data);
+                return PartialView(response.Data.First());
             }
             return RedirectToAction("Error");
         }

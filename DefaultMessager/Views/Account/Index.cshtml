@@ -1,0 +1,91 @@
+﻿@using DefaultMessager.Domain.ViewModel.AccountModel
+@model AccountProfileViewModel
+
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card">
+                    <div class="rounded-top text-white d-flex flex-row bg-dark" style="height:200px;">
+                        <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                            <img src="@Model.Description.PathAvatar"
+                                 alt="Generic placeholder image" class="img-fluid rounded-circle img-thumbnail mt-4 mb-2"
+                                 style="width: 150px; z-index: 1">
+                            @if(Model.Login==User.Identity.Name)
+                            {
+                                <form name="inputFileForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" action="/ConvertedImage" style="z-index: 1;">
+                                    <label for="inputField" style="cursor: pointer;" name="inputField"><u>Сhoose avatar</u></label>
+                                    <input name="inputField" hidden id="inputField" onchange="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file" required="">
+                                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Bbf3ysSRuxJrP5nc99BeooF-OX-24kDnRner_btTfMy31vMI8mq-XW1h1vhpdtPtpbqSBTO10kD8j2kfQvrUecHBuAD7Uo1CpgpJAKQ_rmgV5cpKGfC4fkIevhYkuiFMWxif2urRLDkYrZmg2ax6KY">
+                                </form>
+                                <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
+                                    Edit profile
+                                </button>   
+                            }
+                        </div>
+                        <div class="ms-3" style="margin-top: 130px;">
+                            <h5>@Model.Login</h5>
+                            <p>@Model.Description.Name @Model.Description.Surname @Model.Description.Patronymic</p>
+                            <p class="text-secondary">@Model.Description.AccountStatus</p>
+                        </div>
+                    </div>
+                    <div class="p-4 text-white bg-secondary" style="background-color: #f8f9fa;">
+                        <div class="d-flex justify-content-end text-center py-1">
+                        </div>
+                    </div>
+                    <!-- header of main-->
+                    @section modalWindow {
+                        <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        </div>
+                    }
+                    <!-- About -->
+                    <div class="card-body p-4 bg-secondary text-white">
+                        <div class="mb-3">
+                            <p class="lead fw-normal mb-1 mt-5">About</p>
+                            <div class="p-4 bg-secondary" style="background-color: #f8f9fa;">
+                                <p class="font-bold h5 mb-1">Date of birth</p>
+                                <p class="font-italic mb-2">@Model.Description.Birthday.ToString()</p>
+                                <p class="font-bold h5 mb-1">Describe</p>
+                                <p class="font-italic mb-2">@Model.Description.Describe</p>
+                            </div>
+                        </div>
+                        <!-- About -->
+                        <!-- Albums -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0">Albums</p>
+                            <p class="mb-0"><a href="#!" class="text-white">Show all</a></p>
+                        </div>
+                        <div class="row">
+                            @foreach (var item in Model.ImageAlbums)
+                            {
+                                <div class="col-md-6 mb-2" id="@item.Id">
+                                    <div class="container bg-dark mb-3" style="width: 100%; height: 230px; padding: 0;">
+                                        <img src="@item.PathPictures.First()" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <!-- Albums -->
+                        <!-- Posts -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0 mt-2">Posts</p>
+                            <p class="mb-0"><a href="#!" class="text-white">Show all</a></p>
+                        </div>
+                        <div class="row">
+                            @foreach (var item in Model.Posts)
+                            {
+                                <div class="col-md-6 mb-2" id="@item.Id">
+                                    <div class="container bg-dark mb-3" style="width: 100%; height: 230px; padding: 0;">
+                                        <img src="@item.PathPictures.First()" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <!-- Posts -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

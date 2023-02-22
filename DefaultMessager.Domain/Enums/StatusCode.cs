@@ -8,10 +8,12 @@ namespace DefaultMessager.Domain.Enums
 {
     public enum StatusCode
     {
-        EntityCreate = 0,
+        EntityNotFound=0,
+
         EntityUpdate = 1,
         EntityDelete = 2,
         EntityRead = 3,
+        EntityCreate = 4,
 
         CommentCreate =10,
         CommentUpdate=11,

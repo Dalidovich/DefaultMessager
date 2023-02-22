@@ -1,0 +1,39 @@
+﻿@using DefaultMessager.Domain.Entities;
+@model DescriptionAccount
+<div class="modal-dialog modal-xl">
+    <div class="modal-content bg-dark">
+        <div class="modal-header">
+            <h5 class="modal-title text-white" id="staticBackdropLabel">Profile editing</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" asp-controller="Account" asp-action="EditDescription" asp-route-id="@Model.Id">
+                <div class="mb-3">
+                    <label asp-for="@Model.Surname" class="form-label text-white">Surname</label>
+                    <input asp-for="@Model.Surname" value="@Model.Surname" type="text" class="form-control bg-secondary text-white" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Name" class="form-label text-white">Name</label>
+                    <input asp-for="@Model.Name" value="@Model.Name" type="text" class="form-control bg-secondary text-white">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Patronymic" class="form-label text-white">Patronymic</label>
+                    <input asp-for="@Model.Patronymic" value="@Model.Patronymic" type="text" class="form-control bg-secondary text-white">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.Birthday" class="form-label text-white">Birthday</label>
+                    <input asp-for="@Model.Birthday" value="@Model.Birthday.Value.ToString("yyyy-MM-dd")" type="date" class="form-control bg-secondary text-white">
+                </div>
+                <div class="mb-3">
+                    <label    asp-for="@Model.Describe" class="form-label text-white">Describe</label>
+                    <textarea asp-for="@Model.Describe" value="@Model.Describe" class="form-control bg-secondary text-white" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.AccountStatus" class="form-label text-white">Account Status</label>
+                    <input asp-for="@Model.AccountStatus" value="@Model.AccountStatus" type="text" class="form-control bg-secondary text-white">
+                </div>
+                <button type="submit" class="btn btn-outline-secondary text-white">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>

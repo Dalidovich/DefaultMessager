@@ -22,4 +22,16 @@
     <ProjectReference Include="..\DefaultMessager.Service\DefaultMessager.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Post\_posts.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Post\_posts.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Post\_posts.cshtml" />
+  </ItemGroup>
+
 </Project>

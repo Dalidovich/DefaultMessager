@@ -2,6 +2,7 @@ using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Security.Principal;
 
 namespace DefaultMessager.DAL
 {
@@ -26,63 +27,28 @@ namespace DefaultMessager.DAL
         }
         private void standartFill()
         {
-            var account = new Account("email_1", "Ilia", "456", Role.admin, DateTime.Now, StatusAccount.normal);
-            this.Accounts.Add(account);
+            const int countFill = 45;
+            List<Account> accounts = new List<Account>();
+            for (int i = 0; i < countFill; i++)
+            {
+                accounts.Add(new Account("email_1", i.ToString(), "456", Role.admin, DateTime.Now, StatusAccount.normal));
+            }
+            this.Accounts.AddRange(accounts);
             this.SaveChanges();
-            var description = new DescriptionAccount((Guid)account.Id, "/img/cover 1.png");
-            this.DescriptionAccounts.Add(description);
+
+            List<DescriptionAccount> descriptionAccounts = new List<DescriptionAccount>();
+            for (int i = 0; i < countFill; i++)
+            {
+                descriptionAccounts.Add(new DescriptionAccount((Guid)accounts[i].Id, StandartPath.defaultAvatarImage));
+            };
+            this.DescriptionAccounts.AddRange(descriptionAccounts);
             this.SaveChanges();
+            Random random =new Random();
             List<Post> posts = new List<Post>();
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 2", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 3", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 4", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 1", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 5", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 6", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
-            posts.Add(new Post((Guid)account.Id, new[] { "/img/cover 1.png" }, "text1", "post 7", new[] { "none" }, DateTime.Now));
+            for (int i = 0; i < countFill; i++)
+            {
+                posts.Add(new Post((Guid)accounts[i].Id, new[] { StandartPath.defaultAvatarImage }, "text1", "post "+i.ToString(), new[] { "none" }, DateTime.Now));
+            }
             this.Posts.AddRange(posts);
             this.SaveChanges();
         }

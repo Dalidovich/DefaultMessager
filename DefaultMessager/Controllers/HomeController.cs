@@ -19,7 +19,7 @@ namespace DefaultMessager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return RedirectToAction("RandomPostIcons", "Post");
+            return RedirectToAction("PostIcons", "Post");
         }
 
         public IActionResult Privacy()
