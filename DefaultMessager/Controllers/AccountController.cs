@@ -104,15 +104,7 @@ namespace DefaultMessager.Controllers
             var descriptionById = new DescriptionAccountById<DescriptionAccount>(id);
             var descriptionAccount=await _descriptionAccountService.GetOne(descriptionById.ToExpression());
             var forUpdate = descriptionAccount.Data;
-
-            forUpdate.Name=model.Name;
-            forUpdate.Surname=model.Surname;
-            forUpdate.Patronymic=model.Patronymic;
-            forUpdate.Describe=model.Describe;
-            forUpdate.AccountStatus=model.AccountStatus;
-            forUpdate.Birthday=model.Birthday;
-
-
+            forUpdate.Update(model);
             var response = await _descriptionAccountService.Update(forUpdate);
             if (response.StatusCode == Domain.Enums.StatusCode.EntityUpdate)
             {

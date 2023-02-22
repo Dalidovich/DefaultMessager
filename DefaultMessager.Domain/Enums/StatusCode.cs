@@ -20,12 +20,12 @@ namespace DefaultMessager.Domain.Enums
         CommentDelete=12,
         CommentRead=13,
 
-        DescriptionUserCreate=20,
-        DescriptionUserUpdate=21,
-        DescriptionUserDelete=22,
-        DescriptionUserRead  =23,
+        DescriptionAccountCreate = 20,
+        DescriptionAccountUpdate = 21,
+        DescriptionAccountDelete = 22,
+        DescriptionAccountRead = 23,
 
-        ImageAlbumCreate=30,
+        ImageAlbumCreate =30,
         ImageAlbumUpdate=31,
         ImageAlbumDelete=32,
         ImageAlbumRead  =33,

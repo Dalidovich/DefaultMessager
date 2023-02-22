@@ -35,17 +35,22 @@ namespace DefaultMessager.Domain.Entities
         public DescriptionAccount(Guid accountId)
         {
             AccountId = accountId;
+            Name = "";
+            Surname = "";
+            Patronymic = "";
+            Birthday = DateTime.UtcNow;
+            Describe = "";
+            AccountStatus = "";
+            PathAvatar = "";
         }
         public void Update(DescriptionAccount description)
         {
-            AccountId = description.AccountId;
             Name = description.Name;
             Surname = description.Surname;
             Patronymic = description.Patronymic;
             Birthday = description.Birthday;
             Describe = description.Describe;
             AccountStatus = description.AccountStatus;
-            PathAvatar = description.PathAvatar;
         }
         public DescriptionAccount()
         {

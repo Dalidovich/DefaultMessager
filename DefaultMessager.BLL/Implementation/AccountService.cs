@@ -76,7 +76,7 @@ namespace DefaultMessager.BLL.Implementation
                 var account = _navAccountRepository.GetIncludeDescribeAndRefreshToken(accountByLogin.ToExpression()).FirstOrDefault();
                 if (account == null || !VerifyPasswordHash(viewModel.Password, Convert.FromBase64String(account.Password), Convert.FromBase64String(account.Salt)))
                 {
-                    if (!forRefresh && account != null)
+                    if ((!forRefresh) && account == null)
                     {
                         return new BaseResponse<(string, string, Guid)>()
                         {
