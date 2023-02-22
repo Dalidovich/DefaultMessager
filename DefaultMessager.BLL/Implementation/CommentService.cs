@@ -21,12 +21,14 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navCommentRepository = commentNavRepositories;
         }
-        public async Task<BaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0, Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
+        public async Task<BaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0
+            , Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
         {
             try
             {
-                var contents = await _navCommentRepository.GetCommentFullInclude(whereExpression).OrderBy(x => x.DatePublicate)
-                    .Skip(skipCount * countComments).Take(countComments).ToListAsync();
+                var contents = (await _navCommentRepository.GetCommentFullInclude(whereExpression)
+                    .OrderByDescending(c => c.DatePublicate)
+                    .Skip(skipCount * countComments).Take(countComments).ToListAsync());
                 if (contents == null)
                 {
                     return new StandartResponse<IEnumerable<Comment>>()

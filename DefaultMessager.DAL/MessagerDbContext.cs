@@ -56,7 +56,7 @@ namespace DefaultMessager.DAL
             {
                 for (int k = 0; k < countFill; k++)
                 {
-                    comments.Add(new Comment((Guid)posts[i].Id, (Guid)accounts[i].Id, new string('a', i * k), DateTime.UtcNow, StatusComment.normal));
+                    comments.Add(new Comment((Guid)posts[i].Id, (Guid)accounts[i].Id, (k+1).ToString(), DateTime.Now, StatusComment.normal));
                 }
             }
             this.Comments.AddRange(comments);

@@ -17,7 +17,7 @@ namespace DefaultMessager.DAL.Repositories.CommentRepositories
         }
         public IQueryable<Comment> GetCommentFullInclude(Expression<Func<Comment, bool>>? whereExpression=null)
         {
-            var content= _db.Comments.Include(x=>x.Post).Include(x=>x.Account);
+            var content = _db.Comments.Include(x => x.Post).Include(x => x.Account);
             return whereExpression is null ? content : content.Where(whereExpression);
         }
     }

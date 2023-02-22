@@ -4,6 +4,8 @@ using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification;
+using Microsoft.AspNetCore.Authorization;
+using DefaultMessager.Domain.Enums;
 
 namespace DefaultMessager.Controllers
 {
@@ -25,8 +27,26 @@ namespace DefaultMessager.Controllers
             var response = await _commentService.GetFullComments(page,commentByPost.ToExpression());
             if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
             {
-                var a= PartialView("_comments", response.Data);
-                return a;
+                return PartialView("_comments", response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+        [Authorize]
+        public async Task<IActionResult> SendComment(Guid postId,string commentContent)
+        {
+            string? id = Request.Cookies[CookieNames.AccountId];
+            if (id != null && commentContent!="")
+            {
+                var createResponse = await _commentService.Create(new Comment(postId, new Guid(id), commentContent));
+                if (createResponse.StatusCode == Domain.Enums.StatusCode.EntityCreate)
+                {
+                    var commentById=new CommentById<Comment>((Guid)createResponse.Data.Id);
+                    var response = await _commentService.GetFullComments(0, commentById.ToExpression());
+                    if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
+                    {
+                        return PartialView("_comments", response.Data);
+                    }
+                }
             }
             return RedirectToAction("Error");
         }

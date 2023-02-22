@@ -28,3 +28,7 @@ function loadCommentItems() {
         });
     }
 }
+function cleanPage()
+{
+    page = 0;
+}

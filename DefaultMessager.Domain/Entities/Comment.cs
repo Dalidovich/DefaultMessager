@@ -24,5 +24,13 @@ namespace DefaultMessager.Domain.Entities
         public Comment()
         {
         }
+        public Comment(Guid postId, Guid id, string commentContent)
+        {
+            PostId = postId;
+            AccountId = id;
+            CommentTextContent = commentContent;
+            DatePublicate=DateTime.Now;
+            CommentStatus = StatusComment.normal;
+        }
     }
 }

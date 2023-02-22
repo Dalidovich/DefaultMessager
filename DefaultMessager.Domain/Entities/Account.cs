@@ -32,7 +32,7 @@ namespace DefaultMessager.Domain.Entities
             Login= model.Login;
             Password= password;
             Role = Role.standart;
-            CreateDate=DateTime.UtcNow;
+            CreateDate=DateTime.Now;
             StatusAccount = StatusAccount.normal;
             Salt = salt;
         }

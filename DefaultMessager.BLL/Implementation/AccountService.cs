@@ -151,8 +151,8 @@ namespace DefaultMessager.BLL.Implementation
                     issuer: _options.Issuer,
                     audience: _options.Audience,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(1)),
-                    notBefore: DateTime.UtcNow,
+                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(1)),
+                    notBefore: DateTime.Now,
                     signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );
 

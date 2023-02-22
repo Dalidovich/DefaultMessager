@@ -4,7 +4,7 @@
 {
         <div class="row">
             <p class="text-mute mb-2 h6 fw-bold">
-                <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-accountId="@comment.Account.Id">@comment.Account.Login</a>
+            <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@comment.Account.Login">@comment.Account.Login</a>
             </p>
             <p class="text-white mb-2" style="font-size: 11pt">@comment.CommentTextContent</p>
             <p class="text-gray" style="font-size: 8pt">@comment.DatePublicate</p>

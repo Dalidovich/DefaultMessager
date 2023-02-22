@@ -38,7 +38,7 @@ namespace DefaultMessager.Domain.Entities
             Name = "";
             Surname = "";
             Patronymic = "";
-            Birthday = DateTime.UtcNow;
+            Birthday = DateTime.Now;
             Describe = "";
             AccountStatus = "";
             PathAvatar = "";
