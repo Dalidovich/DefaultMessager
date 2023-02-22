@@ -35,9 +35,9 @@
                             @await Html.PartialAsync("~/Views/Comment/_comments.cshtml",Model.Comments.Take(StandartConst.countCommentsOnOneLoad))
                         </div>
 
-                        <input type="text" class="form-control mb-2 mt-3" placeholder="Add a comment" style="display: inline-block; width: 65%;" placeholder="Add a comment">
+                        <input id="commentField" type="text" class="form-control mb-2 mt-3" placeholder="Add a comment" style="display: inline-block; width: 65%;" placeholder="Add a comment">
                         <button type="button" class="btn btn-outline-dark text-white ms-3 mt-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-mdb-ripple-color="dark"
-                                style="z-index: 1;">
+                                style="z-index: 1;" >
                             Add a comment
                         </button>
                     </div>

@@ -15,23 +15,5 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _messageAlbumService = service;
         }
-
-        [HttpGet]
-        public ActionResult Registration() => View();
-        [HttpPost]
-        public async Task<IActionResult> Registration(RegisterAccountViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                //var responce = await _accountService.Registration(model);
-                //if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
-                //{
-
-                //    return RedirectToAction("Index", "Home");
-                //}
-                //ModelState.AddModelError("", responce.Description);
-            }
-            return View(model);
-        }
     }
 }
