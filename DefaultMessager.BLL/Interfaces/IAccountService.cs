@@ -10,9 +10,9 @@ namespace DefaultMessager.BLL.Interfaces
     {
         public string GetRefreshToken();
         public string GetToken(AccountAuthenticateViewModel account, string pathAvatar);
-        public Task<IBaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression);
-        public Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr);
-        public Task<IBaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh);
-        public Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel);
+        public Task<BaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression);
+        public Task<BaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr);
+        public Task<BaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh);
+        public Task<BaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel);
     }
 }

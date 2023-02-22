@@ -69,7 +69,7 @@ namespace DefaultMessager
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuerSigningKey = true,
-                    LifetimeValidator = CustomLifeTime.CustomLifeTimeValidator
+                    LifetimeValidator = JwtHelper.CustomLifeTimeValidator
                 };
             });
         }

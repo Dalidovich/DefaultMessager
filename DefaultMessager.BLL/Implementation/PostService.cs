@@ -25,7 +25,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navPostRepository = navPostRepository;
         }
-        public async Task<IBaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount=0,int countPost = StandartConst.countPostsOnOneLoad)
+        public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount=0,int countPost = StandartConst.countPostsOnOneLoad)
         {
             try
             {
@@ -33,12 +33,12 @@ namespace DefaultMessager.BLL.Implementation
                     .Skip(skipCount*countPost).Take(countPost).ToListAsync();
                 if (contents == null)
                 {
-                    return new BaseResponse<IEnumerable<PostIconViewModel>>()
+                    return new StandartResponse<IEnumerable<PostIconViewModel>>()
                     {
                         Description = "post not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<PostIconViewModel>>()
+                return new StandartResponse<IEnumerable<PostIconViewModel>>()
                 {
                     Data = contents,
                     StatusCode = StatusCode.PostRead
@@ -47,7 +47,7 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetIncludePostIconViewModel] : {ex.Message}");
-                return new BaseResponse<IEnumerable<PostIconViewModel>>()
+                return new StandartResponse<IEnumerable<PostIconViewModel>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -55,19 +55,19 @@ namespace DefaultMessager.BLL.Implementation
             }
         }
 
-        public async Task<IBaseResponse<IEnumerable<Post>>> GetFullPosts(Expression<Func<Post, bool>>? whereExpression)
+        public async Task<BaseResponse<IEnumerable<Post>>> GetFullPosts(Expression<Func<Post, bool>>? whereExpression)
         {
             try
             {
                 var contents = await _navPostRepository.getFullPosts(whereExpression).ToListAsync();
                 if (contents == null)
                 {
-                    return new BaseResponse<IEnumerable<Post>>()
+                    return new StandartResponse<IEnumerable<Post>>()
                     {
                         Description = "post not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<Post>>()
+                return new StandartResponse<IEnumerable<Post>>()
                 {
                     Data = contents,
                     StatusCode = StatusCode.PostRead
@@ -76,7 +76,7 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetFullPosts] : {ex.Message}");
-                return new BaseResponse<IEnumerable<Post>>()
+                return new StandartResponse<IEnumerable<Post>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

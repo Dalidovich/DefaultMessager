@@ -1,6 +1,5 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.Response.Base;
 using DefaultMessager.Domain.ViewModel.AccountModel;
@@ -17,6 +16,7 @@ using DefaultMessager.BLL.Base;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using DefaultMessager.Domain.Enums;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -35,24 +35,24 @@ namespace DefaultMessager.BLL.Implementation
             _refreshTokenService = refreshTokenService;
             _navAccountRepository = navAccountRepository;
         }
-        public async Task<IBaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
+        public async Task<BaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
             try
             {
                 var accountOnRegistration = (await GetOne(x => x.Login == viewModel.Login)).Data;
                 if (accountOnRegistration != null)
                 {
-                    return new BaseResponse<(string, string, Guid)>()
+                    return new StandartResponse<(string, string, Guid)>()
                     {
                         Description = "Account with that login alredy exist"
                     };
                 }
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
-                newAccount = await _repository.createAsync((T)newAccount);
+                newAccount = (await Create((T)newAccount)).Data;
                 await _descriptionAccountService.Create(new DescriptionAccount((Guid)newAccount.Id, StandartPath.defaultAvatarImage));
                 await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(viewModel))).Data,
                     StatusCode = StatusCode.AccountCreate
@@ -61,14 +61,14 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Registration] : {ex.Message}");
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public async Task<IBaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh = false)
+        public async Task<BaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh = false)
         {
             try
             {
@@ -78,17 +78,17 @@ namespace DefaultMessager.BLL.Implementation
                 {
                     if ((!forRefresh) && account == null)
                     {
-                        return new BaseResponse<(string, string, Guid)>()
+                        return new StandartResponse<(string, string, Guid)>()
                         {
                             Description = "account not found"
                         };
                     }
                 }
-                string token = GetToken(account, account.Description.PathAvatar);
+                string token = GetToken(account);
                 var refreshTokenStr = GetRefreshToken();
                 account.RefreshToken.Token = refreshTokenStr;
                 await _refreshTokenService.Update(account.RefreshToken);
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Data = (token, refreshTokenStr, (Guid)account.Id),
                     StatusCode = StatusCode.AccountAuthenticate
@@ -97,21 +97,21 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Authenticate] : {ex.Message}");
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public async Task<IBaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr)
+        public async Task<BaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr)
         {
             try
             {
                 var refreshToken = (await _refreshTokenService.GetOne(x => x.AccountId == accountId && x.Token == refreshTokenStr)).Data;
                 if (refreshToken == null)
                 {
-                    return new BaseResponse<(string, string, Guid)>()
+                    return new StandartResponse<(string, string, Guid)>()
                     {
                         Description = "token not found"
                     };
@@ -119,7 +119,7 @@ namespace DefaultMessager.BLL.Implementation
 
                 var account = (await GetOne(x => x.Id == accountId)).Data;
                 LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(viewModel, true)).Data,
                     StatusCode = StatusCode.AccountAuthenticate
@@ -128,21 +128,21 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[RefreshJWTToken] : {ex.Message}");
-                return new BaseResponse<(string, string, Guid)>()
+                return new StandartResponse<(string, string, Guid)>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public string GetToken(AccountAuthenticateViewModel account, string pathAvatar)
+        public string GetToken(AccountAuthenticateViewModel account)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Login),
                 new Claim(ClaimTypes.Role, account.Role.ToString()),
                 new Claim(CustomClaimType.AccountId, account.Id.ToString()),
-                new Claim(CustomClaimType.AccountPathAvatar, pathAvatar)
+                new Claim(CustomClaimType.AccountPathAvatar, account.Description.PathAvatar)
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
@@ -179,19 +179,19 @@ namespace DefaultMessager.BLL.Implementation
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
-        public async Task<IBaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression)
+        public async Task<BaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression)
         {
             try
             {
                 var entity = await _navAccountRepository.GetProfiles(expression).SingleOrDefaultAsync();
                 if (entity == null)
                 {
-                    return new BaseResponse<AccountProfileViewModel>()
+                    return new StandartResponse<AccountProfileViewModel>()
                     {
                         Description = "entity not found"
                     };
                 }
-                return new BaseResponse<AccountProfileViewModel>()
+                return new StandartResponse<AccountProfileViewModel>()
                 {
                     Data = entity,
                     StatusCode = StatusCode.AccountRead
@@ -200,7 +200,7 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetOne] : {ex.Message}");
-                return new BaseResponse<AccountProfileViewModel>()
+                return new StandartResponse<AccountProfileViewModel>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

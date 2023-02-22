@@ -24,11 +24,11 @@ namespace DefaultMessager.BLL.Base
             _logger = logger;
         }
 
-        public async Task<IBaseResponse<T>> Create(T entity)
+        public async Task<BaseResponse<T>> Create(T entity)
         {
             try
             {
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Data = await _repository.createAsync(entity),
                     StatusCode = StatusCode.EntityCreate,
@@ -37,7 +37,7 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Create] : {ex.Message}");
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -45,20 +45,20 @@ namespace DefaultMessager.BLL.Base
             }
         }
 
-        public async Task<IBaseResponse<bool>> Delete(Expression<Func<T, bool>> expression)
+        public async Task<BaseResponse<bool>> Delete(Expression<Func<T, bool>> expression)
         {
             try
             {
                 var entity = await _repository.GetAll().SingleOrDefaultAsync(expression);
                 if (entity == null)
                 {
-                    return new BaseResponse<bool>()
+                    return new StandartResponse<bool>()
                     {
                         Description = "entity not found"
                     };
                 }
 
-                return new BaseResponse<bool>()
+                return new StandartResponse<bool>()
                 {
                     Data = await _repository.deleteAsync(entity),
                     StatusCode = StatusCode.EntityDelete
@@ -67,7 +67,7 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Delete] : {ex.Message}");
-                return new BaseResponse<bool>()
+                return new StandartResponse<bool>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -75,19 +75,19 @@ namespace DefaultMessager.BLL.Base
             }
         }
 
-        public async Task<IBaseResponse<IEnumerable<T>>> GetAll()
+        public async Task<BaseResponse<IEnumerable<T>>> GetAll()
         {
             try
             {
                 var contents = await _repository.GetAll().ToListAsync();
                 if (contents == null)
                 {
-                    return new BaseResponse<IEnumerable<T>>()
+                    return new StandartResponse<IEnumerable<T>>()
                     {
                         Description = "entity not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<T>>()
+                return new StandartResponse<IEnumerable<T>>()
                 {
                     Data = contents,
                     StatusCode = StatusCode.EntityRead
@@ -96,7 +96,7 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetAll] : {ex.Message}");
-                return new BaseResponse<IEnumerable<T>>()
+                return new StandartResponse<IEnumerable<T>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -104,19 +104,19 @@ namespace DefaultMessager.BLL.Base
             }
         }
 
-        public async Task<IBaseResponse<T>> GetOne(Expression<Func<T, bool>> expression)
+        public async Task<BaseResponse<T>> GetOne(Expression<Func<T, bool>> expression)
         {
             try
             {
                 var entity = await _repository.GetAll().SingleOrDefaultAsync(expression);
                 if (entity == null)
                 {
-                    return new BaseResponse<T>()
+                    return new StandartResponse<T>()
                     {
                         Description = "entity not found"
                     };
                 }
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Data = entity,
                     StatusCode = StatusCode.EntityRead
@@ -125,26 +125,26 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetOne] : {ex.Message}");
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
                 };
             }
         }
-        public async Task<IBaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression)
+        public async Task<BaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression)
         {
             try
             {
                 var entites = await _repository.GetAll().Where(expression).ToListAsync();
                 if (entites == null)
                 {
-                    return new BaseResponse<IEnumerable<T>>()
+                    return new StandartResponse<IEnumerable<T>>()
                     {
                         Description = "satisfactory entity not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<T>>()
+                return new StandartResponse<IEnumerable<T>>()
                 {
                     Data = entites,
                     StatusCode = StatusCode.EntityRead
@@ -153,7 +153,7 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetAllSatisfactory] : {ex.Message}");
-                return new BaseResponse<IEnumerable<T>>()
+                return new StandartResponse<IEnumerable<T>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,
@@ -161,11 +161,11 @@ namespace DefaultMessager.BLL.Base
             }
         }
 
-        public async Task<IBaseResponse<T>> Update(T entity)
+        public async Task<BaseResponse<T>> Update(T entity)
         {
             try
             {
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Data = await _repository.updateAsync(entity),
                     StatusCode = StatusCode.EntityUpdate,
@@ -174,7 +174,7 @@ namespace DefaultMessager.BLL.Base
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[Create] : {ex.Message}");
-                return new BaseResponse<T>()
+                return new StandartResponse<T>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

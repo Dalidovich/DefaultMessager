@@ -21,7 +21,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navCommentRepository = commentNavRepositories;
         }
-        public async Task<IBaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0, Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
+        public async Task<BaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0, Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
         {
             try
             {
@@ -29,12 +29,12 @@ namespace DefaultMessager.BLL.Implementation
                     .Skip(skipCount * countComments).Take(countComments).ToListAsync();
                 if (contents == null)
                 {
-                    return new BaseResponse<IEnumerable<Comment>>()
+                    return new StandartResponse<IEnumerable<Comment>>()
                     {
                         Description = "comments not found"
                     };
                 }
-                return new BaseResponse<IEnumerable<Comment>>()
+                return new StandartResponse<IEnumerable<Comment>>()
                 {
                     Data = contents,
                     StatusCode = StatusCode.CommentRead
@@ -43,7 +43,7 @@ namespace DefaultMessager.BLL.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"[GetCommentView] : {ex.Message}");
-                return new BaseResponse<IEnumerable<Comment>>()
+                return new StandartResponse<IEnumerable<Comment>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

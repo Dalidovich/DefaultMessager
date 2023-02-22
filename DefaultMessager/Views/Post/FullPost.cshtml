@@ -32,7 +32,7 @@
 
                         <div class="overflow-y-auto overflow-x-hidden text-white mt-2" style="width: 100%; height: 270px;" onscroll="loadCommentItems()" 
                             id="scrolCommentList">
-                            @await Html.PartialAsync("_comments",Model.Comments.Take(StandartConst.countCommentsOnOneLoad))
+                            @await Html.PartialAsync("~/Views/Comment/_comments.cshtml",Model.Comments.Take(StandartConst.countCommentsOnOneLoad))
                         </div>
 
                         <input type="text" class="form-control mb-2 mt-3" placeholder="Add a comment" style="display: inline-block; width: 65%;" placeholder="Add a comment">

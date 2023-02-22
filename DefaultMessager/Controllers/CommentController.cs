@@ -25,7 +25,8 @@ namespace DefaultMessager.Controllers
             var response = await _commentService.GetFullComments(page,commentByPost.ToExpression());
             if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
             {
-                return PartialView("_comments", response.Data);
+                var a= PartialView("_comments", response.Data);
+                return a;
             }
             return RedirectToAction("Error");
         }

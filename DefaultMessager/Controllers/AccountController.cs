@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
-using DefaultMessager.Domain.Enums;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
 using Microsoft.AspNetCore.Routing;
 using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
+using DefaultMessager.Domain.Enums;
 
 namespace DefaultMessager.Controllers
 {
@@ -33,17 +33,6 @@ namespace DefaultMessager.Controllers
             _descriptionAccountService = descriptionAccountService;
         }
 
-        private void setJWTTokenComponentInCookie((string, string,Guid) jwtComponent)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-            };
-            Response.Cookies.Append(CookieNames.JWTToken, jwtComponent.Item1, cookieOptions);
-            Response.Cookies.Append(CookieNames.RefreshToken, jwtComponent.Item2, cookieOptions);
-            Response.Cookies.Append(CookieNames.AccountId, jwtComponent.Item3.ToString(), cookieOptions);
-
-        }
 
         [HttpGet]
         public IActionResult Registration() => View();
@@ -55,7 +44,7 @@ namespace DefaultMessager.Controllers
                 var responce = await _accountService.Registration(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
                 {
-                    setJWTTokenComponentInCookie(responce.Data);                    
+                    Response.Cookies.setJwtCookie(responce.Data);                    
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -73,7 +62,7 @@ namespace DefaultMessager.Controllers
                 var responce = await _accountService.Authenticate(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
                 {
-                    setJWTTokenComponentInCookie(responce.Data);
+                    Response.Cookies.setJwtCookie(responce.Data);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -82,9 +71,7 @@ namespace DefaultMessager.Controllers
         }
         public async Task<IActionResult> LogOut()
         {
-            Response.Cookies.Delete(CookieNames.JWTToken);
-            Response.Cookies.Delete(CookieNames.RefreshToken);
-            Response.Cookies.Delete(CookieNames.AccountId);
+            Response.Cookies.removeJwtCookie();
             return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> Index(string? login=null)
