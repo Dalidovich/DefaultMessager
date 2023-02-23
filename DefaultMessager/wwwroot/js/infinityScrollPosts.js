@@ -1,13 +1,13 @@
 ﻿$(window).scroll(function () {
     if ($(window).scrollTop() == $(document).height() - $(window).height())
     {
-        loadItems();
+        loadPostItems();
     }
 });
 $('div#loading').hide();
 var page = 0;
 var _inCallback = false;
-function loadItems() {
+function loadPostItems() {
     if (page > -1 && !_inCallback) {
         _inCallback = true;
         page++;

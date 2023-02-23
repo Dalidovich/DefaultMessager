@@ -1,11 +1,16 @@
 ﻿using DefaultMessager.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DefaultMessager.Domain.Response.Base
 {
-    public class BaseResponse<T> : IBaseResponse<T>
+    public abstract class BaseResponse<T>
     {
-        public string Description { get; set; } = null!;
-        public StatusCode StatusCode { get; set; }
-        public T Data { get; set; }
+        public virtual T Data { get; set; }
+        public virtual StatusCode StatusCode { get; set; }
+        public virtual string Description { get; set; }
     }
 }

@@ -11,11 +11,11 @@ namespace DefaultMessager.BLL.Base
 {
     public interface IBaseService<T>
     {
-        Task<IBaseResponse<T>> GetOne(Expression<Func<T, bool>> expression);
-        Task<IBaseResponse<IEnumerable<T>>> GetAll();
-        Task<IBaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression);
-        Task<IBaseResponse<bool>> Delete(Expression<Func<T, bool>> expression);
-        Task<IBaseResponse<T>> Create(T entity);
-        Task<IBaseResponse<T>> Update(T entity);
+        Task<BaseResponse<T>> GetOne(Expression<Func<T, bool>> expression);
+        Task<BaseResponse<IEnumerable<T>>> GetAll();
+        Task<BaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression);
+        Task<BaseResponse<bool>> Delete(Expression<Func<T, bool>> expression);
+        Task<BaseResponse<T>> Create(T entity);
+        Task<BaseResponse<T>> Update(T entity);
     }
 }

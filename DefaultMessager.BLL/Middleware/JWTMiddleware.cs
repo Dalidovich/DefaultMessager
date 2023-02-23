@@ -1,6 +1,7 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -29,20 +30,12 @@ namespace DefaultMessager.BLL.Middleware
                 var response = (await accountService.RefreshJWTToken(new Guid(id), refreshToken)).Data;
                 if (response.Item2 is not null)
                 {
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                    };
-                    context.Response.Cookies.Append(CookieNames.JWTToken, response.Item1, cookieOptions);
-                    context.Response.Cookies.Append(CookieNames.RefreshToken, response.Item2, cookieOptions);
-                    context.Response.Cookies.Append(CookieNames.AccountId,response.Item3.ToString(), cookieOptions);
+                    context.Response.Cookies.setJwtCookie(response);
                     token = response.Item1;
                 }
                 else
                 {
-                    context.Response.Cookies.Delete(CookieNames.AccountId);
-                    context.Response.Cookies.Delete(CookieNames.JWTToken);
-                    context.Response.Cookies.Delete(CookieNames.RefreshToken);
+                    context.Response.Cookies.removeJwtCookie();
                 }
             }
 
