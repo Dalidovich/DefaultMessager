@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.DAL.Repositories.CommentRepositories;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.Extensions.Configuration;
+using DefaultMessager.DAL.SettingsAWSClient;
 
 namespace DefaultMessager
 {
@@ -40,6 +43,11 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
             webApplicationBuilder.Services.AddScoped<RefreshTokenService<RefreshToken>>();
+
+            webApplicationBuilder.Services.Configure<AWSClientOptions>(
+                webApplicationBuilder.Configuration.GetSection(AWSClientOptions.NameSettings)
+            );
+            webApplicationBuilder.Services.AddScoped<IAWSClientProvider, AWSClientProvider>();
         }
 
         public static void addJWT(this WebApplicationBuilder webApplicationBuilder)
@@ -73,9 +81,5 @@ namespace DefaultMessager
                 };
             });
         }
-        //public static void addMapster(this WebApplicationBuilder webApplicationBuilder)
-        //{
-        //    webApplicationBuilder.Services.AddScoped<IMapper, ServiceMapper>();
-        //}
     }
 }
