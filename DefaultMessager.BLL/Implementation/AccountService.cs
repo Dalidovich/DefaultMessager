@@ -17,6 +17,7 @@ using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpe
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.DAL.SettingsAWSClient;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -26,14 +27,17 @@ namespace DefaultMessager.BLL.Implementation
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
         private readonly RefreshTokenService<RefreshToken> _refreshTokenService;
         private readonly AccountNavRepository _navAccountRepository;
+        private readonly IAWSClientProvider _AWSClientProvider;
         public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
             , DescriptionAccountService<DescriptionAccount> descriptionAccountService
+            , IAWSClientProvider aWSClientProvider
             , RefreshTokenService<RefreshToken> refreshTokenService, AccountNavRepository navAccountRepository) : base(repository, logger)
         {
             _options = options.Value;
             _descriptionAccountService = descriptionAccountService;
             _refreshTokenService = refreshTokenService;
             _navAccountRepository = navAccountRepository;
+            _AWSClientProvider = aWSClientProvider;
         }
         public async Task<BaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
