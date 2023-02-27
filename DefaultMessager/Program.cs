@@ -1,6 +1,5 @@
 using DefaultMessager.BLL.Middleware;
 using DefaultMessager.DAL;
-using DefaultMessager.DAL.Connection;
 using DefaultMessager.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,23 +15,13 @@ namespace DefaultMessager
 
             builder.Services.AddSingleton(builder.Configuration);
 
-            builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString(StandartConst.NameConnection)));
+            builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(
+                builder.Configuration.GetConnectionString(StandartConst.NameConnection)));
 
             builder.AddRepositores();
             builder.AddServices();
             builder.AddJWT();
-            /*
-                        DbContextOptionsBuilder<MessagerDbContext> t = new DbContextOptionsBuilder<MessagerDbContext>();
-                        MessagerDbContext dbContext = new MessagerDbContext(t, builder.Configuration.GetConnectionString(NpgConnectionOptions.NameConnection));
-                        dbContext.UpdateDatabase();*/
-
-
-
             var app = builder.Build();
-
-
-/*                var context = app.Services.GetRequiredService<MessagerDbContext>();
-            context.UpdateDatabase();*/
 
             app.UseCookiePolicy();
             app.UseMiddleware<JWTMiddleware>();

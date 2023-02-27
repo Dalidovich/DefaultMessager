@@ -1,5 +1,7 @@
 ﻿using Bytewizer.Backblaze.Client;
 using Bytewizer.Backblaze.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace DefaultMessager.DAL.SettingsAWSClient
 {
@@ -26,6 +28,22 @@ namespace DefaultMessager.DAL.SettingsAWSClient
             var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
             var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
             return reusltResponceDelete.IsSuccessStatusCode;
+        }
+        public async Task<string> GetIdWithBucketName(string bucketName)
+        {
+            return (await _s3Client.Buckets.FindByNameAsync(bucketName)).BucketId;
+        }
+        public async Task<string> GetFileLink(string bucketId, string objectName)
+        {
+            ListFileNamesRequest fileNamesRequest = new(bucketId);
+            var a = (await _s3Client.Buckets.FindByIdAsync(bucketId));
+            var file = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
+
+            HttpClient client = new HttpClient();
+
+
+            Console.WriteLine(file.ContentSha1);
+            return null;
         }
     }
 }

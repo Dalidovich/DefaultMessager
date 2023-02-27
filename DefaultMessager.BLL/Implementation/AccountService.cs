@@ -27,17 +27,17 @@ namespace DefaultMessager.BLL.Implementation
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
         private readonly RefreshTokenService<RefreshToken> _refreshTokenService;
         private readonly AccountNavRepository _navAccountRepository;
-        private readonly IBackblazeClientProvider _AWSClientProvider;
+        private readonly IBackblazeClientProvider _BackblazeClientProvider;
         public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
             , DescriptionAccountService<DescriptionAccount> descriptionAccountService
-            , IBackblazeClientProvider aWSClientProvider
+            , IBackblazeClientProvider backblazeClientProvider
             , RefreshTokenService<RefreshToken> refreshTokenService, AccountNavRepository navAccountRepository) : base(repository, logger)
         {
             _options = options.Value;
             _descriptionAccountService = descriptionAccountService;
             _refreshTokenService = refreshTokenService;
             _navAccountRepository = navAccountRepository;
-            _AWSClientProvider = aWSClientProvider;
+            _BackblazeClientProvider = backblazeClientProvider;
         }
         public async Task<BaseResponse<(string, string, Guid)>> Registration(RegisterAccountViewModel viewModel)
         {
@@ -53,7 +53,21 @@ namespace DefaultMessager.BLL.Implementation
                 }
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
+
+
+                var accountBucket = "Messager" + ((byte)newAccount.Login.Last()) % 2;
+                var standartBucketName = "Standart";
+                var objectPath = $"{newAccount.Login}\\standartAvatar.png";
+
+                var client = await _BackblazeClientProvider.GetClient();
+                await client.GetFileLink(await client.GetIdWithBucketName(standartBucketName), "100.png");
+                //готовый код выше перенести ниже создания аккаунта
+
                 newAccount = (await Add((T)newAccount)).Data;
+
+
+                //await client.UploadObjectFromStreamAsync(await client.GetIdWithBucketName(accountBucket),objectPath, memoryStream);
+
                 await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, StandartPath.defaultAvatarImage));
                 await _refreshTokenService.Add(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new StandartResponse<(string, string, Guid)>()
