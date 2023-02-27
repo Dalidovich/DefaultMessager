@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.BLL.Implementation;
-using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DefaultMessager.Controllers
 {

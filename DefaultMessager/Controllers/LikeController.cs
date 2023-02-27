@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.BLL.Implementation;
-using DefaultMessager.Domain.ViewModel.AccountModel;
-using DefaultMessager.BLL.Interfaces;
-using DefaultMessager.Domain.JWT;
-using Microsoft.AspNetCore.Authorization;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.LikeSpecification;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.SpecificationPattern.CompositeSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.LikeSpecification;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DefaultMessager.Controllers
 {
@@ -23,9 +18,9 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _likeService = service;
         }
-        private async Task<IActionResult> _createLike(Guid postId,Guid accountId,LikeByPostId<Like> likeByPost)
+        private async Task<IActionResult> _createLike(Guid postId, Guid accountId, LikeByPostId<Like> likeByPost)
         {
-            var createtResponce = await _likeService.Create(new Like(postId, accountId));
+            var createtResponce = await _likeService.Add(new Like(postId, accountId));
             if (createtResponce.StatusCode == Domain.Enums.StatusCode.EntityCreate)
             {
                 var response = await _likeService.GetAllSatisfactory(likeByPost.ToExpression());
@@ -70,10 +65,10 @@ namespace DefaultMessager.Controllers
             string? id = Request.Cookies[CookieNames.AccountId];
             if (id != null)
             {
-                var accountId=new Guid(id);
+                var accountId = new Guid(id);
                 var likeByPost = new LikeByPostId<Like>(postId);
                 var likeByAccount = new LikeByAccountId<Like>(accountId);
-                var andSpec=new AndSpecification<Like>(likeByAccount, likeByPost);
+                var andSpec = new AndSpecification<Like>(likeByAccount, likeByPost);
                 var responseExistMyLike = await _likeService.GetOne(andSpec.ToExpression());
                 if (responseExistMyLike.StatusCode == Domain.Enums.StatusCode.EntityNotFound)
                 {

@@ -1,25 +1,24 @@
-﻿using DefaultMessager.DAL.Interfaces;
+﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.DAL.BackblazeS3;
+using DefaultMessager.DAL.BackblazeS3.ClientProvider;
+using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
 using DefaultMessager.DAL.Repositories.AccountRepositores;
+using DefaultMessager.DAL.Repositories.CommentRepositories;
+using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.BLL.Implementation;
-using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DefaultMessager.DAL.Repositories.PostRepositories;
-using DefaultMessager.DAL.Repositories.CommentRepositories;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.Extensions.Configuration;
-using DefaultMessager.DAL.SettingsAWSClient;
 
 namespace DefaultMessager
 {
     public static class DIManger
     {
-        public static void addRepositores(this WebApplicationBuilder webApplicationBuilder)
+        public static void AddRepositores(this WebApplicationBuilder webApplicationBuilder)
         {
+           
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Comment>, CommentRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<DescriptionAccount>, DescriptionAccountRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<ImageAlbum>, ImageAlbumRepository>();
@@ -33,7 +32,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<CommentNavRepositories>();
         }
-        public static void addServices(this WebApplicationBuilder webApplicationBuilder)
+        public static void AddServices(this WebApplicationBuilder webApplicationBuilder)
         {
             webApplicationBuilder.Services.AddScoped<CommentService<Comment>>();
             webApplicationBuilder.Services.AddScoped<DescriptionAccountService<DescriptionAccount>>();
@@ -44,13 +43,13 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
             webApplicationBuilder.Services.AddScoped<RefreshTokenService<RefreshToken>>();
 
-            webApplicationBuilder.Services.Configure<AWSClientOptions>(
-                webApplicationBuilder.Configuration.GetSection(AWSClientOptions.NameSettings)
+            webApplicationBuilder.Services.Configure<BackblazeClientOptions>(
+                webApplicationBuilder.Configuration.GetSection(BackblazeClientOptions.NameSettings)
             );
-            webApplicationBuilder.Services.AddScoped<IAWSClientProvider, AWSClientProvider>();
+            webApplicationBuilder.Services.AddScoped<IBackblazeClientProvider, BackblazeClientProvider>();
         }
 
-        public static void addJWT(this WebApplicationBuilder webApplicationBuilder)
+        public static void AddJWT(this WebApplicationBuilder webApplicationBuilder)
         {
             webApplicationBuilder.Services.Configure<JWTSettings>(webApplicationBuilder.Configuration.GetSection("JWTSettings"));
             var secretKey = webApplicationBuilder.Configuration.GetSection("JWTSettings:SecretKey").Value;

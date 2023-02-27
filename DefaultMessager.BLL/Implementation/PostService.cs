@@ -1,7 +1,6 @@
 ﻿using DefaultMessager.BLL.Base;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.DAL.Interfaces;
-using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
@@ -9,12 +8,7 @@ using DefaultMessager.Domain.Response.Base;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -25,12 +19,12 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navPostRepository = navPostRepository;
         }
-        public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount=0,int countPost = StandartConst.countPostsOnOneLoad)
+        public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad)
         {
             try
             {
-                var contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x=>x.SendDateTime)
-                    .Skip(skipCount*countPost).Take(countPost).ToListAsync();
+                var contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
+                    .Skip(skipCount * countPost).Take(countPost).ToListAsync();
                 if (contents == null)
                 {
                     return new StandartResponse<IEnumerable<PostIconViewModel>>()

@@ -1,23 +1,23 @@
-﻿using DefaultMessager.DAL.Interfaces;
+﻿using DefaultMessager.BLL.Base;
+using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.DAL.BackblazeS3.ClientProvider;
+using DefaultMessager.DAL.Interfaces;
+using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.Response.Base;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Options;
-using DefaultMessager.DAL.Repositories.AccountRepositores;
-using DefaultMessager.BLL.Interfaces;
-using DefaultMessager.BLL.Base;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using DefaultMessager.Domain.Enums;
-using DefaultMessager.DAL.SettingsAWSClient;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -27,10 +27,10 @@ namespace DefaultMessager.BLL.Implementation
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
         private readonly RefreshTokenService<RefreshToken> _refreshTokenService;
         private readonly AccountNavRepository _navAccountRepository;
-        private readonly IAWSClientProvider _AWSClientProvider;
+        private readonly IBackblazeClientProvider _AWSClientProvider;
         public AccountService(IBaseRepository<T> repository, ILogger<T> logger, IOptions<JWTSettings> options
             , DescriptionAccountService<DescriptionAccount> descriptionAccountService
-            , IAWSClientProvider aWSClientProvider
+            , IBackblazeClientProvider aWSClientProvider
             , RefreshTokenService<RefreshToken> refreshTokenService, AccountNavRepository navAccountRepository) : base(repository, logger)
         {
             _options = options.Value;
@@ -53,9 +53,9 @@ namespace DefaultMessager.BLL.Implementation
                 }
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
-                newAccount = (await Create((T)newAccount)).Data;
-                await _descriptionAccountService.Create(new DescriptionAccount((Guid)newAccount.Id, StandartPath.defaultAvatarImage));
-                await _refreshTokenService.Create(new RefreshToken((Guid)newAccount.Id, "none"));
+                newAccount = (await Add((T)newAccount)).Data;
+                await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, StandartPath.defaultAvatarImage));
+                await _refreshTokenService.Add(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new StandartResponse<(string, string, Guid)>()
                 {
                     Data = (await Authenticate(new LogInAccountViewModel(viewModel))).Data,

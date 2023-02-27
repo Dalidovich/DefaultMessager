@@ -4,10 +4,10 @@
     {
         public Guid? Id { get; set; }
         public Guid AccountId { get; set; }
-        public string[]? PathPictures { get; set; } 
-        public string? PostTextContent { get; set; } 
+        public string[]? PathPictures { get; set; }
+        public string? PostTextContent { get; set; }
         public string? Title { get; set; }
-        public string[]? PathAudios { get; set; } 
+        public string[]? PathAudios { get; set; }
         public DateTime SendDateTime { get; set; }
         public Account? Account { get; set; }
         public Post(Guid accountId, string[] pathPictures, string text, string title, string[] pathAudios, DateTime sendDateTime)

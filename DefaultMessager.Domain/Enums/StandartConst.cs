@@ -4,6 +4,6 @@
     {
         public const int countPostsOnOneLoad = 30;
         public const int countCommentsOnOneLoad = 10;
-
+        public const string NameConnection = "NpgConnectionString";
     }
 }

@@ -1,8 +1,5 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.ViewModel.AccountModel;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DefaultMessager.DAL.Repositories.PostRepositories
 {
@@ -15,13 +12,13 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
             _db = db;
         }
 
-        public async Task<Post> createAsync(Post entity)
+        public async Task<Post> AddAsync(Post entity)
         {
             var createdEntity = await _db.Posts.AddAsync(entity);
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
-        public async Task<bool> deleteAsync(Post entity)
+        public async Task<bool> DeleteAsync(Post entity)
         {
             _db.Posts.Remove(entity);
             await _db.SaveChangesAsync();

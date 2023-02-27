@@ -1,22 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Claims;
+﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.BLL.Implementation;
-using DefaultMessager.Domain.ViewModel.AccountModel;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DefaultMessager.Domain.JWT;
-using Microsoft.AspNetCore.Http;
-using DefaultMessager.BLL.Interfaces;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using Microsoft.AspNetCore.Routing;
-using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
-using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DefaultMessager.Controllers
 {
@@ -44,7 +32,7 @@ namespace DefaultMessager.Controllers
                 var responce = await _accountService.Registration(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
                 {
-                    Response.Cookies.setJwtCookie(responce.Data);                    
+                    Response.Cookies.setJwtCookie(responce.Data);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -69,12 +57,12 @@ namespace DefaultMessager.Controllers
             }
             return View(model);
         }
-        public async Task<IActionResult> LogOut()
+        public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
             return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> Index(string? login=null)
+        public async Task<IActionResult> Index(string? login = null)
         {
             login = login ?? User.Identity.Name;
             var accountByLogin = new AccountProfileByLogin<AccountProfileViewModel>(login);
@@ -86,10 +74,10 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("Error");
         }
         [HttpPost]
-        public async Task<IActionResult> EditDescription(DescriptionAccount model,Guid id)
+        public async Task<IActionResult> EditDescription(DescriptionAccount model, Guid id)
         {
             var descriptionById = new DescriptionAccountById<DescriptionAccount>(id);
-            var descriptionAccount=await _descriptionAccountService.GetOne(descriptionById.ToExpression());
+            var descriptionAccount = await _descriptionAccountService.GetOne(descriptionById.ToExpression());
             var forUpdate = descriptionAccount.Data;
             forUpdate.Update(model);
             var response = await _descriptionAccountService.Update(forUpdate);

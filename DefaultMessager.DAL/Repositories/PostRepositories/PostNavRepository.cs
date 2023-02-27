@@ -2,9 +2,7 @@
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace DefaultMessager.DAL.Repositories.PostRepositories
@@ -25,7 +23,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
                 Id = c.Id,
                 PathPictures = c.PathPictures,
                 Title = c.Title,
-                SendDateTime= c.SendDateTime,
+                SendDateTime = c.SendDateTime,
                 AccountViewModel = new AccountIconViewModel()
                 {
                     Id = c.Account.Id,
@@ -33,7 +31,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
                     PathAvatar = new DescriptionPathAvatarAccountViewModel(c.Account.Description.PathAvatar)
                 }
             });
-            return whereExpression is null?content:content.Where(whereExpression);
+            return whereExpression is null ? content : content.Where(whereExpression);
         }
         public IQueryable<Post> getFullPosts(Expression<Func<Post, bool>>? whereExpression = null)
         {

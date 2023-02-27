@@ -2,7 +2,6 @@ using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Security.Principal;
 
 namespace DefaultMessager.DAL
 {
@@ -16,16 +15,14 @@ namespace DefaultMessager.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Relations> Relations { get; set; }
-        public DbSet<RefreshToken> RefreshTokens{ get; set; }
-        public static string ConnectionString { get; set; }
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public void UpdateDatabase()
         {
             Database.EnsureDeleted();
             Database.Migrate();
-            standartFill();
+            StandartFill();
         }
-        private void standartFill()
+        private void StandartFill()
         {
             const int countFill = 45;
             List<Account> accounts = new List<Account>();
@@ -43,11 +40,11 @@ namespace DefaultMessager.DAL
             };
             this.DescriptionAccounts.AddRange(descriptionAccounts);
             this.SaveChanges();
-            Random random =new Random();
+            Random random = new Random();
             List<Post> posts = new List<Post>();
             for (int i = 0; i < countFill; i++)
             {
-                posts.Add(new Post((Guid)accounts[i].Id, new[] { StandartPath.defaultAvatarImage }, "text1", "post "+i.ToString(), new[] { "none" }, DateTime.Now));
+                posts.Add(new Post((Guid)accounts[i].Id, new[] { StandartPath.defaultAvatarImage }, "text1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
             }
             this.Posts.AddRange(posts);
             this.SaveChanges();
@@ -56,20 +53,23 @@ namespace DefaultMessager.DAL
             {
                 for (int k = 0; k < countFill; k++)
                 {
-                    comments.Add(new Comment((Guid)posts[i].Id, (Guid)accounts[i].Id, (k+1).ToString(), DateTime.Now, StatusComment.normal));
+                    comments.Add(new Comment((Guid)posts[i].Id, (Guid)accounts[i].Id, (k + 1).ToString(), DateTime.Now, StatusComment.normal));
                 }
             }
             this.Comments.AddRange(comments);
             this.SaveChanges();
         }
-        public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) {}
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) 
         {
-            optionsBuilder.UseNpgsql(ConnectionString);
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
+
         public MessagerDbContext()
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.UseNpgsql(optionsBuilder.Options.ToString());
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

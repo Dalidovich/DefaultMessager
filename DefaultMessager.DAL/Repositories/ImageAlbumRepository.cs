@@ -12,14 +12,14 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<ImageAlbum> createAsync(ImageAlbum entity)
+        public async Task<ImageAlbum> AddAsync(ImageAlbum entity)
         {
             var createdEntity = await _db.ImageAlbums.AddAsync(entity);
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
 
-        public async Task<bool> deleteAsync(ImageAlbum entity)
+        public async Task<bool> DeleteAsync(ImageAlbum entity)
         {
             _db.ImageAlbums.Remove(entity);
             await _db.SaveChangesAsync();

@@ -1,15 +1,9 @@
 ﻿using DefaultMessager.DAL.Interfaces;
-using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.BLL.Base
 {
@@ -24,13 +18,13 @@ namespace DefaultMessager.BLL.Base
             _logger = logger;
         }
 
-        public async Task<BaseResponse<T>> Create(T entity)
+        public async Task<BaseResponse<T>> Add(T entity)
         {
             try
             {
                 return new StandartResponse<T>()
                 {
-                    Data = await _repository.createAsync(entity),
+                    Data = await _repository.AddAsync(entity),
                     StatusCode = StatusCode.EntityCreate,
                 };
             }
@@ -60,7 +54,7 @@ namespace DefaultMessager.BLL.Base
 
                 return new StandartResponse<bool>()
                 {
-                    Data = await _repository.deleteAsync(entity),
+                    Data = await _repository.DeleteAsync(entity),
                     StatusCode = StatusCode.EntityDelete
                 };
             }

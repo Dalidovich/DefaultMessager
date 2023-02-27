@@ -1,18 +1,12 @@
 ﻿using DefaultMessager.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.Domain.JWT
 {
     public static class JwtHelper
     {
-        public static bool CustomLifeTimeValidator(DateTime? nbf, DateTime? exp,SecurityToken tokenToValidate,TokenValidationParameters @param) 
+        public static bool CustomLifeTimeValidator(DateTime? nbf, DateTime? exp, SecurityToken tokenToValidate, TokenValidationParameters @param)
         {
             return exp != null ? exp > DateTime.UtcNow : false;
         }

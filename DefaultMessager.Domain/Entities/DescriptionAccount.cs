@@ -1,21 +1,17 @@
-﻿using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
-using System.Xml.Linq;
-
-namespace DefaultMessager.Domain.Entities
+﻿namespace DefaultMessager.Domain.Entities
 {
     public class DescriptionAccount
     {
         public Guid? Id { get; set; }
         public Guid AccountId { get; set; }
-        public string? Name { get; set; } 
-        public string? Surname { get; set; } 
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
         public string? Patronymic { get; set; }
         public DateTime? Birthday { get; set; }
         public string? Describe { get; set; }
-        public string? AccountStatus { get; set; } 
+        public string? AccountStatus { get; set; }
         public string? PathAvatar { get; set; }
-        public Account? Account{get; set;}
+        public Account? Account { get; set; }
 
         public DescriptionAccount(Guid accountId, string? name, string? surname, string? patronymic, DateTime? birthday, string? describe, string? accountStatus, string? pathAvatar)
         {
@@ -28,7 +24,7 @@ namespace DefaultMessager.Domain.Entities
             AccountStatus = accountStatus;
             PathAvatar = pathAvatar;
         }
-        public DescriptionAccount(Guid accountId,string pathAvatar): this(accountId)
+        public DescriptionAccount(Guid accountId, string pathAvatar) : this(accountId)
         {
             PathAvatar = pathAvatar;
         }

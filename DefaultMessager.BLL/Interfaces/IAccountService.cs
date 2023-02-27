@@ -1,6 +1,4 @@
-﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.JWT;
-using DefaultMessager.Domain.Response.Base;
+﻿using DefaultMessager.Domain.Response.Base;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using System.Linq.Expressions;
 

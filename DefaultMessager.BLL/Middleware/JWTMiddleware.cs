@@ -3,12 +3,6 @@ using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.BLL.Middleware
 {
@@ -25,7 +19,7 @@ namespace DefaultMessager.BLL.Middleware
             string? token = context.Request.Cookies[CookieNames.JWTToken];
             string? refreshToken = context.Request.Cookies[CookieNames.RefreshToken];
             string? id = context.Request.Cookies[CookieNames.AccountId];
-            if (!context.User.Identity.IsAuthenticated && refreshToken != null && id != null)
+            if (context.User.Identity is not null && !context.User.Identity.IsAuthenticated && refreshToken != null && id != null)
             {
                 var response = (await accountService.RefreshJWTToken(new Guid(id), refreshToken)).Data;
                 if (response.Item2 is not null)

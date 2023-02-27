@@ -1,10 +1,4 @@
-﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DefaultMessager.Domain.Enums;
 
 namespace DefaultMessager.Domain.ViewModel.RelationModel
 {

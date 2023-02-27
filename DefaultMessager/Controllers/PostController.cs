@@ -1,9 +1,7 @@
-﻿using DefaultMessager.Domain.Entities;
+﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
-using DefaultMessager.BLL.Implementation;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DefaultMessager.Controllers
 {
@@ -34,7 +32,7 @@ namespace DefaultMessager.Controllers
             var response = await _postService.GetPostIcons(page);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
-                return PartialView("_posts",response.Data);
+                return PartialView("_posts", response.Data);
             }
             return RedirectToAction("Error");
         }
