@@ -1,4 +1,5 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
@@ -14,14 +15,14 @@ namespace DefaultMessager.BLL.Middleware
         {
             _next = next;
         }
-        public async Task InvokeAsync(HttpContext context, AccountService<Account> accountService)
+        public async Task InvokeAsync(HttpContext context, IRegistrationService registrationService)
         {
             string? token = context.Request.Cookies[CookieNames.JWTToken];
             string? refreshToken = context.Request.Cookies[CookieNames.RefreshToken];
             string? id = context.Request.Cookies[CookieNames.AccountId];
             if (context.User.Identity is not null && !context.User.Identity.IsAuthenticated && refreshToken != null && id != null)
             {
-                var response = (await accountService.RefreshJWTToken(new Guid(id), refreshToken)).Data;
+                var response = (await registrationService.RefreshJWTToken(new Guid(id), refreshToken)).Data;
                 if (response.Item2 is not null)
                 {
                     context.Response.Cookies.setJwtCookie(response);

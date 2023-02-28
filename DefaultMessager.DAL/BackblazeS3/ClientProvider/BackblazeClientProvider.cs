@@ -16,8 +16,6 @@ namespace DefaultMessager.DAL.BackblazeS3.ClientProvider
         }
         public async Task<BackblazeS3Client> GetClient()
         {
-            Console.WriteLine(_AWSClientOptions);
-
             var options = new ClientOptions();
             var loggerFactory = LoggerFactory.Create(builder =>
             {

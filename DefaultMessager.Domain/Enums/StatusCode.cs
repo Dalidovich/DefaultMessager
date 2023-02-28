@@ -45,6 +45,9 @@
         AccountRead = 73,
         AccountAuthenticate = 74,
 
+        FileUpload=80,
+        FileUploadFailed=81,
+
         OK = 200,
         OKNoContent = 204,
         InternalServerError = 500

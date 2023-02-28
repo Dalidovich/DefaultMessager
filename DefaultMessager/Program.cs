@@ -22,7 +22,6 @@ namespace DefaultMessager
             builder.AddServices();
             builder.AddJWT();
             var app = builder.Build();
-
             app.UseCookiePolicy();
             app.UseMiddleware<JWTMiddleware>();
 

@@ -1,4 +1,5 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
@@ -13,12 +14,15 @@ namespace DefaultMessager.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly AccountService<Account> _accountService;
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
+        private readonly IRegistrationService _registrationService;
 
-        public AccountController(ILogger<AccountController> logger, AccountService<Account> service, DescriptionAccountService<DescriptionAccount> descriptionAccountService)
+        public AccountController(ILogger<AccountController> logger, AccountService<Account> service
+            , DescriptionAccountService<DescriptionAccount> descriptionAccountService, IRegistrationService registrationService)
         {
             _logger = logger;
             _accountService = service;
             _descriptionAccountService = descriptionAccountService;
+            _registrationService = registrationService;
         }
 
 
@@ -29,7 +33,7 @@ namespace DefaultMessager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var responce = await _accountService.Registration(model);
+                var responce = await _registrationService.Registration(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
                 {
                     Response.Cookies.setJwtCookie(responce.Data);
@@ -47,7 +51,7 @@ namespace DefaultMessager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var responce = await _accountService.Authenticate(model);
+                var responce = await _registrationService.Authenticate(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
                 {
                     Response.Cookies.setJwtCookie(responce.Data);
@@ -95,6 +99,18 @@ namespace DefaultMessager.Controllers
             if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
             {
                 return PartialView(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+        public async Task<IActionResult> chengeAvatar()
+        {
+            IFormFileCollection files=Request.Form.Files;
+            MemoryStream content = new MemoryStream();
+            await files[0].CopyToAsync(content);
+            var response=await _descriptionAccountService.updateAvatarPath(User.Identity.Name, content);
+            if (response.StatusCode == Domain.Enums.StatusCode.FileUpload)
+            {
+                return RedirectToAction("Index");
             }
             return RedirectToAction("Error");
         }

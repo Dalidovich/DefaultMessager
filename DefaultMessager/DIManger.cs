@@ -1,4 +1,5 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.DAL.BackblazeS3;
 using DefaultMessager.DAL.BackblazeS3.ClientProvider;
 using DefaultMessager.DAL.Interfaces;
@@ -42,6 +43,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
             webApplicationBuilder.Services.AddScoped<RefreshTokenService<RefreshToken>>();
+            webApplicationBuilder.Services.AddScoped<IRegistrationService,RegistrationService>();
 
             webApplicationBuilder.Services.Configure<BackblazeClientOptions>(
                 webApplicationBuilder.Configuration.GetSection(BackblazeClientOptions.NameSettings)
