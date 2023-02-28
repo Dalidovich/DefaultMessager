@@ -58,7 +58,6 @@ namespace DefaultMessager.BLL.Implementation
 
                 var client = await _BackblazeClientProvider.GetClient();
                 var avatarLink = await client.GetFileLink(standartBucketName, @"standartAvatar.png");
-
                 await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, avatarLink));
                 await _refreshTokenService.Add(new RefreshToken((Guid)newAccount.Id, "none"));
                 return new StandartResponse<(string, string, Guid)>()

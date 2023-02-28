@@ -4,8 +4,13 @@ using DefaultMessager.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 using System.Data;
+using System.Net;
 using System.Net.Http.Json;
+using System.Security.AccessControl;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace DefaultMessager.DAL.SettingsAWSClient
 {
@@ -42,15 +47,11 @@ namespace DefaultMessager.DAL.SettingsAWSClient
         {
             ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
             var file = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
-            var req = await new GetRequest().getLink(StandartConst.GetLinkServicePort + file.FileId);
-            JObject json = JObject.Parse(req);
-            return json["link"].ToString();
+            return GetFileLink(file.FileId);
         }
-        public async Task<string> GetFileLink(string fileId)
+        public string GetFileLink(string fileId)
         {
-            var req = await new GetRequest().getLink(StandartConst.GetLinkServicePort + fileId);
-            JObject json = JObject.Parse(req);
-            return json["link"].ToString();
+            return StandartConst.DounloadUrlApi + fileId;
         }
     }
 }
