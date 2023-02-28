@@ -1,16 +1,6 @@
 ﻿using Bytewizer.Backblaze.Client;
 using Bytewizer.Backblaze.Models;
 using DefaultMessager.Domain.Enums;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using System.Collections;
-using System.Data;
-using System.Net;
-using System.Net.Http.Json;
-using System.Security.AccessControl;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace DefaultMessager.DAL.SettingsAWSClient
 {

@@ -28,7 +28,8 @@ namespace DefaultMessager.BLL.Implementation
             {
                 var client = await _BackblazeClientProvider.GetClient();
                 var accountAuthByLogin = new AccountAuthByLogin<AccountAuthenticateViewModel>(login);
-                var fileId = await client.UploadObjectFromStreamAsync(_accountService.GetAccountBucket(login).Data, login + @"/avatar.png", content);                
+                var fileId = await client.UploadObjectFromStreamAsync(_accountService.GetAccountBucket(login).Data, login + @"/avatar.png", content);
+                await client.UploadLargeObjectFromStreamAsync(_accountService.GetAccountBucket(login).Data, login + @"/AVATAR.png", content);
                 var response = await _accountService.GetAccountIncludeDescribeAndRefreshToken(accountAuthByLogin.ToExpression());
                 response.Data.Description.PathAvatar = client.GetFileLink(fileId);
                 await Update((T)response.Data.Description);

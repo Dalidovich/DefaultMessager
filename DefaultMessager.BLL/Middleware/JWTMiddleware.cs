@@ -1,6 +1,4 @@
-﻿using DefaultMessager.BLL.Implementation;
-using DefaultMessager.BLL.Interfaces;
-using DefaultMessager.Domain.Entities;
+﻿using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Http;
