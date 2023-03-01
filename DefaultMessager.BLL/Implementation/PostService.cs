@@ -19,12 +19,24 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navPostRepository = navPostRepository;
         }
-        public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad)
+        public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad
+            , Expression<Func<PostIconViewModel, bool>>? expression = null)
         {
             try
             {
-                var contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
+
+                IEnumerable<PostIconViewModel> contents;
+                if (expression != null)
+                {
+                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
+                    .Where(expression).Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                }
+                else
+                {
+                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
                     .Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                }
+                    
                 if (contents == null)
                 {
                     return new StandartResponse<IEnumerable<PostIconViewModel>>()

@@ -68,7 +68,7 @@
                         <!-- Posts -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0 mt-2">Posts</p>
-                            <p class="mb-0"><a href="#!" class="text-white">Show all</a></p>
+                            <p class="mb-0"><a asp-action="PostsIconsWithOneOwner" asp-controller="Post" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
                         </div>
                         <div class="row">
                             @foreach (var item in Model.Posts)

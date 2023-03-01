@@ -1,7 +1,10 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace DefaultMessager.Controllers
 {
@@ -9,16 +12,23 @@ namespace DefaultMessager.Controllers
     {
         private readonly ILogger<PostController> _logger;
         private readonly PostService<Post> _postService;
+        private Expression<Func<PostIconViewModel, bool>>? _expression { get; set; }
 
         public PostController(ILogger<PostController> logger, PostService<Post> service, PostService<Post> navPostService)
         {
             _logger = logger;
             _postService = service;
         }
+        public async Task<IActionResult> PostsIconsWithOneOwner(Guid accountId)
+        {
+            _expression = new PostIconViewModelByCreaterId<PostIconViewModel>(accountId).ToExpression();
+            return await PostIcons(0);
+        }
+        [HttpGet]
         public async Task<IActionResult> PostIcons(int? id)
         {
             var page = id ?? 0;
-            var response = await _postService.GetPostIcons(page);
+            var response = await _postService.GetPostIcons(page,StandartConst.countPostsOnOneLoad, _expression);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
                 return View(response.Data);
@@ -29,13 +39,14 @@ namespace DefaultMessager.Controllers
         public async Task<ActionResult> GetPartialPostIcons(int? id)
         {
             var page = id ?? 0;
-            var response = await _postService.GetPostIcons(page);
+            var response = await _postService.GetPostIcons(page, StandartConst.countPostsOnOneLoad, _expression);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
                 return PartialView("_posts", response.Data);
             }
             return RedirectToAction("Error");
         }
+
         [HttpGet]
         public async Task<ActionResult> FullPost(Guid postId)
         {

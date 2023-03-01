@@ -7,7 +7,7 @@ namespace DefaultMessager.BLL.Interfaces
 {
     public interface IPostService
     {
-        Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount, int count);
+        Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount, int count, Expression<Func<PostIconViewModel, bool>>? expression = null);
         Task<BaseResponse<IEnumerable<Post>>> GetFullPosts(Expression<Func<Post, bool>>? whereExpression);
     }
 }

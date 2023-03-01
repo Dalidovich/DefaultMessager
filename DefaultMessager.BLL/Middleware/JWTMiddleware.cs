@@ -26,10 +26,6 @@ namespace DefaultMessager.BLL.Middleware
                     context.Response.Cookies.setJwtCookie(response);
                     token = response.Item1;
                 }
-                else
-                {
-                    context.Response.Cookies.removeJwtCookie();
-                }
             }
 
             if (token != null)
