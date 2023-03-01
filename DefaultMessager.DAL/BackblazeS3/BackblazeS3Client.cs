@@ -24,10 +24,17 @@ namespace DefaultMessager.DAL.SettingsAWSClient
         }
         public async Task<bool> DeleteObjectAsync(string bucketName, string objectName)
         {
-            ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
-            var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
-            var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
-            return reusltResponceDelete.IsSuccessStatusCode;
+            try
+            {
+                ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
+                var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
+                var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
+                return reusltResponceDelete.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         private async Task<string> GetIdWithBucketName(string bucketName)
         {
