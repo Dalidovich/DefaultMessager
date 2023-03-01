@@ -1,8 +1,13 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -57,6 +62,29 @@ namespace DefaultMessager.Controllers
                 return PartialView(response.Data.First());
             }
             return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CreatePost()=> PartialView("_createPost");
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreatePost(PostCreateViewModel postCreateViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                IFormFileCollection files = Request.Form.Files;
+                var responce = await _postService
+                    .Add(postCreateViewModel, postCreateViewModel.FormFiles,null
+                    ,new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value),User.Identity.Name);
+                if (responce.StatusCode == Domain.Enums.StatusCode.PostCreate)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", responce.Description);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -49,7 +49,7 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
                     AccountId2 = c2.AccountId2,
                     Status = c2.Status,
                 })),
-                ImageAlbums = new List<ImageAlbumViewModel>(c.Posts.Select(c2 => new ImageAlbumViewModel()
+                ImageAlbums = new List<ImageAlbumViewModel>(c.ImageAlbum.Select(c2 => new ImageAlbumViewModel()
                 {
                     Id = c2.Id,
                     PathPictures = c2.PathPictures,

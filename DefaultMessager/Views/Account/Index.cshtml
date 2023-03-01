@@ -15,7 +15,7 @@
                             {
                                 <form name="inputAvatarFile" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
                                     <label for="inputField" style="cursor: pointer;" name="inputField"><u>Сhoose avatar</u></label>
-                                    <input onchange="SubmitForm(this,'inputAvatarFile');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file" required="">
+                                    <input onchange="SubmitForm(this,'inputAvatarFile');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
                                 </form>
                                 <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
                                     Edit profile

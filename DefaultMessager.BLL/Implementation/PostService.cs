@@ -1,11 +1,13 @@
 ﻿using DefaultMessager.BLL.Base;
 using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.DAL.BackblazeS3.ClientProvider;
 using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
 using DefaultMessager.Domain.ViewModel.PostModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -15,9 +17,14 @@ namespace DefaultMessager.BLL.Implementation
     public class PostService<T> : BaseService<T>, IPostService where T : Post
     {
         private readonly PostNavRepository _navPostRepository;
-        public PostService(IBaseRepository<T> repository, ILogger<T> logger, PostNavRepository navPostRepository) : base(repository, logger)
+        private readonly IBackblazeClientProvider _BackblazeClientProvider;
+        private readonly AccountService<Account> _accountService;
+        public PostService(IBaseRepository<T> repository, ILogger<T> logger, PostNavRepository navPostRepository
+            ,IBackblazeClientProvider backblazeClientProvider, AccountService<Account> accountService) : base(repository, logger)
         {
             _navPostRepository = navPostRepository;
+            _BackblazeClientProvider= backblazeClientProvider;
+            _accountService= accountService;
         }
         public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad
             , Expression<Func<PostIconViewModel, bool>>? expression = null)
@@ -83,6 +90,41 @@ namespace DefaultMessager.BLL.Implementation
             {
                 _logger.LogError(ex, $"[GetFullPosts] : {ex.Message}");
                 return new StandartResponse<IEnumerable<Post>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+        public async Task<BaseResponse<Post>> Add(PostCreateViewModel entity, IFormFileCollection imgPath
+            , IFormFileCollection? audioPath,Guid accountId,string login)
+        {
+            try
+            {
+                var client=await _BackblazeClientProvider.GetClient();
+                var bucketName=_accountService.GetAccountBucket(login);
+                Post post=new Post(entity,accountId);
+                string[] filePath=new string[imgPath.Count];
+                post = (await Add((T)post)).Data;
+                for (int i = 0; i < imgPath.Count; i++)
+                {
+                    MemoryStream memoryStreams = new MemoryStream();
+                    await imgPath[i].CopyToAsync(memoryStreams);
+                    var fileId=await client.UploadObjectFromStreamAsync(bucketName.Data, login + "/" + post.Id + "/" + i, memoryStreams);
+                    filePath[i] = client.GetFileLink(fileId);
+                }
+                post.PathPictures= filePath;
+                post = (await Update((T)post)).Data;
+                return new StandartResponse<Post>()
+                {
+                    Data = post,
+                    StatusCode = StatusCode.PostCreate,
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[Add Post] : {ex.Message}");
+                return new StandartResponse<Post>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

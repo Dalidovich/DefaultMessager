@@ -5,6 +5,7 @@ using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DefaultMessager.Controllers
@@ -102,6 +103,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+        [Authorize]
         public async Task<IActionResult> chengeAvatar()
         {
             IFormFileCollection files=Request.Form.Files;

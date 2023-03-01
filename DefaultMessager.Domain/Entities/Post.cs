@@ -1,4 +1,6 @@
-﻿namespace DefaultMessager.Domain.Entities
+﻿using DefaultMessager.Domain.ViewModel.PostModel;
+
+namespace DefaultMessager.Domain.Entities
 {
     public class Post
     {
@@ -26,6 +28,14 @@
 
         public Post()
         {
+        }
+
+        public Post(PostCreateViewModel postCreateViewModel,Guid accountId)
+        {
+            AccountId = accountId;
+            PostTextContent= postCreateViewModel.PostTextContent;
+            Title = postCreateViewModel.Title;
+            SendDateTime=DateTime.Now;
         }
 
         public List<Like> Likes { get; set; } = new List<Like>();

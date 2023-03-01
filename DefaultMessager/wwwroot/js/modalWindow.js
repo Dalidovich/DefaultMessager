@@ -28,11 +28,32 @@ function OpenEditDescriptionModelWindow(parametrs) {
     if (url == undefined || descriptionId == undefined) {
         alert('model or url undefined')
     }
-    console.log(descriptionId);
     $.ajax({
         type: 'GET',
         url: url,
         data: { "descriptionId": descriptionId },
+        success: function (response) {
+            modal.html(response);
+            modal.modal('show')
+        },
+        failure: function () {
+            modal.modal('hide')
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    });
+}
+function OpenCreatePostModelWindow(parametrs) {
+    const url = parametrs.url;
+    const modal = $('#modal');
+    if (url == undefined ) {
+        alert('url undefined')
+    }
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: {},
         success: function (response) {
             modal.html(response);
             modal.modal('show')
