@@ -10,12 +10,12 @@
                         <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
                             <img src="@Model.Description.PathAvatar"
                                  alt="Generic placeholder image" class="img-fluid rounded-circle img-thumbnail mt-4 mb-2"
-                                 style="width: 150px; z-index: 1">
+                                 style="width: 150px; z-index: 1" id="forDropZone">
                             @if(Model.Login==User.Identity.Name)
                             {
-                                <form name="inputAvatarFile" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
-                                    <label for="inputField" style="cursor: pointer;" name="inputField"><u>Сhoose avatar</u></label>
-                                    <input onchange="SubmitForm(this,'inputAvatarFile');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
+                                <form name="inputForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
+                                    <label for="inputField" style="cursor: pointer;" name="inputField"><center><u>drag or click for new avatar</u></center></label>
+                                    <input onchange="SubmitForm(this,'inputForm');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
                                 </form>
                                 <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
                                     Edit profile
@@ -88,3 +88,23 @@
         </div>
     </div>
 </section>
+@if (Model.Login == User.Identity.Name)
+{
+    <script>
+        window.addEventListener("dragenter", dragElementEnter, 0);
+        function dragElementEnter() {
+            document.getElementById("dropZone").style.display = "block";
+        }
+    </script>
+    @section dropZone {
+    <div id="dropZone"
+         ondrop="dropElement(event);event.stopPropagation(); event.preventDefault(); "
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondragleave="leaveElement();">
+            <img src="https://www.remove.bg/images/corner.svg" style="left:34px; top:34px; position:absolute;">
+            <img src="https://www.remove.bg/images/corner.svg" style="right:34px; top:34px; position:absolute; transform: rotate(90deg);">
+            <img src="https://www.remove.bg/images/corner.svg" style="left:34px; bottom:34px; position:absolute; transform: rotate(270deg);">
+            <img src="https://www.remove.bg/images/corner.svg" style="right:34px; bottom:34px; position:absolute; transform: rotate(180deg);">
+        </div>
+    }
+}
