@@ -115,7 +115,9 @@ namespace DefaultMessager.Controllers
             IFormFileCollection files=Request.Form.Files;
             MemoryStream content = new MemoryStream();
             await files[0].CopyToAsync(content);
+            Console.WriteLine(DateTime.Now.Millisecond);
             var response=await _descriptionAccountService.updateAvatarPath(User.Identity.Name, content);
+            Console.WriteLine(DateTime.Now.Millisecond);
             if (response.StatusCode == Domain.Enums.StatusCode.FileUpload)
             {
                 return RedirectToAction("Index");

@@ -30,7 +30,7 @@ namespace DefaultMessager.BLL.Implementation
                 var accountAuthByLogin = new AccountAuthByLogin<AccountAuthenticateViewModel>(login);
                 var accountBucket = _accountService.GetAccountBucket(login).Data;
                 await client.DeleteObjectAsync(accountBucket, login + @"/avatar.png");
-                var fileId = await client.UploadObjectFromStreamAsync(accountBucket, login + @"/avatar.png", content);
+                var fileId = await client.UploadObjectFromStreamAsync(accountBucket, "avatar.png", content,login);
                 var response = await _accountService.GetAccountIncludeDescribeAndRefreshToken(accountAuthByLogin.ToExpression());
                 response.Data.Description.PathAvatar = client.GetFileLink(fileId);
                 await Update((T)response.Data.Description);
