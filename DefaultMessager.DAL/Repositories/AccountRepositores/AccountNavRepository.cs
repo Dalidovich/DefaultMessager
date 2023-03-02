@@ -17,10 +17,12 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
         {
             _db = db;
         }
+
         public IQueryable<AccountAuthenticateViewModel> GetIncludeDescribeAndRefreshToken(Expression<Func<AccountAuthenticateViewModel, bool>> whereExpression)
         {
             return _db.Accounts.ProjectToType<AccountAuthenticateViewModel>().Where(whereExpression);
         }
+
         public IQueryable<AccountProfileViewModel> GetProfiles(Expression<Func<AccountProfileViewModel, bool>>? whereExpression = null)
         {
             var content = _db.Accounts.Select(c => new AccountProfileViewModel()

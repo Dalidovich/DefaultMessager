@@ -16,6 +16,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
         {
             _db = db;
         }
+
         public IQueryable<PostIconViewModel> GetIncludePostIconViewModel(Expression<Func<PostIconViewModel, bool>>? whereExpression = null)
         {
             var content = _db.Posts.Select(c => new PostIconViewModel
@@ -33,6 +34,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
             });
             return whereExpression is null ? content : content.Where(whereExpression);
         }
+
         public IQueryable<Post> getFullPosts(Expression<Func<Post, bool>>? whereExpression = null)
         {
             var content = _db.Posts.Include(x => x.Account).ThenInclude(x => x.Description)

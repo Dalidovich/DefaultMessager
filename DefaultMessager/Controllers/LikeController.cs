@@ -18,6 +18,7 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _likeService = service;
         }
+
         private async Task<IActionResult> _createLike(Guid postId, Guid accountId, LikeByPostId<Like> likeByPost)
         {
             var createtResponce = await _likeService.Add(new Like(postId, accountId));
@@ -31,6 +32,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         private async Task<IActionResult> _deleteLike(Guid postId, AndSpecification<Like> andSpec, LikeByPostId<Like> likeByPost)
         {
             var deleteResponce = await _likeService.Delete(andSpec.ToExpression());
@@ -44,6 +46,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         public async Task<IActionResult> GetLikes(Guid postId)
         {
             var likeByPost = new LikeByPostId<Like>(postId);
@@ -59,6 +62,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [Authorize]
         public async Task<IActionResult> ManipulateLikeOnPost(Guid postId)
         {

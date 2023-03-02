@@ -10,6 +10,7 @@ namespace DefaultMessager.Domain.JWT
         {
             return exp != null ? exp > DateTime.UtcNow : false;
         }
+
         public static void setJwtCookie(this IResponseCookies responseCookies, (string, string, Guid) jwtComponent)
         {
             var cookieOptions = new CookieOptions
@@ -20,6 +21,7 @@ namespace DefaultMessager.Domain.JWT
             responseCookies.Append(CookieNames.RefreshToken, jwtComponent.Item2, cookieOptions);
             responseCookies.Append(CookieNames.AccountId, jwtComponent.Item3.ToString(), cookieOptions);
         }
+
         public static void removeJwtCookie(this IResponseCookies responseCookies)
         {
             responseCookies.Delete(CookieNames.JWTToken);

@@ -13,6 +13,7 @@ namespace DefaultMessager.BLL.Middleware
         {
             _next = next;
         }
+
         public async Task InvokeAsync(HttpContext context, IRegistrationService registrationService)
         {
             string? token = context.Request.Cookies[CookieNames.JWTToken];

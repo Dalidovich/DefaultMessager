@@ -14,6 +14,7 @@ namespace DefaultMessager.DAL.BackblazeS3.ClientProvider
         {
             _AWSClientOptions = AWSClientOptions.Value;
         }
+
         public async Task<BackblazeS3Client> GetClient()
         {
             var options = new ClientOptions();

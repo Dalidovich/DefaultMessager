@@ -17,6 +17,7 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _commentService = service;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetPartialComments(int? id, Guid postId)
         {
@@ -29,6 +30,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [Authorize]
         public async Task<IActionResult> SendComment(Guid postId, string commentContent)
         {

@@ -24,11 +24,13 @@ namespace DefaultMessager.Controllers
             _logger = logger;
             _postService = service;
         }
+
         public async Task<IActionResult> PostsIconsWithOneOwner(Guid accountId)
         {
             _expression = new PostIconViewModelByCreaterId<PostIconViewModel>(accountId).ToExpression();
             return await PostIcons(0);
         }
+
         [HttpGet]
         public async Task<IActionResult> PostIcons(int? id)
         {
@@ -40,6 +42,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [HttpGet]
         public async Task<ActionResult> GetPartialPostIcons(int? id)
         {

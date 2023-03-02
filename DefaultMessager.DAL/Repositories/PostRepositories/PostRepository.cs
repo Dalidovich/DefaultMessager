@@ -18,6 +18,7 @@ namespace DefaultMessager.DAL.Repositories.PostRepositories
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
+
         public async Task<bool> DeleteAsync(Post entity)
         {
             _db.Posts.Remove(entity);

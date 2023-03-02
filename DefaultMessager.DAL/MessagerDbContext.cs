@@ -22,6 +22,7 @@ namespace DefaultMessager.DAL
             Database.Migrate();
             StandartFill();
         }
+
         private void StandartFill()
         {
             const int countFill = 45;
@@ -59,6 +60,7 @@ namespace DefaultMessager.DAL
             this.Comments.AddRange(comments);
             this.SaveChanges();
         }
+
         public MessagerDbContext(DbContextOptions<MessagerDbContext> options) : base(options) 
         {
         }
@@ -67,11 +69,13 @@ namespace DefaultMessager.DAL
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseNpgsql(optionsBuilder.Options.ToString());
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -80,6 +84,7 @@ namespace DefaultMessager.DAL
 
             OnModelCreatingPartial(modelBuilder);
         }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 

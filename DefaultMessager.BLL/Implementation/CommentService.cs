@@ -19,6 +19,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navCommentRepository = commentNavRepositories;
         }
+
         public async Task<BaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0
             , Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
         {

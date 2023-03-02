@@ -12,16 +12,19 @@ namespace DefaultMessager.DAL.SettingsAWSClient
         {
             _s3Client = s3Client;
         }
+
         public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, Stream stream)
         {
             var response=await _s3Client.UploadAsync(await GetIdWithBucketName(bucketName), objectName, stream);
             return response.Response.FileId;
         }
+
         public async Task DownloadObjectAsync(string bucketName, string objectName, string pathToNewFile)
         {
             FileStream downloadFileStream = new(pathToNewFile + objectName, FileMode.OpenOrCreate);
             await _s3Client.DownloadAsync(await GetIdWithBucketName(bucketName), objectName, downloadFileStream);
         }
+
         public async Task<bool> DeleteObjectAsync(string bucketName, string objectName)
         {
             try
@@ -36,16 +39,19 @@ namespace DefaultMessager.DAL.SettingsAWSClient
                 return false;
             }
         }
+
         private async Task<string> GetIdWithBucketName(string bucketName)
         {
             return (await _s3Client.Buckets.FindByNameAsync(bucketName)).BucketId;
         }
+
         public async Task<string> GetFileLink(string bucketName, string objectName)
         {
             ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
             var file = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
             return GetFileLink(file.FileId);
         }
+
         public string GetFileLink(string fileId)
         {
             return StandartConst.DounloadUrlApi + fileId;

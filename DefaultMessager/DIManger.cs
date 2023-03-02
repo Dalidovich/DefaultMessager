@@ -33,6 +33,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<CommentNavRepositories>();
         }
+
         public static void AddServices(this WebApplicationBuilder webApplicationBuilder)
         {
             webApplicationBuilder.Services.AddScoped<CommentService<Comment>>();

@@ -76,6 +76,7 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+
         public async Task<BaseResponse<(string, string, Guid)>> Authenticate(LogInAccountViewModel viewModel, bool forRefresh = false)
         {
             try
@@ -112,6 +113,7 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+
         public async Task<BaseResponse<(string, string, Guid)>> RefreshJWTToken(Guid accountId, string refreshTokenStr)
         {
             try
@@ -143,6 +145,7 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+
         public string GetToken(AccountAuthenticateViewModel account)
         {
             List<Claim> claims = new List<Claim>
@@ -166,11 +169,13 @@ namespace DefaultMessager.BLL.Implementation
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
+
         public string GetRefreshToken()
         {
             var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             return refreshToken;
         }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -179,6 +184,7 @@ namespace DefaultMessager.BLL.Implementation
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
+
         private bool VerifyPasswordHash(string Password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))

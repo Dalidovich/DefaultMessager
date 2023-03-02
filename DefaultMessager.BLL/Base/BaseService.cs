@@ -126,6 +126,7 @@ namespace DefaultMessager.BLL.Base
                 };
             }
         }
+
         public async Task<BaseResponse<IEnumerable<T>>> GetAllSatisfactory(Expression<Func<T, bool>> expression)
         {
             try

@@ -19,6 +19,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navAccountRepository = navAccountRepository;
         }
+
         public BaseResponse<string> GetAccountBucket(string login)
         {
             return new StandartResponse<string>()
@@ -26,6 +27,7 @@ namespace DefaultMessager.BLL.Implementation
                 Data = "Messager" + ((byte)login.Last()) % 2
             };
         }
+
         public async Task<BaseResponse<AccountProfileViewModel>> GetProfile(Expression<Func<AccountProfileViewModel, bool>> expression)
         {
             try
@@ -54,6 +56,7 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+
         public async Task<BaseResponse<AccountAuthenticateViewModel>> GetAccountIncludeDescribeAndRefreshToken(Expression<Func<AccountAuthenticateViewModel, bool>> expression)
         {
             try

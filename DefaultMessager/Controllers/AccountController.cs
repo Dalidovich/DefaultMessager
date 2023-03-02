@@ -26,9 +26,9 @@ namespace DefaultMessager.Controllers
             _registrationService = registrationService;
         }
 
-
         [HttpGet]
         public IActionResult Registration() => View();
+
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterAccountViewModel model)
         {
@@ -47,6 +47,7 @@ namespace DefaultMessager.Controllers
 
         [HttpGet]
         public ActionResult LogIn() => View();
+
         [HttpPost]
         public async Task<IActionResult> LogIn(LogInAccountViewModel model)
         {
@@ -62,11 +63,13 @@ namespace DefaultMessager.Controllers
             }
             return View(model);
         }
+
         public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
             return RedirectToAction("Index", "Home");
         }
+
         public async Task<IActionResult> Index(string? login = null)
         {
             login = login ?? User.Identity.Name;
@@ -78,6 +81,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [HttpPost]
         public async Task<IActionResult> EditDescription(DescriptionAccount model, Guid id)
         {
@@ -92,6 +96,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [HttpGet]
         public async Task<IActionResult> EditDescription(Guid descriptionId)
         {
@@ -103,6 +108,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [Authorize]
         public async Task<IActionResult> chengeAvatar()
         {

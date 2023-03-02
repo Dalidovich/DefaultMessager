@@ -26,6 +26,7 @@ namespace DefaultMessager.BLL.Implementation
             _BackblazeClientProvider= backblazeClientProvider;
             _accountService= accountService;
         }
+
         public async Task<BaseResponse<IEnumerable<PostIconViewModel>>> GetPostIcons(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad
             , Expression<Func<PostIconViewModel, bool>>? expression = null)
         {
@@ -96,6 +97,7 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+
         public async Task<BaseResponse<Post>> Add(PostCreateViewModel entity, IFormFileCollection imgPath
             , IFormFileCollection? audioPath,Guid accountId,string login)
         {
