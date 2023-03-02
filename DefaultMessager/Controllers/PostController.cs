@@ -19,7 +19,7 @@ namespace DefaultMessager.Controllers
         private readonly PostService<Post> _postService;
         private Expression<Func<PostIconViewModel, bool>>? _expression { get; set; }
 
-        public PostController(ILogger<PostController> logger, PostService<Post> service, PostService<Post> navPostService)
+        public PostController(ILogger<PostController> logger, PostService<Post> service)
         {
             _logger = logger;
             _postService = service;
