@@ -12,14 +12,14 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
             _db = db;
         }
 
-        public async Task<Account> createAsync(Account entity)
+        public async Task<Account> AddAsync(Account entity)
         {
             var createdEntity = await _db.Accounts.AddAsync(entity);
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
 
-        public async Task<bool> deleteAsync(Account entity)
+        public async Task<bool> DeleteAsync(Account entity)
         {
             _db.Accounts.Remove(entity);
             await _db.SaveChangesAsync();

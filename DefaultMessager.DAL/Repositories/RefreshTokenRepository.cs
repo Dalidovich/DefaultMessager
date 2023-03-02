@@ -1,6 +1,5 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace DefaultMessager.DAL.Repositories
 {
@@ -13,13 +12,13 @@ namespace DefaultMessager.DAL.Repositories
             _db = db;
         }
 
-        public async Task<RefreshToken> createAsync(RefreshToken entity)
+        public async Task<RefreshToken> AddAsync(RefreshToken entity)
         {
             var createdEntity = await _db.RefreshTokens.AddAsync(entity);
             await _db.SaveChangesAsync();
             return createdEntity.Entity;
         }
-        public async Task<bool> deleteAsync(RefreshToken entity)
+        public async Task<bool> DeleteAsync(RefreshToken entity)
         {
             _db.RefreshTokens.Remove(entity);
             await _db.SaveChangesAsync();

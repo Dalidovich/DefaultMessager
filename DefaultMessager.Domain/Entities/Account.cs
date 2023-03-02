@@ -1,5 +1,4 @@
 ﻿using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 
 namespace DefaultMessager.Domain.Entities
@@ -14,9 +13,9 @@ namespace DefaultMessager.Domain.Entities
         public DateTime CreateDate { get; set; }
         public StatusAccount StatusAccount { get; set; }
         public string Salt { get; set; }
-        public DescriptionAccount? Description {get ;set;}
-        public RefreshToken? RefreshToken{get ;set;}
-        public Account(string email, string login, string password, Role role, DateTime createDate, StatusAccount statusAccount,string salt="none")
+        public DescriptionAccount? Description { get; set; }
+        public RefreshToken? RefreshToken { get; set; }
+        public Account(string email, string login, string password, Role role, DateTime createDate, StatusAccount statusAccount, string salt = "none")
         {
             Email = email;
             Login = login;
@@ -26,13 +25,13 @@ namespace DefaultMessager.Domain.Entities
             StatusAccount = statusAccount;
             Salt = salt;
         }
-        public Account(RegisterAccountViewModel model,string salt,string password)
+        public Account(RegisterAccountViewModel model, string salt, string password)
         {
-            Email= model.Email;
-            Login= model.Login;
-            Password= password;
+            Email = model.Email;
+            Login = model.Login;
+            Password = password;
             Role = Role.standart;
-            CreateDate=DateTime.Now;
+            CreateDate = DateTime.Now;
             StatusAccount = StatusAccount.normal;
             Salt = salt;
         }

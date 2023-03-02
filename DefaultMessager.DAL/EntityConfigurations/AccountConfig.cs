@@ -75,7 +75,7 @@ namespace DefaultMessager.DAL.EntityConfigurations
                    .WithOne(p => p.Account)
                    .HasPrincipalKey(p => p.Id)
                    .HasForeignKey(d => d.AccountId);
-             
+
             builder.HasOne(d => d.Description)
                    .WithOne(p => p.Account)
                    .HasPrincipalKey<Account>(p => p.Id)

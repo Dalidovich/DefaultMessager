@@ -31,7 +31,7 @@ namespace DefaultMessager.Tests
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(db.Accounts.AsNoTracking().GroupBy(x => x.Id).Any(x=> x.Count() < 1), Is.False);
+                    Assert.That(db.Accounts.AsNoTracking().GroupBy(x => x.Id).Any(x => x.Count() < 1), Is.False);
                 });
             }
         }
@@ -46,12 +46,12 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.DescriptionAccounts.Add(new DescriptionAccount((Guid)idUser,"dima","surname","pathronomic",DateTime.Now,"1","s","path"));
+                db.DescriptionAccounts.Add(new DescriptionAccount((Guid)idUser, "dima", "surname", "pathronomic", DateTime.Now, "1", "s", "path"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That( db.DescriptionAccounts.AsNoTracking().Any(x => x.Name == "dima"), Is.True);
+                Assert.That(db.DescriptionAccounts.AsNoTracking().Any(x => x.Name == "dima"), Is.True);
             }
         }
 
@@ -65,12 +65,12 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idUser = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.ImageAlbums.Add(new ImageAlbum((Guid)idUser, Array.Empty<string>(),"one"));
+                db.ImageAlbums.Add(new ImageAlbum((Guid)idUser, Array.Empty<string>(), "one"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That( db.ImageAlbums.Any(x => x.Title == "one"), Is.True);
+                Assert.That(db.ImageAlbums.Any(x => x.Title == "one"), Is.True);
             }
         }
 
@@ -111,7 +111,7 @@ namespace DefaultMessager.Tests
             }
             using (var db = new MessagerDbContext())
             {
-                Assert.That(db.Comments.Any( x => x.CommentTextContent == "1"), Is.True);
+                Assert.That(db.Comments.Any(x => x.CommentTextContent == "1"), Is.True);
             }
         }
 
@@ -129,7 +129,7 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idPost = db.Posts.OrderBy(x => x.Id).Last().Id;
 
-                db.Likes.Add(new Like((Guid)idPost,(Guid)idUser));
+                db.Likes.Add(new Like((Guid)idPost, (Guid)idUser));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())
@@ -152,7 +152,7 @@ namespace DefaultMessager.Tests
                 db.SaveChanges();
                 idReciever = db.Accounts.OrderBy(x => x.Id).Last().Id;
 
-                db.Messages.Add(new Message((Guid)idReciever,(Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now,StatusMessage.normal,"text"));
+                db.Messages.Add(new Message((Guid)idReciever, (Guid)idSender, Array.Empty<string>(), Array.Empty<string>(), DateTime.Now, StatusMessage.normal, "text"));
                 db.SaveChanges();
             }
             using (var db = new MessagerDbContext())

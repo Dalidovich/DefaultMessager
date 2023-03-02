@@ -1,22 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Claims;
+﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
-using DefaultMessager.BLL.Implementation;
+using DefaultMessager.Domain.JWT;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using DefaultMessager.Domain.JWT;
-using Microsoft.AspNetCore.Http;
-using DefaultMessager.BLL.Interfaces;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using Microsoft.AspNetCore.Routing;
-using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
-using DefaultMessager.Domain.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DefaultMessager.Controllers
 {
@@ -25,26 +15,29 @@ namespace DefaultMessager.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly AccountService<Account> _accountService;
         private readonly DescriptionAccountService<DescriptionAccount> _descriptionAccountService;
+        private readonly IRegistrationService _registrationService;
 
-        public AccountController(ILogger<AccountController> logger, AccountService<Account> service, DescriptionAccountService<DescriptionAccount> descriptionAccountService)
+        public AccountController(ILogger<AccountController> logger, AccountService<Account> service
+            , DescriptionAccountService<DescriptionAccount> descriptionAccountService, IRegistrationService registrationService)
         {
             _logger = logger;
             _accountService = service;
             _descriptionAccountService = descriptionAccountService;
+            _registrationService = registrationService;
         }
-
 
         [HttpGet]
         public IActionResult Registration() => View();
+
         [HttpPost]
         public async Task<IActionResult> Registration(RegisterAccountViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var responce = await _accountService.Registration(model);
+                var responce = await _registrationService.Registration(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountCreate)
                 {
-                    Response.Cookies.setJwtCookie(responce.Data);                    
+                    Response.Cookies.setJwtCookie(responce.Data);
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", responce.Description);
@@ -54,12 +47,13 @@ namespace DefaultMessager.Controllers
 
         [HttpGet]
         public ActionResult LogIn() => View();
+
         [HttpPost]
         public async Task<IActionResult> LogIn(LogInAccountViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var responce = await _accountService.Authenticate(model);
+                var responce = await _registrationService.Authenticate(model);
                 if (responce.StatusCode == Domain.Enums.StatusCode.AccountAuthenticate)
                 {
                     Response.Cookies.setJwtCookie(responce.Data);
@@ -69,12 +63,14 @@ namespace DefaultMessager.Controllers
             }
             return View(model);
         }
-        public async Task<IActionResult> LogOut()
+
+        public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
             return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> Index(string? login=null)
+
+        public async Task<IActionResult> Index(string? login = null)
         {
             login = login ?? User.Identity.Name;
             var accountByLogin = new AccountProfileByLogin<AccountProfileViewModel>(login);
@@ -85,11 +81,12 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [HttpPost]
-        public async Task<IActionResult> EditDescription(DescriptionAccount model,Guid id)
+        public async Task<IActionResult> EditDescription(DescriptionAccount model, Guid id)
         {
             var descriptionById = new DescriptionAccountById<DescriptionAccount>(id);
-            var descriptionAccount=await _descriptionAccountService.GetOne(descriptionById.ToExpression());
+            var descriptionAccount = await _descriptionAccountService.GetOne(descriptionById.ToExpression());
             var forUpdate = descriptionAccount.Data;
             forUpdate.Update(model);
             var response = await _descriptionAccountService.Update(forUpdate);
@@ -99,6 +96,7 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
         [HttpGet]
         public async Task<IActionResult> EditDescription(Guid descriptionId)
         {
@@ -107,6 +105,20 @@ namespace DefaultMessager.Controllers
             if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
             {
                 return PartialView(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> chengeAvatar()
+        {
+            IFormFileCollection files=Request.Form.Files;
+            MemoryStream content = new MemoryStream();
+            await files[0].CopyToAsync(content);
+            var response=await _descriptionAccountService.updateAvatarPath(User.Identity.Name, content);
+            if (response.StatusCode == Domain.Enums.StatusCode.FileUpload)
+            {
+                return RedirectToAction("Index");
             }
             return RedirectToAction("Error");
         }

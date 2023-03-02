@@ -1,7 +1,4 @@
-﻿using DefaultMessager.DAL.EntityConfigurations;
-using DefaultMessager.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 

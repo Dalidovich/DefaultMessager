@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DefaultMessager.Domain.Enums
+﻿namespace DefaultMessager.Domain.Enums
 {
     public enum StatusCode
     {
@@ -50,6 +44,9 @@ namespace DefaultMessager.Domain.Enums
         AccountDelete = 72,
         AccountRead = 73,
         AccountAuthenticate = 74,
+
+        FileUpload=80,
+        FileUploadFailed=81,
 
         OK = 200,
         OKNoContent = 204,

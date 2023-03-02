@@ -1,5 +1,4 @@
-﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.ViewModel.AccountModel;
+﻿using DefaultMessager.Domain.ViewModel.AccountModel;
 
 namespace DefaultMessager.Domain.ViewModel.PostModel
 {

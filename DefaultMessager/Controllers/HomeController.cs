@@ -1,8 +1,5 @@
-﻿using DefaultMessager.DAL.Interfaces;
-using DefaultMessager.Domain.Entities;
+﻿using DefaultMessager.DAL;
 using DefaultMessager.Models;
-using DefaultMessager.BLL.Implementation;
-using DefaultMessager.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -22,9 +19,10 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("PostIcons", "Post");
         }
 
-        public IActionResult Privacy()
+        public IActionResult ReloadBD()
         {
-            return View();
+            HttpContext.RequestServices.GetService<MessagerDbContext>().UpdateDatabase();
+            return RedirectToAction("PostIcons", "Post");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

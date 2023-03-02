@@ -13,10 +13,9 @@
                                  style="width: 150px; z-index: 1">
                             @if(Model.Login==User.Identity.Name)
                             {
-                                <form name="inputFileForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" action="/ConvertedImage" style="z-index: 1;">
+                                <form name="inputAvatarFile" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
                                     <label for="inputField" style="cursor: pointer;" name="inputField"><u>Сhoose avatar</u></label>
-                                    <input name="inputField" hidden id="inputField" onchange="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file" required="">
-                                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Bbf3ysSRuxJrP5nc99BeooF-OX-24kDnRner_btTfMy31vMI8mq-XW1h1vhpdtPtpbqSBTO10kD8j2kfQvrUecHBuAD7Uo1CpgpJAKQ_rmgV5cpKGfC4fkIevhYkuiFMWxif2urRLDkYrZmg2ax6KY">
+                                    <input onchange="SubmitForm(this,'inputAvatarFile');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
                                 </form>
                                 <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
                                     Edit profile
@@ -69,7 +68,7 @@
                         <!-- Posts -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0 mt-2">Posts</p>
-                            <p class="mb-0"><a href="#!" class="text-white">Show all</a></p>
+                            <p class="mb-0"><a asp-action="PostsIconsWithOneOwner" asp-controller="Post" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
                         </div>
                         <div class="row">
                             @foreach (var item in Model.Posts)

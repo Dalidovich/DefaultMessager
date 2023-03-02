@@ -1,14 +1,9 @@
 ﻿using DefaultMessager.Domain.SpecificationPattern.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CompositeSpecification
 {
-    public class AndSpecification<T>:Specification<T>
+    public class AndSpecification<T> : Specification<T>
     {
         private readonly Specification<T> _spec0;
         private readonly Specification<T> _spec1;

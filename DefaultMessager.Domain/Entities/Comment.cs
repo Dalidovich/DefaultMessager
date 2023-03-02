@@ -1,5 +1,4 @@
 ﻿using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification;
 
 namespace DefaultMessager.Domain.Entities
 {
@@ -11,7 +10,7 @@ namespace DefaultMessager.Domain.Entities
         public string? CommentTextContent { get; set; }
         public DateTime DatePublicate { get; set; }
         public StatusComment CommentStatus { get; set; }
-        public Post? Post { get; set; }  
+        public Post? Post { get; set; }
         public Account? Account { get; set; }
         public Comment(Guid postId, Guid accountId, string commentText, DateTime datePublicate, StatusComment status)
         {
@@ -29,7 +28,7 @@ namespace DefaultMessager.Domain.Entities
             PostId = postId;
             AccountId = id;
             CommentTextContent = commentContent;
-            DatePublicate=DateTime.Now;
+            DatePublicate = DateTime.Now;
             CommentStatus = StatusComment.normal;
         }
     }

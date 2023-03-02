@@ -1,12 +1,6 @@
 ﻿using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.SpecificationPattern.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification
 {
@@ -16,7 +10,7 @@ namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSp
         public PostByCreaterId(Guid creatorId)
         {
             _creatorId = creatorId;
-            expression = x => x.Id == _creatorId;
+            expression = x => x.AccountId == _creatorId;
         }
         public override Expression<Func<Post, bool>> ToExpression()
         {

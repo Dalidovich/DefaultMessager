@@ -44,6 +44,6 @@ namespace DefaultMessager.DAL.EntityConfigurations
             builder.Property(e => e.MessageTextContent)
                    .HasColumnType(EntityDataTypes.Character_varying)
                    .HasColumnName("message_text_content");
-            }
+        }
     }
 }

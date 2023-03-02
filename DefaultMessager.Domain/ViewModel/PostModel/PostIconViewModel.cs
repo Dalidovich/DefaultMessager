@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.ViewModel.AccountModel;
+﻿using DefaultMessager.Domain.ViewModel.AccountModel;
 
 namespace DefaultMessager.Domain.ViewModel.PostModel
 {

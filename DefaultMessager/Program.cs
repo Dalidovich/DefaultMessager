@@ -1,12 +1,7 @@
 using DefaultMessager.BLL.Middleware;
 using DefaultMessager.DAL;
-using DefaultMessager.DAL.Interfaces;
-using DefaultMessager.DAL.Repositories;
-using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.JWT;
+using DefaultMessager.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 
 namespace DefaultMessager
 {
@@ -20,23 +15,12 @@ namespace DefaultMessager
 
             builder.Services.AddSingleton(builder.Configuration);
 
-            MessagerDbContext.ConnectionString = builder.Configuration["ConnectionStrings"];
+            builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(
+                builder.Configuration.GetConnectionString(StandartConst.NameConnection)));
 
-            //DbContextOptions<MessagerDbContext> dbContextOptions = new DbContextOptions<MessagerDbContext>();
-            //DbContextOptionsBuilder<MessagerDbContext> dbContextOptionsBuilder = new DbContextOptionsBuilder<MessagerDbContext>().UseNpgsql(
-            //    MessagerDbContext.ConnectionString);
-            //MessagerDbContext appDBContext = new MessagerDbContext();
-            //appDBContext.UpdateDatabase();
-
-            builder.Services.AddDbContext<MessagerDbContext>(opt => opt.UseNpgsql(MessagerDbContext.ConnectionString));
-
-            
-
-            builder.addRepositores();
-            builder.addServices();
-            builder.addJWT();
-
-
+            builder.AddRepositores();
+            builder.AddServices();
+            builder.AddJWT();
             var app = builder.Build();
             app.UseCookiePolicy();
             app.UseMiddleware<JWTMiddleware>();
@@ -55,7 +39,6 @@ namespace DefaultMessager
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllerRoute(
                 name: "default",

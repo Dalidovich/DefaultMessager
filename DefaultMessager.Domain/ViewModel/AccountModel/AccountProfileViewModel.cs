@@ -1,6 +1,4 @@
-﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
+﻿using DefaultMessager.Domain.ViewModel.DescriptionAccountModel;
 using DefaultMessager.Domain.ViewModel.ImageAlbumModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using DefaultMessager.Domain.ViewModel.RelationModel;

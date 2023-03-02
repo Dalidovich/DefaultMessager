@@ -5,8 +5,6 @@ using DefaultMessager.DAL.Repositories.CommentRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
-using DefaultMessager.Domain.ViewModel.CommentModel;
-using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -17,10 +15,11 @@ namespace DefaultMessager.BLL.Implementation
     {
         private CommentNavRepositories _navCommentRepository;
 
-        public CommentService(IBaseRepository<T> repository, ILogger<T> logger,CommentNavRepositories commentNavRepositories) : base(repository, logger)
+        public CommentService(IBaseRepository<T> repository, ILogger<T> logger, CommentNavRepositories commentNavRepositories) : base(repository, logger)
         {
             _navCommentRepository = commentNavRepositories;
         }
+
         public async Task<BaseResponse<IEnumerable<Comment>>> GetFullComments(int skipCount = 0
             , Expression<Func<Comment, bool>>? whereExpression = null, int countComments = StandartConst.countCommentsOnOneLoad)
         {
