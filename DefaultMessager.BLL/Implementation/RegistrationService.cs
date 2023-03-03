@@ -173,6 +173,7 @@ namespace DefaultMessager.BLL.Implementation
         public string GetRefreshToken()
         {
             var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
             return refreshToken;
         }
 
@@ -190,6 +191,7 @@ namespace DefaultMessager.BLL.Implementation
             using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(Password));
+
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
