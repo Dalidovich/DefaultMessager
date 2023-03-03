@@ -44,8 +44,12 @@ namespace DefaultMessager.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPartialPostIcons(int? id)
+        public async Task<ActionResult> GetPartialPostIcons(int? id,Guid? accountId)
         {
+            if (accountId != null)
+            {
+                _expression = new PostIconViewModelByCreaterId<PostIconViewModel>((Guid)accountId).ToExpression();
+            }
             var page = id ?? 0;
             var response = await _postService.GetPostIcons(page, StandartConst.countPostsOnOneLoad, _expression);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
