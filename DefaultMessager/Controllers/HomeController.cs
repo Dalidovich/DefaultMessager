@@ -22,6 +22,7 @@ namespace DefaultMessager.Controllers
         public IActionResult ReloadBD()
         {
             HttpContext.RequestServices.GetService<MessagerDbContext>().UpdateDatabase();
+
             return RedirectToAction("PostIcons", "Post");
         }
 

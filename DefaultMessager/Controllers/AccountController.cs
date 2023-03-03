@@ -67,6 +67,7 @@ namespace DefaultMessager.Controllers
         public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
+
             return RedirectToAction("Index", "Home");
         }
 

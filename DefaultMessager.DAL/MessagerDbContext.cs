@@ -49,6 +49,13 @@ namespace DefaultMessager.DAL
             }
             this.Posts.AddRange(posts);
             this.SaveChanges();
+            posts = new List<Post>();
+            for (int i = 0; i < countFill; i++)
+            {
+                posts.Add(new Post((Guid)accounts[0].Id, new[] { StandartPath.defaultAvatarImage }, "text_1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
+            }
+            this.Posts.AddRange(posts);
+            this.SaveChanges();
             List<Comment> comments = new List<Comment>();
             for (int i = 0; i < countFill; i++)
             {

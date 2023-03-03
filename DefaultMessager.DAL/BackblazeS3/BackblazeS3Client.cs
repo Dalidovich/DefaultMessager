@@ -1,6 +1,7 @@
 ﻿using Bytewizer.Backblaze.Client;
 using Bytewizer.Backblaze.Models;
 using DefaultMessager.Domain.Enums;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DefaultMessager.DAL.SettingsAWSClient
 {
@@ -16,6 +17,24 @@ namespace DefaultMessager.DAL.SettingsAWSClient
         public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, Stream stream)
         {
             var response=await _s3Client.UploadAsync(await GetIdWithBucketName(bucketName), objectName, stream);
+            return response.Response.FileId;
+        }
+
+        public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, MemoryStream content,string login
+            ,string? uploadPath=null)
+        {
+            var objectPath = $"{login}{DateTime.Now.Ticks}{objectName}";
+            var totalPath = $"wwwroot\\BufferFileZone\\{objectPath}";
+            using (FileStream fs = new FileStream(totalPath, FileMode.OpenOrCreate))
+            {
+                await fs.WriteAsync(content.ToArray());
+            }
+            totalPath= Directory.GetCurrentDirectory() +"\\"+ totalPath;
+            content.Dispose();
+            CancellationToken ct = new();
+            objectName = uploadPath?? totalPath;
+            var response = await _s3Client.Files.UploadAsync(await GetIdWithBucketName(bucketName), objectName, totalPath, null, ct);
+            new Task(()=> { File.Delete(totalPath); }).Start();
             return response.Response.FileId;
         }
 
