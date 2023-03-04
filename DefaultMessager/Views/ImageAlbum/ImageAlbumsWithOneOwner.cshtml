@@ -1,0 +1,32 @@
+﻿@using DefaultMessager.Domain.Entities;
+@using DefaultMessager.Domain.Enums;
+@model IEnumerable<ImageAlbum>
+
+<div class="navbar navbar-secondary">
+    <p class="h2 mt-2 ms-4 text-white">Albums</p>
+    @if (Model.FirstOrDefault() != null && Model.First().Account.Login == User.Identity.Name)
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" data-bs-toggle="modal" data-bs-target="#AddAlbum" class="bi bi-plus-circle-fill me-4" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+        </svg>
+    }
+</div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 mt-3 border-bottom"></div>
+<div class="container-fluid">
+    <div class="row" id="scrolImageAlbumList">
+        @await Html.PartialAsync("_imageAlbums")
+    </div>
+    <div id="loading">
+        <img src='@Url.Content(StandartPath.loadGif)'>
+    </div>
+</div>
+@section modalWindow {
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    </div>
+}
+@if (Model.FirstOrDefault() != null)
+{
+    <script>
+        setImageAlbumScrollEvent({ accountId: '@Model.First().AccountId' })
+    </script>
+}

@@ -51,6 +51,11 @@ a:hover {
     color: rgb(0, 162, 255);
     text-decoration: underline;
 }
+.holder {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
 #dropZone {
     background: rgba(102,74,0,.8);
     bottom: 0;
@@ -63,4 +68,17 @@ a:hover {
     top: 0;
     z-index: 6000;
     display: none;
+}
+.block {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    display: none;
+}
+
+.holder:hover .block {
+    display: block;
 }

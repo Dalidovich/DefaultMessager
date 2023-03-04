@@ -1,28 +1,28 @@
 ﻿var accountId
-function setPostScrollEvent(parametrs) {
+function setImageAlbumScrollEvent(parametrs) {
     $('div#loading').hide();
     accountId = parametrs.accountId;
     $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-            loadPostItems(accountId);
+            loadImageAlbumItems(accountId);
         }
     });
 }
 var page = 0;
 var _inCallback = false;
-function loadPostItems() {
+function loadImageAlbumItems() {
     if (page > -1 && !_inCallback) {
         _inCallback = true;
         page++;
         $('div#loading').show();
         $.ajax({
             type: 'GET',
-            url: '/Post/GetPartialPostIcons',
+            url: '/ImageAlbum/GetPartialImageAlbums',
             data: { "id": page, "accountId": accountId },
             success: function (data, textstatus)
             {
                 if (data != '') {
-                    $("#scrolPostList").append(data);
+                    $("#scrolImageAlbumList").append(data);
                 }
                 else {
                     page = -1;

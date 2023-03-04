@@ -25,7 +25,7 @@ namespace DefaultMessager.DAL
 
         private void StandartFill()
         {
-            const int countFill = 45;
+            const int countFill = 100;
             List<Account> accounts = new List<Account>();
             for (int i = 0; i < countFill; i++)
             {
@@ -55,6 +55,18 @@ namespace DefaultMessager.DAL
                 posts.Add(new Post((Guid)accounts[0].Id, new[] { StandartPath.defaultAvatarImage }, "text_1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
             }
             this.Posts.AddRange(posts);
+            this.SaveChanges();
+            List<ImageAlbum> albums = new List<ImageAlbum>();
+            for (int i = 0; i < countFill; i++)
+            {
+                List<string> photos=new List<string>();
+                for (int k = 0; k < countFill; k++)
+                {
+                    photos.Add(StandartPath.defaultAvatarImage);
+                }
+                albums.Add(new ImageAlbum((Guid)accounts[0].Id, photos.ToArray(), $"title{i}"));
+            }
+            this.ImageAlbums.AddRange(albums);
             this.SaveChanges();
             List<Comment> comments = new List<Comment>();
             for (int i = 0; i < countFill; i++)

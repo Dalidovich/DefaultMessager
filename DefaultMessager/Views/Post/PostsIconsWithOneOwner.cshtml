@@ -19,6 +19,6 @@
 @if (Model.FirstOrDefault() != null)
 {
     <script>
-        setScrollEvent({ accountId: '@Model.First().AccountViewModel.Id' })
+        setPostScrollEvent({ accountId: '@Model.First().AccountViewModel.Id' })
     </script>
 }
