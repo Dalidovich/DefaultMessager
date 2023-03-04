@@ -44,7 +44,7 @@ function OpenEditDescriptionModelWindow(parametrs) {
         }
     });
 }
-function OpenCreatePostModelWindow(parametrs) {
+function OpenModelWindow(parametrs) {
     const url = parametrs.url;
     const modal = $('#modal');
     if (url == undefined ) {

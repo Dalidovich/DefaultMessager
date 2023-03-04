@@ -7,7 +7,9 @@ using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
+using DefaultMessager.Domain.ViewModel.ImageAlbumModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -19,10 +21,15 @@ namespace DefaultMessager.BLL.Implementation
         private readonly ImageAlbumNavRepository _navImageAlbumRepository;
         private readonly IBackblazeClientProvider _BackblazeClientProvider;
         private readonly AccountService<Account> _accountService;
-        public ImageAlbumService(IBaseRepository<T> repository, ILogger<T> logger, ImageAlbumNavRepository imageAlbumNavRepository) : base(repository, logger)
+
+        public ImageAlbumService(IBaseRepository<T> repository, ILogger<T> logger, ImageAlbumNavRepository imageAlbumNavRepository
+            ,IBackblazeClientProvider backblazeClientProvider,AccountService<Account> accountService) : base(repository, logger)
         {
             _navImageAlbumRepository = imageAlbumNavRepository;
+            _accountService= accountService;
+            _BackblazeClientProvider= backblazeClientProvider;
         }
+
         public async Task<BaseResponse<IEnumerable<ImageAlbum>>> GetImageAlbum(int skipCount = 0, int countPost = StandartConst.countPostsOnOneLoad
             , Expression<Func<ImageAlbum, bool>>? expression = null)
         {
@@ -58,6 +65,32 @@ namespace DefaultMessager.BLL.Implementation
             {
                 _logger.LogError(ex, $"[GetImageAlbum] : {ex.Message}");
                 return new StandartResponse<IEnumerable<ImageAlbum>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
+        public async Task<BaseResponse<ImageAlbum>> Add(ImageAlbumCreateViewModel viewModel, Guid accountId)
+        {
+            try
+            {
+                var standartBucketName = "Standart";
+                var client = await _BackblazeClientProvider.GetClient();
+                var avatarLink = await client.GetFileLink(standartBucketName, @"standartAvatar.png");
+
+                ImageAlbum imageAlbum = new ImageAlbum(viewModel,accountId,avatarLink);
+                return new StandartResponse<ImageAlbum>()
+                {
+                    Data = (await Add((T)imageAlbum)).Data,
+                    StatusCode = StatusCode.ImageAlbumCreate
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[Add ImageAlbum] : {ex.Message}");
+                return new StandartResponse<ImageAlbum>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

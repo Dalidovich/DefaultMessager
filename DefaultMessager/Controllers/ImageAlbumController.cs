@@ -72,9 +72,28 @@ namespace DefaultMessager.Controllers
             var response =await _imageAlbumService.Delete(imageAlbumById.ToExpression());
             if (response.StatusCode == Domain.Enums.StatusCode.EntityDelete)
             {
-                return await ImageAlbums(null);
+                return RedirectToAction("Index","Account");
             }
             return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CreateImageAlbum()=> PartialView("_createImageAlbum");
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateImageAlbum(ImageAlbumCreateViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var responce = await _imageAlbumService.Add(viewModel,new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value));
+                if (responce.StatusCode == Domain.Enums.StatusCode.ImageAlbumCreate)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
