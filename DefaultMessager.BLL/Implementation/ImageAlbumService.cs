@@ -11,6 +11,7 @@ using DefaultMessager.Domain.ViewModel.ImageAlbumModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
@@ -125,6 +126,63 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
-
+        public async Task<BaseResponse<ImageAlbum>> AddPhoto(IFormFileCollection files, Guid imageAlbumId, Guid accountId, string login)
+        {
+            try
+            {
+                var imageAlbumResponse=await GetImageAlbum(x=>x.Id==imageAlbumId);
+                if (imageAlbumResponse.StatusCode == StatusCode.ImageAlbumRead)
+                {
+                    var imageAlbum=imageAlbumResponse.Data.First();
+                    var client = await _BackblazeClientProvider.GetClient();
+                    var bucketName = _accountService.GetAccountBucket(login);
+                    string[] filePath = imageAlbum.PathPictures;
+                    Array.Resize<string>(ref filePath, imageAlbum.PathPictures.Length + files.Count);
+                    string startUploadPath = 
+                        $"{login}/{TypeSaveContent.imageAlbums}/{imageAlbum.Title}{imageAlbum.Id}/";
+                    try
+                    {
+                        for (int i = imageAlbum.PathPictures.Length; i < filePath.Length; i++)
+                        {
+                            MemoryStream memoryStreams = new MemoryStream();
+                            await files[i - imageAlbum.PathPictures.Length].CopyToAsync(memoryStreams);
+                            var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data, $"{imageAlbum.Id}{files[i - imageAlbum.PathPictures.Length].Name}"
+                                , memoryStreams, login
+                                , $"{startUploadPath}{DateTime.Now.Ticks}{files[i - imageAlbum.PathPictures.Length].Name}");
+                            filePath[i] = client.GetFileLink(fileId);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"[Add Photo in ImageAlbum upload] : {ex.Message}");
+                        return new StandartResponse<ImageAlbum>()
+                        {
+                            Description = ex.Message,
+                            StatusCode = StatusCode.FileUploadFailed,
+                        };
+                    }
+                    imageAlbum.PathPictures = filePath;
+                    imageAlbum = (await Update((T)imageAlbum)).Data;
+                    return new StandartResponse<ImageAlbum>()
+                    {
+                        Data = imageAlbum,
+                        StatusCode = StatusCode.FileUpload,
+                    };
+                }
+                return new StandartResponse<ImageAlbum>()
+                {
+                    Description = imageAlbumResponse.Description
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[Add Photo in ImageAlbum] : {ex.Message}");
+                return new StandartResponse<ImageAlbum>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
     }
 }

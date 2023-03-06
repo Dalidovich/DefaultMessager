@@ -129,5 +129,19 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddPhotoToImageAlbum(Guid imageAlbumId)
+        {
+            var files = Request.Form.Files;
+            var responce = await _imageAlbumService.AddPhoto(files
+                , imageAlbumId, new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value),User.Identity.Name);
+            if (responce.StatusCode == Domain.Enums.StatusCode.FileUpload)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
