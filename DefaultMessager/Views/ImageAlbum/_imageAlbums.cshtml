@@ -6,7 +6,19 @@
     <div class="col-md-2 col-sm-4 col-xs-12 my-2">
         <div class="rounded-4 float-start post mb-2">
             <div class="container holder bg-dark mb-0" style="width: 100%; height: 200px; padding: 0;">
-                <img src="@item.PathPictures.FirstOrDefault().ToString()" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                @if (@item.PathPictures.FirstOrDefault()!=null)
+                {
+                    <img src="@item.PathPictures.FirstOrDefault()" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                }
+                else
+                {
+                    <center>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 30%; height: 30%; width="24" height="24" fill="white" class="mt-5 bi bi-box-arrow-down object-fit-scale" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z" />
+                            <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
+                        </svg>
+                    </center>
+                }
                 <div class="container block bg-dark mb-0" style="width: 100%; height: 200px; padding: 0; opacity: 80%; margin: 0;">
                     @if (User.Identity.Name==item.Account.Login)
                     {

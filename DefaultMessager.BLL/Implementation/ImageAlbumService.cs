@@ -7,10 +7,12 @@ using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
+using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.ImageAlbumSpecification;
 using DefaultMessager.Domain.ViewModel.ImageAlbumModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -77,11 +79,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             try
             {
-                var standartBucketName = "Standart";
-                var client = await _BackblazeClientProvider.GetClient();
-                var avatarLink = await client.GetFileLink(standartBucketName, @"standartAvatar.png");
-
-                ImageAlbum imageAlbum = new ImageAlbum(viewModel,accountId,avatarLink);
+                ImageAlbum imageAlbum = new ImageAlbum(viewModel,accountId);
                 return new StandartResponse<ImageAlbum>()
                 {
                     Data = (await Add((T)imageAlbum)).Data,
@@ -146,9 +144,10 @@ namespace DefaultMessager.BLL.Implementation
                         {
                             MemoryStream memoryStreams = new MemoryStream();
                             await files[i - imageAlbum.PathPictures.Length].CopyToAsync(memoryStreams);
-                            var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data, $"{imageAlbum.Id}{files[i - imageAlbum.PathPictures.Length].Name}"
+                            var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data
+                                , $"{imageAlbum.Id}{files[i - imageAlbum.PathPictures.Length].FileName}"
                                 , memoryStreams, login
-                                , $"{startUploadPath}{DateTime.Now.Ticks}{files[i - imageAlbum.PathPictures.Length].Name}");
+                                , $"{startUploadPath}{DateTime.Now.Ticks}{files[i - imageAlbum.PathPictures.Length].FileName}");
                             filePath[i] = client.GetFileLink(fileId);
                         }
                     }
@@ -178,6 +177,39 @@ namespace DefaultMessager.BLL.Implementation
             {
                 _logger.LogError(ex, $"[Add Photo in ImageAlbum] : {ex.Message}");
                 return new StandartResponse<ImageAlbum>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
+        public async Task<BaseResponse<bool>> DeleteWithId(Guid imageAlbumId)
+        {
+            try
+            {
+                var imageAlbumById=new ImageAlbumById<ImageAlbum>(imageAlbumId);
+                var entity = (await GetImageAlbum(imageAlbumById.ToExpression())).Data.SingleOrDefault();
+                if (entity == null)
+                {
+                    return new StandartResponse<bool>()
+                    {
+                        Description = "entity not found"
+                    };
+                }
+                var bucketName = _accountService.GetAccountBucket(entity.Account.Login).Data;
+                var imageAlbumPath = $"{entity.Account.Login}/{TypeSaveContent.imageAlbums}/{entity.Title}{entity.Id}";
+                var client = await _BackblazeClientProvider.GetClient();
+                return new StandartResponse<bool>()
+                {
+                    Data = (await client.DeleteInFolderAsync(bucketName, imageAlbumPath)&await _repository.DeleteAsync((T)entity)),
+                    StatusCode = StatusCode.ImageAlbumDelete
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[Delete] : {ex.Message}");
+                return new StandartResponse<bool>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

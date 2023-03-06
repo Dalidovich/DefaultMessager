@@ -21,11 +21,11 @@ namespace DefaultMessager.Domain.Entities
             AccountId = accountId;
         }
 
-        public ImageAlbum(ImageAlbumCreateViewModel viewModel, Guid accountId,string firstPhoto)
+        public ImageAlbum(ImageAlbumCreateViewModel viewModel, Guid accountId)
         {
             AccountId = accountId;
             Title= viewModel.Title;
-            PathPictures = new string[] { firstPhoto };
+            PathPictures = new string[] {};
         }
     }
 }

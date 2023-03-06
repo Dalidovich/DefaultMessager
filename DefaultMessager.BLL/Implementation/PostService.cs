@@ -116,9 +116,9 @@ namespace DefaultMessager.BLL.Implementation
                     {
                         MemoryStream memoryStreams = new MemoryStream();
                         await imgPath[i].CopyToAsync(memoryStreams);
-                        var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data, $"{post.Id}{imgPath[i].Name}"
+                        var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data, $"{post.Id}{imgPath[i].FileName}"
                             , memoryStreams, login
-                            , $"{startUploadPath}{DateTime.Now.Ticks}{imgPath[i].Name}");
+                            , $"{startUploadPath}{DateTime.Now.Ticks}{imgPath[i].FileName}");
                         filePath[i] = client.GetFileLink(fileId);
                     }
                 }

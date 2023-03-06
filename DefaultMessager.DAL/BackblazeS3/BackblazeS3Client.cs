@@ -32,7 +32,7 @@ namespace DefaultMessager.DAL.SettingsAWSClient
             totalPath= Directory.GetCurrentDirectory() +"\\"+ totalPath;
             content.Dispose();
             CancellationToken ct = new();
-            objectName = uploadPath?? totalPath;
+            objectName = uploadPath?? $"{login}/{objectName}";
             var response = await _s3Client.Files.UploadAsync(await GetIdWithBucketName(bucketName), objectName, totalPath, null, ct);
             new Task(()=> { File.Delete(totalPath); }).Start();
             return response.Response.FileId;
@@ -52,6 +52,20 @@ namespace DefaultMessager.DAL.SettingsAWSClient
                 var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileName == objectName);
                 var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
                 return reusltResponceDelete.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> DeleteInFolderAsync(string bucketName, string objectName)
+        {
+            try
+            {
+                ListFileVersionRequest fileVersionRequest = new ListFileVersionRequest(await GetIdWithBucketName(bucketName));
+                fileVersionRequest.Prefix = objectName;
+                var reusltResponceDelete = await _s3Client.Files.DeleteAllAsync(fileVersionRequest);
+                return true;
             }
             catch (Exception)
             {

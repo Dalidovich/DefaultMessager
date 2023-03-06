@@ -68,9 +68,8 @@ namespace DefaultMessager.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteImageAlbum(Guid imageAlbumId)
         {
-            var imageAlbumById =new ImageAlbumById<ImageAlbum>(imageAlbumId);
-            var response =await _imageAlbumService.Delete(imageAlbumById.ToExpression());
-            if (response.StatusCode == Domain.Enums.StatusCode.EntityDelete)
+            var response =await _imageAlbumService.DeleteWithId(imageAlbumId);
+            if (response.StatusCode == Domain.Enums.StatusCode.ImageAlbumDelete)
             {
                 return RedirectToAction("Index","Account");
             }
@@ -90,7 +89,7 @@ namespace DefaultMessager.Controllers
                 var responce = await _imageAlbumService.Add(viewModel,new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value));
                 if (responce.StatusCode == Domain.Enums.StatusCode.ImageAlbumCreate)
                 {
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("ImageAlbumsWithOneOwner", "ImageAlbum", new { accountId = responce.Data.AccountId });
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -139,7 +138,7 @@ namespace DefaultMessager.Controllers
                 , imageAlbumId, new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value),User.Identity.Name);
             if (responce.StatusCode == Domain.Enums.StatusCode.FileUpload)
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("PhotoOfAlbum", "ImageAlbum", new {id=0, imageAlbumId=imageAlbumId });
             }
             return RedirectToAction("Index", "Home");
         }
