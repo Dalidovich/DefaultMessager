@@ -23,6 +23,7 @@
         ImageAlbumUpdate = 31,
         ImageAlbumDelete = 32,
         ImageAlbumRead = 33,
+        PhotoDelete = 34,
 
         LikeCreate = 40,
         LikeUpdate = 41,
@@ -50,6 +51,6 @@
 
         OK = 200,
         OKNoContent = 204,
-        InternalServerError = 500
+        InternalServerError = 500,
     }
 }
