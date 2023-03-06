@@ -89,6 +89,30 @@ function OpenDeleteImageAlbumModelWindow(parametrs) {
         }
     });
 }
+function OpenDeletePhotoInImageAlbumModelWindow(parametrs) {
+    const url = parametrs.url;
+    const imageAlbumId = parametrs.imageAlbumId;
+    const photoId = parametrs.photoId;
+    const modal = $('#modal');
+    if (url == undefined || imageAlbumId == undefined || photoId == undefined) {
+        alert('model or url undefined')
+    }
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: { "imageAlbumId": imageAlbumId, "photoId": photoId },
+        success: function (response) {
+            modal.html(response);
+            modal.modal('show')
+        },
+        failure: function () {
+            modal.modal('hide')
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    });
+}
 function CloseModelWindow() {
     $('#modal').html('');
     $('#modal').modal('hide')

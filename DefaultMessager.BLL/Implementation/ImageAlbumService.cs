@@ -194,7 +194,7 @@ namespace DefaultMessager.BLL.Implementation
                 {
                     return new StandartResponse<bool>()
                     {
-                        Description = "entity not found"
+                        Description = "image album not found"
                     };
                 }
                 var bucketName = _accountService.GetAccountBucket(entity.Account.Login).Data;
@@ -208,8 +208,45 @@ namespace DefaultMessager.BLL.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"[Delete] : {ex.Message}");
+                _logger.LogError(ex, $"[DeleteWithId] : {ex.Message}");
                 return new StandartResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
+        public async Task<BaseResponse<Guid>> DeletePhoto(Guid imageAlbumId, string photoId)
+        {
+            try
+            {
+                var imageAlbumById = new ImageAlbumById<ImageAlbum>(imageAlbumId);
+                var entity = (await GetImageAlbum(imageAlbumById.ToExpression())).Data.SingleOrDefault();
+                if (entity == null)
+                {
+                    return new StandartResponse<Guid>()
+                    {
+                        Description = "image album not found"
+                    };
+                }
+                List<string> links= entity.PathPictures.ToList();
+                links.Remove(photoId);
+                entity.PathPictures=links.ToArray();
+                photoId = photoId.Substring(StandartConst.DounloadUrlApi.Length);
+                var client = await _BackblazeClientProvider.GetClient();
+                var bucketName = _accountService.GetAccountBucket(entity.Account.Login).Data;
+                var deleteResponse = await client.DeleteObjectAsyncById(bucketName, photoId);
+                return new StandartResponse<Guid>()
+                {
+                    Data= ((Guid)(await Update((T)entity)).Data.Id),
+                    StatusCode=StatusCode.PhotoDelete
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[DeleteWithId] : {ex.Message}");
+                return new StandartResponse<Guid>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

@@ -76,6 +76,23 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("Error");
         }
 
+        [Authorize]
+        public async Task<IActionResult> DeletePhotoInImageAlbumForm(Guid imageAlbumId,string photoId)
+        {
+            return PartialView("_deletePhotoInImageAlbum", (imageAlbumId,photoId));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeletePhotoInImageAlbum(Guid imageAlbumId,string photoId)
+        {
+            var response = await _imageAlbumService.DeletePhoto(imageAlbumId,photoId);
+            if (response.StatusCode == Domain.Enums.StatusCode.PhotoDelete)
+            {
+                return RedirectToAction("PhotoOfAlbum", "ImageAlbum",new {id=0, imageAlbumId = response.Data });
+            }
+            return RedirectToAction("Error");
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> CreateImageAlbum()=> PartialView("_createImageAlbum");

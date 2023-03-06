@@ -15,5 +15,6 @@ namespace DefaultMessager.BLL.Interfaces
         public Task<BaseResponse<IEnumerable<ImageAlbum>>> GetImageAlbum(Expression<Func<ImageAlbum, bool>> expression);
         public Task<BaseResponse<ImageAlbum>> AddPhoto(IFormFileCollection files, Guid imageAlbumId, Guid accountId, string login);
         public Task<BaseResponse<bool>> DeleteWithId(Guid imageAlbumId);
+        public Task<BaseResponse<Guid>> DeletePhoto(Guid imageAlbumId,string photoId);
     }
 }

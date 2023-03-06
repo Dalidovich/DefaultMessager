@@ -58,6 +58,20 @@ namespace DefaultMessager.DAL.SettingsAWSClient
                 return false;
             }
         }
+        public async Task<bool> DeleteObjectAsyncById(string bucketName, string fileId)
+        {
+            try
+            {
+                ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
+                var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest,x=>x.FileId==fileId);
+                var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
+                return reusltResponceDelete.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public async Task<bool> DeleteInFolderAsync(string bucketName, string objectName)
         {
             try
