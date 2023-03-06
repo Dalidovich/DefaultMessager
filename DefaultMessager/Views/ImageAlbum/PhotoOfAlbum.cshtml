@@ -1,0 +1,36 @@
+﻿@using DefaultMessager.Domain.Enums;
+@model (IEnumerable<string>,bool,Guid)
+<div class="navbar navbar-secondary">
+    <p class="h2 mt-2 ms-4 text-white">Album photo</p>
+    @if (Model.Item2)
+    {
+        <form name="inputFileForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" action="/ConvertedImage" style="z-index: 1;">
+            <label for="inputField" class="me-4" style="cursor: pointer; width: 35px;" name="inputField">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" class="bi bi-plus-circle-fill me-4" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                </svg>
+            </label>
+            <input name="inputField" hidden id="inputField" onchange="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file" required="">
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Bbf3ysSRuxJrP5nc99BeooF-OX-24kDnRner_btTfMy31vMI8mq-XW1h1vhpdtPtpbqSBTO10kD8j2kfQvrUecHBuAD7Uo1CpgpJAKQ_rmgV5cpKGfC4fkIevhYkuiFMWxif2urRLDkYrZmg2ax6KY">
+        </form>   
+    }
+</div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 mt-3 border-bottom"></div>
+<div class="container-fluid">
+    <div class="row" id="scrolImageAlbumPhotoList">
+        @await Html.PartialAsync("_photoOfAlbum")
+    </div>
+    <div id="loading">
+        <img src='@Url.Content(StandartPath.loadGif)' style="display:none">
+    </div>
+</div>
+@section modalWindow {
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    </div>
+}
+@if (Model.Item1.FirstOrDefault() != null)
+{
+    <script>
+        setImageAlbumPhotoScrollEvent({ imageAlbumId: '@Model.Item3' })
+    </script>
+}

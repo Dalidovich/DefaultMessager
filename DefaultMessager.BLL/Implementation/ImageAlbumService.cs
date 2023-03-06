@@ -97,5 +97,34 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+        public async Task<BaseResponse<IEnumerable<ImageAlbum>>> GetImageAlbum(Expression<Func<ImageAlbum, bool>> expression)
+        {
+            try
+            {
+                var contents = await _navImageAlbumRepository.GetImageAlbumFullInclude().Where(expression).ToListAsync();
+                if (contents == null)
+                {
+                    return new StandartResponse<IEnumerable<ImageAlbum>>()
+                    {
+                        Description = "image album not found"
+                    };
+                }
+                return new StandartResponse<IEnumerable<ImageAlbum>>()
+                {
+                    Data = contents,
+                    StatusCode = StatusCode.ImageAlbumRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetImageAlbum] : {ex.Message}");
+                return new StandartResponse<IEnumerable<ImageAlbum>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
     }
 }

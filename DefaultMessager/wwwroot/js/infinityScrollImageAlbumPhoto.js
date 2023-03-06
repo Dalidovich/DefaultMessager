@@ -1,28 +1,28 @@
-﻿var accountId
-function setImageAlbumScrollEvent(parametrs) {
+﻿var imageAlbumId
+function setImageAlbumPhotoScrollEvent(parametrs) {
     $('div#loading').hide();
-    accountId = parametrs.accountId;
+    imageAlbumId = parametrs.imageAlbumId;
     $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-            loadImageAlbumItems();
+            loadImageAlbumPhotoItems();
         }
     });
 }
 var page = 0;
 var _inCallback = false;
-function loadImageAlbumItems() {
+function loadImageAlbumPhotoItems() {
     if (page > -1 && !_inCallback) {
         _inCallback = true;
         page++;
         $('div#loading').show();
         $.ajax({
             type: 'GET',
-            url: '/ImageAlbum/GetPartialImageAlbums',
-            data: { "id": page, "accountId": accountId },
+            url: '/ImageAlbum/GetPartialPhotoOfAlbum',
+            data: { "id": page, "imageAlbumId": imageAlbumId },
             success: function (data, textstatus)
             {
                 if (data != '') {
-                    $("#scrolImageAlbumList").append(data);
+                    $("#scrolImageAlbumPhotoList").append(data);
                 }
                 else {
                     page = -1;

@@ -95,5 +95,39 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> PhotoOfAlbum(int? id, Guid? imageAlbumId)
+        {
+            var page = id ?? 0;
+            var expression = new ImageAlbumById<ImageAlbum>((Guid)imageAlbumId).ToExpression();
+            var response = await _imageAlbumService.GetImageAlbum(expression);
+            if (response.StatusCode == Domain.Enums.StatusCode.ImageAlbumRead)
+            {
+                return View(
+                    (response.Data.First().PathPictures.Take(StandartConst.countPostsOnOneLoad)
+                    , response.Data.First().Account.Login == (User.Identity.Name ?? "")
+                    , (Guid)response.Data.First().Id)
+                    );
+            }
+            return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPartialPhotoOfAlbum(int? id, Guid? imageAlbumId)
+        {
+            var page = id ?? 0;
+            var expression = new ImageAlbumById<ImageAlbum>((Guid)imageAlbumId).ToExpression();
+            var response = await _imageAlbumService.GetImageAlbum(expression);
+            if (response.StatusCode == Domain.Enums.StatusCode.ImageAlbumRead)
+            {
+                return PartialView("_photoOfAlbum"
+                    , (response.Data.First().PathPictures.Skip(StandartConst.countPostsOnOneLoad*page).Take(StandartConst.countPostsOnOneLoad)
+                    , response.Data.First().Account.Login == (User.Identity.Name ?? "")
+                    , (Guid)response.Data.First().Id)
+                    );
+            }
+            return RedirectToAction("Error");
+        }
     }
 }
