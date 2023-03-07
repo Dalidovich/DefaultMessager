@@ -7,7 +7,7 @@ using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.ImageAlbumSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.ImageAlbumSpecification;
 using DefaultMessager.Domain.ViewModel.ImageAlbumModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Http;

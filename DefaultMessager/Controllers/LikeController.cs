@@ -3,7 +3,6 @@ using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Specification.CompositeSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.LikeSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.LikeSpecification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

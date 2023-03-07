@@ -5,7 +5,7 @@ using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.Extensions.Logging;
 

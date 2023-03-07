@@ -1,5 +1,5 @@
 ﻿using DefaultMessager.Domain.Specification.Base;
-using DefaultMessager.Domain.SpecificationPattern;
+using DefaultMessager.Domain.Specification;
 using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.Specification.CompositeSpecification

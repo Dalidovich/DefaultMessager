@@ -6,7 +6,7 @@ using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
