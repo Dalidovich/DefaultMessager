@@ -1,8 +1,8 @@
-﻿using DefaultMessager.Domain.SpecificationPattern.Base;
+﻿using DefaultMessager.Domain.Specification.Base;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification
 {
     public class AccountProfileByLogin<T> : Specification<AccountProfileViewModel>
     {

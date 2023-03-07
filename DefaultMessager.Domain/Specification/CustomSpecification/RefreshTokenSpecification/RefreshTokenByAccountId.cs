@@ -1,8 +1,8 @@
 ﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.SpecificationPattern.Base;
+using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.RefreshTokenSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.RefreshTokenSpecification
 {
     public class RefreshTokenByAccountId<T> : Specification<RefreshToken>
     {

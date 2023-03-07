@@ -1,8 +1,8 @@
 ﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.SpecificationPattern.Base;
+using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.ImageAlbumSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.ImageAlbumSpecification
 {
     public class ImageAlbumByAccount<T> : Specification<ImageAlbum>
     {

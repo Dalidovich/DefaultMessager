@@ -1,9 +1,9 @@
 ﻿using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.SpecificationPattern.Base;
+using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.RelationSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.RelationSpecification
 {
     public class RelationByStatus<T> : Specification<Relations>
     {

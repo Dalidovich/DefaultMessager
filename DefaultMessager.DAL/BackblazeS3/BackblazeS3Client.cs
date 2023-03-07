@@ -3,7 +3,7 @@ using Bytewizer.Backblaze.Models;
 using DefaultMessager.Domain.Enums;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DefaultMessager.DAL.SettingsAWSClient
+namespace DefaultMessager.DAL.BackblazeS3
 {
     public class BackblazeS3Client
     {
@@ -16,12 +16,12 @@ namespace DefaultMessager.DAL.SettingsAWSClient
 
         public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, Stream stream)
         {
-            var response=await _s3Client.UploadAsync(await GetIdWithBucketName(bucketName), objectName, stream);
+            var response = await _s3Client.UploadAsync(await GetIdWithBucketName(bucketName), objectName, stream);
             return response.Response.FileId;
         }
 
-        public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, MemoryStream content,string login
-            ,string? uploadPath=null)
+        public async Task<string> UploadObjectFromStreamAsync(string bucketName, string objectName, MemoryStream content, string login
+            , string? uploadPath = null)
         {
             var objectPath = $"{login}{DateTime.Now.Ticks}{objectName}";
             var totalPath = $"wwwroot\\BufferFileZone\\{objectPath}";
@@ -29,12 +29,12 @@ namespace DefaultMessager.DAL.SettingsAWSClient
             {
                 await fs.WriteAsync(content.ToArray());
             }
-            totalPath= Directory.GetCurrentDirectory() +"\\"+ totalPath;
+            totalPath = Directory.GetCurrentDirectory() + "\\" + totalPath;
             content.Dispose();
             CancellationToken ct = new();
-            objectName = uploadPath?? $"{login}/{objectName}";
+            objectName = uploadPath ?? $"{login}/{objectName}";
             var response = await _s3Client.Files.UploadAsync(await GetIdWithBucketName(bucketName), objectName, totalPath, null, ct);
-            new Task(()=> { File.Delete(totalPath); }).Start();
+            new Task(() => { File.Delete(totalPath); }).Start();
             return response.Response.FileId;
         }
 
@@ -63,7 +63,7 @@ namespace DefaultMessager.DAL.SettingsAWSClient
             try
             {
                 ListFileNamesRequest fileNamesRequest = new(await GetIdWithBucketName(bucketName));
-                var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest,x=>x.FileId==fileId);
+                var deleteFile = await _s3Client.Files.FirstAsync(fileNamesRequest, x => x.FileId == fileId);
                 var reusltResponceDelete = await _s3Client.Files.DeleteAsync(deleteFile.FileId, deleteFile.FileName);
                 return reusltResponceDelete.IsSuccessStatusCode;
             }

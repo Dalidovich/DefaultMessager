@@ -1,7 +1,7 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
