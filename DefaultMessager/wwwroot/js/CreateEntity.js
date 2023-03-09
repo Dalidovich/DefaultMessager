@@ -5,7 +5,6 @@
         alert('model or url undefined')
     }
     let content = document.getElementById("commentField").value;
-    //document.getElementById("commentField").value = "";
     if (content != "")
     {
         $.ajax({
