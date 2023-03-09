@@ -1,8 +1,8 @@
-﻿using DefaultMessager.Domain.SpecificationPattern.Base;
+﻿using DefaultMessager.Domain.Specification.Base;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification
 {
     public class PostIconViewModelByCreaterId<T> : Specification<PostIconViewModel>
     {

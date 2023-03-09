@@ -6,6 +6,7 @@ using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.DAL.Repositories;
 using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.DAL.Repositories.CommentRepositories;
+using DefaultMessager.DAL.Repositories.ImageAlbums;
 using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
@@ -32,6 +33,7 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<AccountNavRepository>();
             webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<CommentNavRepositories>();
+            webApplicationBuilder.Services.AddScoped<ImageAlbumNavRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder webApplicationBuilder)

@@ -2,8 +2,8 @@
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.DescriptionAccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +67,7 @@ namespace DefaultMessager.Controllers
         public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -1,8 +1,8 @@
 ﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.SpecificationPattern.Base;
+using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification
 {
     public class PostByCreaterId<T> : Specification<Post>
     {

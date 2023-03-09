@@ -1,0 +1,21 @@
+﻿@model (IEnumerable<string>,bool,Guid)
+@foreach (var item in Model.Item1)
+{
+    <div class="col-md-2 col-sm-4 col-xs-12 my-2">
+        <div class="rounded-4 float-start post mb-2">
+            <div class="container holder bg-dark mb-0" style="width: 100%; height: 200px; padding: 0;">
+                <img src="@item" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                @if(Model.Item2)
+                {
+                    <div class="container block bg-dark mb-0" style="width: 100%; height: 200px; padding: 0; opacity: 80%; margin: 0;">
+                        <div class="d-flex justify-content-end me-2">
+                            <svg onclick="OpenDeletePhotoInImageAlbumModelWindow({url:'/ImageAlbum/DeletePhotoInImageAlbumForm',imageAlbumId:'@Model.Item3',photoId:'@item'})" xmlns="http://www.w3.org/2000/svg" data-bs-target="#DeletePhoto" width="24" height="24" fill="white" class="bi bi-x-lg mt-1 ms-1" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                            </svg>
+                        </div>
+                    </div>   
+                }
+            </div>
+        </div>
+    </div>
+}

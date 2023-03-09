@@ -1,13 +1,13 @@
 ﻿using DefaultMessager.Domain.Entities;
-using DefaultMessager.Domain.SpecificationPattern.Base;
+using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification
 {
-    public class CommentByAccount<T> : Specification<Comment>
+    public class CommentByAccountId<T> : Specification<Comment>
     {
         private readonly Guid _accountId;
-        public CommentByAccount(Guid id)
+        public CommentByAccountId(Guid id)
         {
             _accountId = id;
             expression = x => x.AccountId == _accountId;

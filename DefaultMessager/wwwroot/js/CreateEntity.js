@@ -5,7 +5,6 @@
         alert('model or url undefined')
     }
     let content = document.getElementById("commentField").value;
-    document.getElementById("commentField").value = "";
     if (content != "")
     {
         $.ajax({
@@ -14,7 +13,7 @@
             data: { "postId": postId, "commentContent": content },
             success: function (data) {
                 $("#scrolCommentList").prepend(data);
-                modal.modal('show')
+                sendInGroup();
             }
         });
     }

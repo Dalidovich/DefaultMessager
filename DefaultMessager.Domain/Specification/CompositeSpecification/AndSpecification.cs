@@ -1,7 +1,7 @@
-﻿using DefaultMessager.Domain.SpecificationPattern.Base;
+﻿using DefaultMessager.Domain.Specification.Base;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CompositeSpecification
+namespace DefaultMessager.Domain.Specification.CompositeSpecification
 {
     public class AndSpecification<T> : Specification<T>
     {

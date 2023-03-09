@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.Base
+namespace DefaultMessager.Domain.Specification.Base
 {
     public abstract class Specification<T> : ISpecification<T>
     {

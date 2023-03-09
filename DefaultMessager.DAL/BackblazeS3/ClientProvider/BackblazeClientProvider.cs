@@ -1,5 +1,4 @@
 ﻿using Bytewizer.Backblaze.Client;
-using DefaultMessager.DAL.SettingsAWSClient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
