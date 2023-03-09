@@ -2,7 +2,7 @@
 @model IEnumerable<Comment>
 @foreach (var comment in Model)
 {
-    <div class="row">
+    <div class="row" id="Comment_@comment.Id">
         <p class="text-mute mb-2 h6 fw-bold">
         <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@comment.Account.Login">@comment.Account.Login</a>
         </p>

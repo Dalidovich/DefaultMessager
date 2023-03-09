@@ -60,7 +60,11 @@ namespace DefaultMessager.Controllers
                 var responseExistMyLike = await _likeService.GetOne(andSpec.ToExpression());
                 return PartialView("_likeCount", (responseOnPost.Data, responseExistMyLike.StatusCode == Domain.Enums.StatusCode.EntityRead));
             }
-            return RedirectToAction("Error");
+            else
+            {
+                var responseOnPost = await _likeService.GetAllSatisfactory(likeByPost.ToExpression());
+                return PartialView("_likeCount", (responseOnPost.Data, false));
+            }
         }
 
         [Authorize]
