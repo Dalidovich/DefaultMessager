@@ -1,6 +1,7 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.DescriptionAccountSpecification;
@@ -83,6 +84,18 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("Error");
         }
 
+        public async Task<IActionResult> IndexById(Guid? id = null)
+        {
+            id = id?? new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+            var accountByLogin = new AccountProfileById<AccountProfileViewModel>((Guid)id);
+            var response = await _accountService.GetProfile(accountByLogin.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return View("Index",response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+
         [HttpPost]
         public async Task<IActionResult> EditDescription(DescriptionAccount model, Guid id)
         {
@@ -123,5 +136,6 @@ namespace DefaultMessager.Controllers
             }
             return RedirectToAction("Error");
         }
+
     }
 }

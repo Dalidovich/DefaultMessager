@@ -1,0 +1,13 @@
+﻿@using DefaultMessager.Domain.ViewModel.MessageModel;
+@model IEnumerable<MessageViewModel>
+
+@foreach(var mess in Model)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container text-white rounded-pill float-start ms-1 mt-1" style="width: fit-content; background: DimGray;">
+                <p class="text-white" style="margin-bottom: 0;">@mess.MessageTextContent</p>
+            </div>
+        </div>
+    </div>
+}

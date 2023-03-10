@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification
 {
-    public class AccountProfileById<T> : Specification<AccountProfileViewModel>
+    public class AccountProfileByLogin<T> : Specification<AccountProfileViewModel>
     {
-        private readonly Guid _id;
-        public AccountProfileById(Guid id)
+        private readonly string _login;
+        public AccountProfileByLogin(string login)
         {
-            _id= id;
-            expression = x => x.Id == _id;
+            _login = login;
+            expression = x => x.Login == _login;
         }
         public override Expression<Func<AccountProfileViewModel, bool>> ToExpression()
         {

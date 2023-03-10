@@ -7,12 +7,12 @@ namespace DefaultMessager.Controllers
     public class MessageController : Controller
     {
         private readonly ILogger<MessageController> _logger;
-        private readonly MessageService<Message> _messageAlbumService;
+        private readonly MessageService<Message> _messageService;
 
         public MessageController(ILogger<MessageController> logger, MessageService<Message> service)
         {
             _logger = logger;
-            _messageAlbumService = service;
+            _messageService = service;
         }
     }
 }

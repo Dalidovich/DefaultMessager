@@ -1,0 +1,46 @@
+﻿@using DefaultMessager.Domain.ViewModel.ChattingModel;
+@model ChattingViewModel
+<div class="container-fluid bg-secondary">
+    <div class="row">
+        <div class="col-md-4 bg-dark d-flex justify-content-center">
+            <input type="text" class="form-control mt-2 mb-2 bg-secondary border-0 text-white" id="exampleFormControlInput1" placeholder="Search">
+        </div>
+        <div class="col-md-8 bg-dark d-flex justify-content-start">
+            <div class="navbar navbar-secondary">
+                @if(Model.Companion!=null)
+                {
+                    <a class="navbar-brand text-white fs-5">
+                        <img src="@Model.Companion.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="30" width="30">
+                        <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@Model.Companion.Login">@Model.Companion.Login</a>
+                    </a>   
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 bg-dark overflow-auto scr" style="height: 80vh;  scrollbar-width: none;">
+            @await Html.PartialAsync("_accountChatList",Model.AccountIconInCorrespondenceViewsModels)
+        </div>
+
+        <div class="col-md-8 bg-secondary" style="height: 80vh;">
+            <div class="row">
+                <div class="col-md-12 bg-dark overflow-auto scr" style="height: 73vh;">
+                    @await Html.PartialAsync("_messagesBetween",Model.MessageOfCurrentCorrespondenceViewModels)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 bg-dark" style="height: 7vh;">
+                    <div class="input-group mt-2 mb-2">
+                        <button class="btn btn-outline-light" type="button" id="button-addon1">+</button>
+                        <input type="text" class="form-control" placeholder="" style="display: inline-block; width: 65%;" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        <button type="button" class="btn btn-outline-dark text-white ms-3 mt-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-mdb-ripple-color="dark"
+                                style="z-index: 1;">
+                            Send a message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

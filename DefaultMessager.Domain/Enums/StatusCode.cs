@@ -49,6 +49,16 @@
         FileUpload=80,
         FileUploadFailed=81,
 
+        RelationCreate = 90,
+        RelationUpdate = 91,
+        RelationDelete = 92,
+        RelationRead = 93,
+
+        ChattingModelCreate = 100,
+        ChattingModelUpdate = 101,
+        ChattingModelDelete = 102,
+        ChattingModelRead = 103,
+
         OK = 200,
         OKNoContent = 204,
         InternalServerError = 500,

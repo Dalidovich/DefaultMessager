@@ -22,7 +22,15 @@
                                 </button>   
                             }
                         </div>
+                        
+                            
                         <div class="ms-3" style="margin-top: 100px;">
+                            @if (User.Identity.IsAuthenticated && Model.Login != User.Identity.Name)
+                            {
+                                <a class="text-white" asp-controller="Relations" asp-action="SetCorrespondenceWith" asp-route-accountId="@Model.Id">
+                                    send message
+                                </a>
+                            }
                             <h5>@Model.Login</h5>
                             <p>@Model.Description.Name @Model.Description.Surname @Model.Description.Patronymic</p>
                             <p class="text-secondary">@Model.Description.AccountStatus</p>
@@ -37,6 +45,7 @@
                         <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         </div>
                     }
+                    
                     <!-- About -->
                     <div class="card-body p-4 bg-secondary text-white">
                         <div class="mb-3">

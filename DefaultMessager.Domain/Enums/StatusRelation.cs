@@ -3,6 +3,7 @@
     public enum StatusRelation
     {
         communicateBaned = 0,
-        friend = 1
+        friend = 1,
+        InCorrespondence=2,
     }
 }

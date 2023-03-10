@@ -7,7 +7,9 @@ using DefaultMessager.DAL.Repositories;
 using DefaultMessager.DAL.Repositories.AccountRepositores;
 using DefaultMessager.DAL.Repositories.CommentRepositories;
 using DefaultMessager.DAL.Repositories.ImageAlbums;
+using DefaultMessager.DAL.Repositories.MessageRepositories;
 using DefaultMessager.DAL.Repositories.PostRepositories;
+using DefaultMessager.DAL.Repositories.RelationsRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,11 +31,14 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Post>, PostRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<Account>, AccountRepository>();
             webApplicationBuilder.Services.AddScoped<IBaseRepository<RefreshToken>, RefreshTokenRepository>();
+            webApplicationBuilder.Services.AddScoped<IBaseRepository<Relations>, RelationsRepository>();
 
             webApplicationBuilder.Services.AddScoped<AccountNavRepository>();
             webApplicationBuilder.Services.AddScoped<PostNavRepository>();
             webApplicationBuilder.Services.AddScoped<CommentNavRepositories>();
             webApplicationBuilder.Services.AddScoped<ImageAlbumNavRepository>();
+            webApplicationBuilder.Services.AddScoped<MessageNavRepository>();
+            webApplicationBuilder.Services.AddScoped<RelationsNavRepository>();
         }
 
         public static void AddServices(this WebApplicationBuilder webApplicationBuilder)
@@ -46,7 +51,9 @@ namespace DefaultMessager
             webApplicationBuilder.Services.AddScoped<PostService<Post>>();
             webApplicationBuilder.Services.AddScoped<AccountService<Account>>();
             webApplicationBuilder.Services.AddScoped<RefreshTokenService<RefreshToken>>();
+            webApplicationBuilder.Services.AddScoped<RelationsService<Relations>>();
             webApplicationBuilder.Services.AddScoped<IRegistrationService,RegistrationService>();
+            webApplicationBuilder.Services.AddScoped<IChattingService, ChattingService>();
 
             webApplicationBuilder.Services.Configure<BackblazeClientOptions>(
                 webApplicationBuilder.Configuration.GetSection(BackblazeClientOptions.NameSettings)

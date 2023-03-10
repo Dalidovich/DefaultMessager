@@ -1,7 +1,7 @@
 ﻿using DefaultMessager.DAL.Interfaces;
 using DefaultMessager.Domain.Entities;
 
-namespace DefaultMessager.DAL.Repositories
+namespace DefaultMessager.DAL.Repositories.MessageRepositories
 {
     public class MessageRepository : IBaseRepository<Message>
     {

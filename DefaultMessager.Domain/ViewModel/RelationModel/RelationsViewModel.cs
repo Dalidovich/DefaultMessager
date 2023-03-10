@@ -2,7 +2,7 @@
 
 namespace DefaultMessager.Domain.ViewModel.RelationModel
 {
-    public class RelationViewModel
+    public class RelationsViewModel
     {
         public Guid AccountId1 { get; set; }
         public Guid AccountId2 { get; set; }

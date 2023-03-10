@@ -14,6 +14,6 @@ namespace DefaultMessager.Domain.ViewModel.AccountModel
         public DescriptionAccountViewModel? Description { get; set; }
         public List<PostIconViewModel> Posts { get; set; } = new List<PostIconViewModel>();
         public List<ImageAlbumViewModel> ImageAlbums { get; set; } = new List<ImageAlbumViewModel>();
-        public List<RelationViewModel> RelationsFrom { get; set; } = new List<RelationViewModel>();
+        public List<RelationsViewModel> RelationsFrom { get; set; } = new List<RelationsViewModel>();
     }
 }
