@@ -4,7 +4,7 @@ function setPostScrollEvent(parametrs) {
     accountId = parametrs.accountId;
     $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-            loadPostItems(accountId);
+            loadPostItems();
         }
     });
 }

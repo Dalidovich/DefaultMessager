@@ -1,4 +1,5 @@
-﻿@using DefaultMessager.Domain.ViewModel.ChattingModel;
+﻿@using DefaultMessager.Domain.Enums;
+@using DefaultMessager.Domain.ViewModel.ChattingModel;
 @model ChattingViewModel
 <div class="container-fluid bg-secondary">
     <div class="row">
@@ -9,6 +10,7 @@
             <div class="navbar navbar-secondary">
                 @if(Model.Companion!=null)
                 {
+                    <div id="compId">@Model.Companion.Id</div>
                     <a class="navbar-brand text-white fs-5">
                         <img src="@Model.Companion.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="30" width="30">
                         <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@Model.Companion.Login">@Model.Companion.Login</a>
@@ -24,8 +26,11 @@
 
         <div class="col-md-8 bg-secondary" style="height: 80vh;">
             <div class="row">
-                <div class="col-md-12 bg-dark overflow-auto scr" style="height: 73vh;">
+                <div class="col-md-12 bg-dark overflow-auto scr" style="height: 73vh;" id="scrolMessageList" onscroll="loadMessageItems()">
                     @await Html.PartialAsync("_messagesBetween",Model.MessageOfCurrentCorrespondenceViewModels)
+                </div>
+                <div id="loading">
+                    <img src='@Url.Content(StandartPath.loadGif)' style="display:none">
                 </div>
             </div>
 

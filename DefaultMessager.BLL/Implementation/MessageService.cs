@@ -10,8 +10,10 @@ using DefaultMessager.Domain.Specification.CompositeSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.MessageSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.Domain.ViewModel.MessageModel;
+using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -23,7 +25,9 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navMessageRepository = messageNavRepository;
         }
-        public async Task<BaseResponse<IEnumerable<MessageViewModel>>> GetMessagesBetween(Guid firstAccountId, Guid secondAccountId)
+        public async Task<BaseResponse<IEnumerable<MessageViewModel>>> GetMessagesBetween(Guid firstAccountId, Guid secondAccountId
+            , int skipCount = 0, Expression<Func<MessageViewModel, bool>>? expression = null
+            , int countPost = StandartConst.countMessageOnOneLoad)
         {
             try
             {
@@ -34,11 +38,21 @@ namespace DefaultMessager.BLL.Implementation
                 var or1Spec = new OrSpecification<MessageViewModel>(messageBySender1, messageByResieve1);
                 var or2Spec = new OrSpecification<MessageViewModel>(messageBySender2, messageByResieve2);
                 var andSpec = new AndSpecification<MessageViewModel>(or1Spec, or2Spec);
-                var response = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression())
-                    .OrderBy(x=>x.SendDateTime).ToListAsync();
+
+                IEnumerable<MessageViewModel> contents;
+                if (expression != null)
+                {
+                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderBy(x => x.SendDateTime)
+                    .Where(expression).Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                }
+                else
+                {
+                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderBy(x => x.SendDateTime)
+                    .Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                }
                 return new StandartResponse<IEnumerable<MessageViewModel>>()
                 {
-                    Data = response??new List<MessageViewModel>(),
+                    Data = contents??new List<MessageViewModel>(),
                     StatusCode = Domain.Enums.StatusCode.MessageRead
                 };
 

@@ -12,9 +12,11 @@ using DefaultMessager.Domain.Specification.CustomSpecification.RelationSpecifica
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.Domain.ViewModel.ChattingModel;
 using DefaultMessager.Domain.ViewModel.MessageModel;
+using DefaultMessager.Domain.ViewModel.PostModel;
 using DefaultMessager.Domain.ViewModel.RelationModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace DefaultMessager.BLL.Implementation
 {
@@ -65,23 +67,6 @@ namespace DefaultMessager.BLL.Implementation
             {
                 _logger.LogError(ex, $"[GetChattingViewModel] : {ex.Message}");
                 return new StandartResponse<ChattingViewModel>()
-                {
-                    Description = ex.Message,
-                    StatusCode = StatusCode.InternalServerError,
-                };
-            }
-        }
-
-        public async Task<BaseResponse<IEnumerable<MessageViewModel>>> GetMessagesFromCorrespondence(Guid firstAccountId, Guid secondAccountId)
-        {
-            try
-            {
-                return await _messageService.GetMessagesBetween(firstAccountId, secondAccountId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"[GetMessagesFromCorrespondence] : {ex.Message}");
-                return new StandartResponse<IEnumerable<MessageViewModel>>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError,

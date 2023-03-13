@@ -1,6 +1,10 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.BLL.Interfaces;
+using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +23,7 @@ namespace DefaultMessager.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var authId = new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
             var response=await _chattingService.GetChattingViewModel(authId);

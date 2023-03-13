@@ -7,7 +7,6 @@ namespace DefaultMessager.BLL.Interfaces
 {
     public interface IChattingService 
     {
-        public Task<BaseResponse<IEnumerable<MessageViewModel>>> GetMessagesFromCorrespondence(Guid firstAccountId, Guid secondAccountId);
         public Task<BaseResponse<ChattingViewModel>> GetChattingViewModel(Guid accountId);
     }
 }
