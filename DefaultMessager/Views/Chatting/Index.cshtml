@@ -20,7 +20,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 bg-dark overflow-auto scr" style="height: 80vh;  scrollbar-width: none;">
+        <div class="col-md-4 bg-dark overflow-auto scr" style="height: 80vh;  scrollbar-width: none;" onscroll="loadAccountIconsItems()"
+             id="scrolAccountIconsList">
             @await Html.PartialAsync("_accountChatList",Model.AccountIconInCorrespondenceViewsModels)
         </div>
 

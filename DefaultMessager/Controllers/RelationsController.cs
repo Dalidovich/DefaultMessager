@@ -1,4 +1,5 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Specification.CompositeSpecification;
@@ -37,6 +38,20 @@ namespace DefaultMessager.Controllers
                 return RedirectToAction("Index", "Chatting");
             }
             return RedirectToAction("IndexById", "Account", new { id=accountId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> GetPartialCompanions(int? id)
+        {
+            var page = id ?? 0;
+            var accountAuthId = new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+            var response = await _relationService.GetListAccountIconInCorrespondence(accountAuthId,page);
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return PartialView("~/Views/Chatting/_accountChatList.cshtml", response.Data);
+            }
+            return RedirectToAction("Error");
         }
     }
 }

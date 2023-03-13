@@ -24,7 +24,7 @@ namespace DefaultMessager.DAL.Repositories.RelationsRepositories
         {
             return _db.Relations.ProjectToType<RelationsViewModel>().Where(expression);
         }
-        public async Task<List<AccountIconViewModel>> GetAccountIconsForCorrespondenceWith(Guid authId)
+        public IQueryable<AccountIconViewModel>? GetAccountIconsForCorrespondenceWith(Guid authId)
         {
             var contentFrom = _db.Relations.Join(_db.Accounts
                 , r => r.AccountId1
@@ -35,12 +35,7 @@ namespace DefaultMessager.DAL.Repositories.RelationsRepositories
                     Login = a.Login,
                     PathAvatar = a.Description.PathAvatar,
                     id2 = r.AccountId2
-                }).Where(x => x.id2 == authId).ToList().Select(a => new AccountIconViewModel()
-                {
-                    Id = a.Id,
-                    Login = a.Login,
-                    PathAvatar = new DescriptionPathAvatarAccountViewModel(a.PathAvatar),
-                });
+                }).Where(x => x.id2 == authId);
 
             var contentTo = _db.Relations.Join(_db.Accounts
                 , r => r.AccountId2
@@ -49,16 +44,16 @@ namespace DefaultMessager.DAL.Repositories.RelationsRepositories
                 {
                     Id = a.Id,
                     Login = a.Login,
-                    PathAvatar = new DescriptionPathAvatarAccountViewModel(a.Description.PathAvatar),
+                    PathAvatar = a.Description.PathAvatar,
                     id2 = r.AccountId1
-                }).Where(x => x.id2 == authId).ToList().Select(a => new AccountIconViewModel()
-                {
-                    Id = a.Id,
-                    Login = a.Login,
-                    PathAvatar = a.PathAvatar
-                });
-            var result = contentFrom.Union(contentTo).ToList();
-            return result ?? new List<AccountIconViewModel>();
+                }).Where(x => x.id2 == authId);
+            var result = contentFrom.Union(contentTo).Select(a => new AccountIconViewModel()
+            {
+                Id = a.Id,
+                Login = a.Login,
+                PathAvatar = new DescriptionPathAvatarAccountViewModel(a.PathAvatar),
+            });
+            return result;
         }
     }
 }

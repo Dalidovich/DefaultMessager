@@ -10,6 +10,7 @@ using DefaultMessager.Domain.Specification.CompositeSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.RelationSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
+using DefaultMessager.Domain.ViewModel.MessageModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -54,14 +55,25 @@ namespace DefaultMessager.BLL.Implementation
             }
         }
 
-        public async Task<BaseResponse<IEnumerable<AccountIconViewModel>>> GetListAccountIconInCorrespondence(Guid authorizedAccountId)
+        public async Task<BaseResponse<IEnumerable<AccountIconViewModel>>> GetListAccountIconInCorrespondence(Guid authorizedAccountId
+            , int skipCount = 0, Expression<Func<AccountIconViewModel, bool>>? expression = null
+            , int countPost = StandartConst.countCompanionsOnOneLoad)
         {
             try
             {
-                List<AccountIconViewModel> response;
+                IEnumerable<AccountIconViewModel>? contents;
                 try
                 {
-                    response = await _relationsNavRepository.GetAccountIconsForCorrespondenceWith(authorizedAccountId);
+                    if (expression != null)
+                    {
+                        contents = await _relationsNavRepository.GetAccountIconsForCorrespondenceWith(authorizedAccountId).OrderBy(x => x.Login)
+                        .Where(expression).Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                    }
+                    else
+                    {
+                        contents = await _relationsNavRepository.GetAccountIconsForCorrespondenceWith(authorizedAccountId).OrderBy(x => x.Login)
+                        .Skip(skipCount * countPost).Take(countPost).ToListAsync();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -73,7 +85,7 @@ namespace DefaultMessager.BLL.Implementation
                 }
                 return new StandartResponse<IEnumerable<AccountIconViewModel>>()
                 {
-                    Data = response,
+                    Data = contents,
                     StatusCode = StatusCode.AccountRead
                 };
             }
