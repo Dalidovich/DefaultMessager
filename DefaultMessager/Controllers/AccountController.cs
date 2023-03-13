@@ -137,5 +137,17 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("Error");
         }
 
+        [Authorize]
+        public async Task<IActionResult> GetAccountIconViewModel(Guid? accountId)
+        {
+            accountId = accountId ?? new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+            var accountIconById=new AccountIconViewModelById<AccountIconViewModel>((Guid)accountId);
+            var response = await _accountService.GetAccountIconViewModel(accountIconById.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return PartialView("~/Views/Chatting/_companion.cshtml",response.Data);
+            }
+            return RedirectToAction("Error");
+        }
     }
 }

@@ -7,14 +7,10 @@
             <input type="text" class="form-control mt-2 mb-2 bg-secondary border-0 text-white" id="exampleFormControlInput1" placeholder="Search">
         </div>
         <div class="col-md-8 bg-dark d-flex justify-content-start">
-            <div class="navbar navbar-secondary">
+            <div class="navbar navbar-secondary" id="companionDiv">
                 @if(Model.Companion!=null)
                 {
-                    <div id="compId">@Model.Companion.Id</div>
-                    <a class="navbar-brand text-white fs-5">
-                        <img src="@Model.Companion.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="30" width="30">
-                        <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@Model.Companion.Login">@Model.Companion.Login</a>
-                    </a>   
+                    @await Html.PartialAsync("_companion",Model.Companion)   
                 }
             </div>
         </div>

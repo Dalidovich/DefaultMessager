@@ -25,7 +25,13 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
 
         public IQueryable<AccountIconViewModel> GetAccountsIconViewModel(Expression<Func<AccountIconViewModel, bool>>? whereExpression)
         {
-            return whereExpression is null ? _db.Accounts.ProjectToType<AccountIconViewModel>() : _db.Accounts.ProjectToType<AccountIconViewModel>().Where(whereExpression);
+            var content = _db.Accounts.Select(a => new AccountIconViewModel()
+            {
+                Id = a.Id,
+                Login = a.Login,
+                PathAvatar = new DescriptionPathAvatarAccountViewModel(a.Description.PathAvatar)
+            });
+            return whereExpression is null ? content : content.Where(whereExpression);
         }
 
         public IQueryable<AccountProfileViewModel> GetProfiles(Expression<Func<AccountProfileViewModel, bool>>? whereExpression = null)

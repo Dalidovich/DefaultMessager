@@ -1,0 +1,7 @@
+﻿@using DefaultMessager.Domain.ViewModel.AccountModel;
+@model AccountIconViewModel
+<div id="compId" style="display:none">@Model.Id</div>
+<a class="navbar-brand text-white fs-5">
+    <img src="@Model.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="30" width="30">
+    <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@Model.Login">@Model.Login</a>
+</a>   
