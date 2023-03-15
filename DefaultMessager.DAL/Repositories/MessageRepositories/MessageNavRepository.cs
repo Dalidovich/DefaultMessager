@@ -18,6 +18,10 @@ namespace DefaultMessager.DAL.Repositories.MessageRepositories
         {
             _db = db;
         }
+        public IQueryable<MessageViewModel> GetMessages(Expression<Func<Message, bool>>? whereExpression = null)
+        {
+            return _db.Messages.Include(x=>x.Reciever).Include(x=>x.Sender).Where(whereExpression).ProjectToType<MessageViewModel>();
+        }
 
         public IQueryable<MessageViewModel> GetMessageInCorrespondence(Expression<Func<MessageViewModel, bool>>? whereExpression = null)
         {

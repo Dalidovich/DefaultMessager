@@ -40,6 +40,25 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("IndexById", "Account", new { id=accountId });
         }
 
+        public async Task<string> getRelationId(Guid companionId)
+        {
+            var authId = new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+
+            var relationByAuthId1 = new RelationByFromAccountId<Relations>(authId);
+            var relationByAuthId2 = new RelationByToAccountId<Relations>(authId);
+            var relationById1 = new RelationByFromAccountId<Relations>(companionId);
+            var relationById2 = new RelationByToAccountId<Relations>(companionId);
+            var orSpec1 = new OrSpecification<Relations>(relationByAuthId1, relationByAuthId2);
+            var orSpec2 = new OrSpecification<Relations>(relationById1, relationById2);
+            var andSpec = new AndSpecification<Relations>(orSpec1, orSpec2);
+            var response = await _relationService.GetOne(andSpec.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.EntityRead)
+            {
+                return response.Data.Id.ToString();
+            }
+            return "___";
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<ActionResult> GetPartialCompanions(int? id)

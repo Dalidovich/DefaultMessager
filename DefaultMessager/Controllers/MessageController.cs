@@ -2,7 +2,9 @@
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.Specification.CompositeSpecification;
 using DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.MessageSpecification;
 using DefaultMessager.Domain.ViewModel.MessageModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +58,12 @@ namespace DefaultMessager.Controllers
                 }
             }
             return RedirectToAction("Error");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> GetMessage(string content)
+        {
+            return PartialView("~/Views/Chatting/_resievedMessage.cshtml", content);
         }
     }
 }

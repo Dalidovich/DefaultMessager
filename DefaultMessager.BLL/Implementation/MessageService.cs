@@ -25,6 +25,29 @@ namespace DefaultMessager.BLL.Implementation
         {
             _navMessageRepository = messageNavRepository;
         }
+
+        public async Task<BaseResponse<MessageViewModel>> GetFullMessage(Expression<Func<Message, bool>> expression)
+        {
+            try
+            {
+                var response=await _navMessageRepository.GetMessages(expression).ToListAsync();
+                return new StandartResponse<MessageViewModel>()
+                {
+                    Data=response.First(),
+                    StatusCode=StatusCode.MessageRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetFullMessage] : {ex.Message}");
+                return new StandartResponse<MessageViewModel>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
+
         public async Task<BaseResponse<IEnumerable<MessageViewModel>>> GetMessagesBetween(Guid firstAccountId, Guid secondAccountId
             , int skipCount = 0, Expression<Func<MessageViewModel, bool>>? expression = null
             , int countPost = StandartConst.countMessageOnOneLoad)
@@ -51,7 +74,7 @@ namespace DefaultMessager.BLL.Implementation
                 }
                 return new StandartResponse<IEnumerable<MessageViewModel>>()
                 {
-                    Data = contents.Reverse<MessageViewModel>() ?? new List<MessageViewModel>(),
+                    Data = contents.Reverse()?? new List<MessageViewModel>(),
                     StatusCode = Domain.Enums.StatusCode.MessageRead
                 };
 

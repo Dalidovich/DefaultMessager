@@ -20,6 +20,7 @@ function GetCorrespondence(parametrs) {
         url: '/Message/GetPartialMessages',
         data: { "companionId": companionId },
         success: function (data) {
+            $("#scrolMessageList").html("");
             $("#scrolMessageList").html(data);
             document.getElementById("scrolMessageList").scrollTop = document.getElementById("scrolMessageList").scrollHeight;
         },
@@ -38,6 +39,30 @@ function GetComment(parametrs) {
         data: { "postId": postId, "login": login },
         success: function (data) {
             $("#scrolCommentList").prepend(data);
+        }
+    });
+}
+
+function GetMessage(parametrs) {
+    const content = parametrs.content;
+    $.ajax({
+        type: 'GET',
+        url: '/Message/GetMessage',
+        data: {"content": content },
+        success: function (data) {
+            $("#scrolMessageList").append(data);
+        }
+    });
+}
+
+function GetRelationId(parametrs) {
+    const companionId = parametrs.companionId;
+    $.ajax({
+        type: 'GET',
+        url: '/Relations/getRelationId',
+        data: { "companionId": companionId },
+        success: function (data) {
+            $("#chatId").html(data);
         }
     });
 }

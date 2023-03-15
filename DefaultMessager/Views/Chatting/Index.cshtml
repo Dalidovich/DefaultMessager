@@ -1,6 +1,9 @@
 ﻿@using DefaultMessager.Domain.Enums;
 @using DefaultMessager.Domain.ViewModel.ChattingModel;
 @model ChattingViewModel
+
+<script src="~/js/SignalRMessages.js"></script>
+<p id="chatId" style="display:none"></p>
 <div class="container-fluid bg-secondary">
     <div class="row">
         <div class="col-md-4 bg-dark d-flex justify-content-center">
@@ -10,7 +13,7 @@
             <div class="navbar navbar-secondary" id="companionDiv">
                 @if(Model.Companion!=null)
                 {
-                    @await Html.PartialAsync("_companion",Model.Companion)   
+                    //@await Html.PartialAsync("_companion",Model.Companion)
                 }
             </div>
         </div>
@@ -20,11 +23,10 @@
              id="scrolAccountIconsList">
             @await Html.PartialAsync("_accountChatList",Model.AccountIconInCorrespondenceViewsModels)
         </div>
-
         <div class="col-md-8 bg-secondary" style="height: 80vh;">
             <div class="row">
                 <div class="col-md-12 bg-dark overflow-auto scr" style="height: 73vh;" id="scrolMessageList">
-                    @await Html.PartialAsync("_messagesBetween",Model.MessageOfCurrentCorrespondenceViewModels)
+                    @*@await Html.PartialAsync("_messagesBetween",Model.MessageOfCurrentCorrespondenceViewModels)*@
                 </div>
                 <div id="loading">
                     <img src='@Url.Content(StandartPath.loadGif)' style="display:none">
@@ -46,4 +48,4 @@
         </div>
     </div>
 </div>
-    <script src="~/js/infinityScrollMessages.js"></script>
+<script src="~/js/infinityScrollMessages.js"></script>

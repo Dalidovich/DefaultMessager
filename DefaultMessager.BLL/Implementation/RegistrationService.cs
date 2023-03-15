@@ -158,7 +158,7 @@ namespace DefaultMessager.BLL.Implementation
                     issuer: _options.Issuer,
                     audience: _options.Audience,
                     claims: claims,
-                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(1)),
+                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(StandartConst.StartJWTTokenLifeTime)),
                     notBefore: DateTime.Now,
                     signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );

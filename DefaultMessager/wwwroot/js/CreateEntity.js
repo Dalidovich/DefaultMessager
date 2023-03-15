@@ -39,6 +39,7 @@ function CreateMessage(parametrs) {
             data: { "companionId": companion, "messageContent": content },
             success: function (data) {
                 $("#scrolMessageList").append(data);
+                sendInMessageGroup();
             },
             error: function (response) {
                 alert(response.responseText);
