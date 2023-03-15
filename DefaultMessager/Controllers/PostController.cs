@@ -55,7 +55,14 @@ namespace DefaultMessager.Controllers
             var response = await _postService.GetPostIcons(page, StandartConst.countPostsOnOneLoad, _expression);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
-                return PartialView("_posts", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("_posts", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
             }
             return RedirectToAction("Error");
         }

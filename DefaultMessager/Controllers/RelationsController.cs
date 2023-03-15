@@ -49,7 +49,14 @@ namespace DefaultMessager.Controllers
             var response = await _relationService.GetListAccountIconInCorrespondence(accountAuthId,page);
             if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
             {
-                return PartialView("~/Views/Chatting/_accountChatList.cshtml", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("~/Views/Chatting/_accountChatList.cshtml", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
             }
             return RedirectToAction("Error");
         }

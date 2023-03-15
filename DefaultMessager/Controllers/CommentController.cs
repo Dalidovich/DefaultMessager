@@ -27,7 +27,14 @@ namespace DefaultMessager.Controllers
             var response = await _commentService.GetFullComments(page, commentByPost.ToExpression());
             if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
             {
-                return PartialView("_comments", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("_comments", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
             }
             return RedirectToAction("Error");
         }
@@ -45,7 +52,15 @@ namespace DefaultMessager.Controllers
                     var response = await _commentService.GetFullComments(0, commentById.ToExpression());
                     if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
                     {
-                        return PartialView("_comments", response.Data);
+                        if (response.Data.Count() != 0)
+                        {
+                            return PartialView("_comments", response.Data);
+                        }
+                        else
+                        {
+                            return PartialView("~/Views/_ViewImports.cshtml");
+                        }
+                        
                     }
                 }
             }
