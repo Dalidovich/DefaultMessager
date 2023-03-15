@@ -21,6 +21,7 @@ function GetCorrespondence(parametrs) {
         data: { "companionId": companionId },
         success: function (data) {
             $("#scrolMessageList").html(data);
+            document.getElementById("scrolMessageList").scrollTop = document.getElementById("scrolMessageList").scrollHeight;
         },
         error: function (response) {
             alert(response.responseText);

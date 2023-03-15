@@ -3,7 +3,7 @@
     public static class StandartConst
     {
         public const int countPostsOnOneLoad = 30;
-        public const int countMessageOnOneLoad = 30;
+        public const int countMessageOnOneLoad = 26;
         public const int countCompanionsOnOneLoad = 15;
         public const int countCommentsOnOneLoad = 10;
         public const string NameConnection = "NpgConnectionString";

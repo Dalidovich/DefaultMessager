@@ -48,15 +48,15 @@ namespace DefaultMessager.BLL.Implementation
                 {
                     Guid firstCompanionId = (Guid)icons.Data.First().Id;
                     accById =new AccountIconViewModelById<AccountIconViewModel>(firstCompanionId);
-                    messages = (List<MessageViewModel>)(await _messageService.GetMessagesBetween(accountId, firstCompanionId)).Data;
-                    companion=icons.Data.FirstOrDefault();
+                    messages = (await _messageService.GetMessagesBetween(accountId, firstCompanionId)).Data.ToList();
+                    companion =icons.Data.FirstOrDefault();
                 }
                 var chattingViewModel = new ChattingViewModel()
                 {
-                    AccountIconInCorrespondenceViewsModels= (List<AccountIconViewModel>)icons.Data,
+                    AccountIconInCorrespondenceViewsModels= icons.Data.ToList(),
                     Companion=companion,
-                    MessageOfCurrentCorrespondenceViewModels=messages
-                };
+                    MessageOfCurrentCorrespondenceViewModels=messages?? new List<MessageViewModel>()
+            };
                 return new StandartResponse<ChattingViewModel>()
                 {
                     Data = chattingViewModel,

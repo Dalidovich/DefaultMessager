@@ -30,7 +30,7 @@ namespace DefaultMessager.BLL.Implementation
             , int countPost = StandartConst.countMessageOnOneLoad)
         {
             try
-            {
+            {                
                 var messageByResieve1 = new MessageViewModelByRecieveId<MessageViewModel>(firstAccountId);
                 var messageBySender1 = new MessageViewModelBySenderId<MessageViewModel>(firstAccountId);
                 var messageByResieve2 = new MessageViewModelByRecieveId<MessageViewModel>(secondAccountId);
@@ -38,21 +38,20 @@ namespace DefaultMessager.BLL.Implementation
                 var or1Spec = new OrSpecification<MessageViewModel>(messageBySender1, messageByResieve1);
                 var or2Spec = new OrSpecification<MessageViewModel>(messageBySender2, messageByResieve2);
                 var andSpec = new AndSpecification<MessageViewModel>(or1Spec, or2Spec);
-
                 IEnumerable<MessageViewModel> contents;
                 if (expression != null)
                 {
-                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderBy(x => x.SendDateTime)
+                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderByDescending(x => x.SendDateTime)
                     .Where(expression).Skip(skipCount * countPost).Take(countPost).ToListAsync();
                 }
                 else
                 {
-                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderBy(x => x.SendDateTime)
+                    contents = await _navMessageRepository.GetMessageInCorrespondence(andSpec.ToExpression()).OrderByDescending(x => x.SendDateTime)
                     .Skip(skipCount * countPost).Take(countPost).ToListAsync();
                 }
                 return new StandartResponse<IEnumerable<MessageViewModel>>()
                 {
-                    Data = contents??new List<MessageViewModel>(),
+                    Data = contents.Reverse<MessageViewModel>() ?? new List<MessageViewModel>(),
                     StatusCode = Domain.Enums.StatusCode.MessageRead
                 };
 

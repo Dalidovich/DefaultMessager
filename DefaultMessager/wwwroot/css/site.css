@@ -82,3 +82,12 @@ a:hover {
 .holder:hover .block {
     display: block;
 }
+
+
+.outer {
+    overflow: auto;
+}
+
+.outer, .inner {
+    transform: scaleY(-1);
+}

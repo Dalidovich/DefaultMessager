@@ -1,6 +1,9 @@
 ﻿using DefaultMessager.BLL.Implementation;
+using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
+using DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification;
+using DefaultMessager.Domain.ViewModel.MessageModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +29,31 @@ namespace DefaultMessager.Controllers
             var response = await _messageService.GetMessagesBetween(accountAuthId, (Guid)companionId,page);
             if (response.StatusCode == Domain.Enums.StatusCode.MessageRead)
             {
-                return PartialView("~/Views/Chatting/_messagesBetween.cshtml", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("~/Views/Chatting/_messagesBetween.cshtml", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
+            }
+            return RedirectToAction("Error");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SendMessage(Guid companionId, string messageContent)
+        {
+            string? id = Request.Cookies[CookieNames.AccountId];
+            if (id != null && messageContent != "")
+            {
+                var createResponse = await _messageService.Add(
+                    new Message(companionId, new Guid(id), new string[]{ }, new string[]{ },DateTime.Now,StatusMessage.normal,messageContent));
+                if (createResponse.StatusCode == Domain.Enums.StatusCode.EntityCreate)
+                {
+                    MessageViewModel messageViewModel= new MessageViewModel(createResponse.Data);
+                    return PartialView("~/Views/Chatting/_messagesBetween.cshtml", new List<MessageViewModel> {messageViewModel});
+                }
             }
             return RedirectToAction("Error");
         }

@@ -123,7 +123,6 @@ namespace DefaultMessager.BLL.Implementation
                         Description = "token not found"
                     };
                 }
-
                 var account = (await _accountService.GetOne(x => x.Id == accountId)).Data;
                 LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
                 return new StandartResponse<(string, string, Guid)>()

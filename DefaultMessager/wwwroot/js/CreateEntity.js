@@ -18,9 +18,31 @@
         });
     }
 }
-function sndBtnClk()
+function sndBtnClk(id)
 {
     if (event.keyCode === 13) {
-        document.getElementById("sndCommBtn").click();
+        document.getElementById(id).click();
+    }
+}
+
+function CreateMessage(parametrs) {
+    const url = parametrs.url;
+    let companion = document.getElementById('compId').innerHTML
+    if (url == undefined) {
+        alert('model or url undefined')
+    }
+    let content = document.getElementById("messageField").value;
+    if (content != "") {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { "companionId": companion, "messageContent": content },
+            success: function (data) {
+                $("#scrolMessageList").append(data);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
     }
 }
