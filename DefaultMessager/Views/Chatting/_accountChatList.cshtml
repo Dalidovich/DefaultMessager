@@ -5,7 +5,7 @@
 {
     <div class="row bg-secondary">
         <div class="col-md-12" >
-            <div class="navbar navbar-secondary" onclick="GetCompanion({accountId:'@acc.Id'}); GetCorrespondence({accountId:'@acc.Id'}); cleanPage();GetRelationId({companionId:'@acc.Id'});">
+            <div class="navbar navbar-secondary" onclick="disconnect();GetCompanion({accountId:'@acc.Id'}); GetCorrespondence({accountId:'@acc.Id'}); cleanPage();GetRelationId({companionId:'@acc.Id'});">
                 <a class="navbar-brand" style="text-decoration:none">
                     <img src="@acc.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="42" width="42">
                     @acc.Login

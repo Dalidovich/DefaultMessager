@@ -20,6 +20,15 @@ async function start() {
     }
 }
 
+function disconnect() {
+
+    if (_connection && _connection.state === 'Connected') {
+        console.log("Disconnecting...");
+        _connection.stop();
+    }
+    return;
+}
+
 function buildConnection() {
     _connection = new signalR.HubConnectionBuilder()
         .withUrl(chatUrl,
@@ -29,6 +38,9 @@ function buildConnection() {
     _connection.on("SendMessageInGroupAsync", (user, message, group) => {
         GetMessage({ content: message });
         console.log(`${user} in ${group}: ${message}`);
+    });
+    _connection.on("RemoveConnectionInGroup", (group) => {
+        console.log(`${user} not in ${group}`);
     });
 }
 
@@ -48,7 +60,6 @@ function sendInMessageGroup() {
     document.getElementById("messageField").value = "";
 }
 
-function removeConnectFromGroup() {
+function removeConnectFromChattingGroup() {
     _connection.invoke("RemoveConnectionInGroup", groupId);
-    document.getElementById("modal").innerHTML = "";
 }
