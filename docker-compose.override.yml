@@ -6,7 +6,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:80
     ports:
-      - "8088:80"
+      - "7150:80"
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
 
