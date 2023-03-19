@@ -1,7 +1,7 @@
 ﻿let _connection,chatUrl,groupId;
 
 function startSignalR(){
-    chatUrl = "https://localhost:7033/comment";
+    chatUrl = "http://localhost:7033/comment";
     groupId = document.getElementById("chatId").innerHTML;
 
     buildConnection();

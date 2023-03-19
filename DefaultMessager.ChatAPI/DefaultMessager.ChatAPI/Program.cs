@@ -15,6 +15,10 @@ namespace DefaultMessager.ChatAPI
                 options.AddDefaultPolicy(
                     builder =>
                     {
+                        builder.WithOrigins("http://localhost:7150")
+                            .AllowAnyHeader()
+                            .WithMethods("GET", "POST")
+                            .AllowCredentials();
                         builder.WithOrigins("https://localhost:7150")
                             .AllowAnyHeader()
                             .WithMethods("GET", "POST")

@@ -4,7 +4,7 @@ services:
   defaultmessager:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:80
+      - ASPNETCORE_URLS=http://+:80
     ports:
       - "7150:80"
     volumes:
@@ -13,7 +13,7 @@ services:
   defaultmessager.chatapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:81
+      - ASPNETCORE_URLS=http://+:81
     ports:
       - "7033:81"
     volumes:
