@@ -1,0 +1,46 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  defaultmessager:
+    image: ${DOCKER_REGISTRY-}defaultmessager
+    depends_on: 
+      - app_db
+    container_name: defaultmessager
+    build:
+      context: .
+      dockerfile: DefaultMessager/Dockerfile
+    environment:
+      - ConnectionStrings__NpgConnectionString=User Id=postgres; Password=Messager54321; Server=app_db; Port=5432; Database=Messager; IntegratedSecurity=true; Pooling=true;
+      - BackblazeClientOptions__AccsesKey=36b673b37143
+      - BackblazeClientOptions__SecretKey=005c65aa2772f9f9d122f2d8eb1b753ad4c7e03aef
+    networks:
+      - dev
+  
+  defaultmessager.chatapi:
+    image: ${DOCKER_REGISTRY-}defaultmessagerchatapi
+    build:
+      context: .
+      dockerfile: DefaultMessager.ChatAPI/DefaultMessager.ChatAPI/Dockerfile
+    container_name: defaultmessagerchatapi
+
+  app_db: 
+    image: postgres:latest
+    container_name: app_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Messager54321
+      - POSTGRES_DB=Messager
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  app_data:

@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  defaultmessager:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:80
+    ports:
+      - "8088:80"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+
+  defaultmessager.chatapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:81
+    ports:
+      - "7033:81"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
