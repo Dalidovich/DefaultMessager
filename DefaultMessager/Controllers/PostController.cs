@@ -3,7 +3,7 @@ using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.PostSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ namespace DefaultMessager.Controllers
         private readonly PostService<Post> _postService;
         private Expression<Func<PostIconViewModel, bool>>? _expression { get; set; }
 
-        public PostController(ILogger<PostController> logger, PostService<Post> service, PostService<Post> navPostService)
+        public PostController(ILogger<PostController> logger, PostService<Post> service)
         {
             _logger = logger;
             _postService = service;
@@ -28,6 +28,7 @@ namespace DefaultMessager.Controllers
         public async Task<IActionResult> PostsIconsWithOneOwner(Guid accountId)
         {
             _expression = new PostIconViewModelByCreaterId<PostIconViewModel>(accountId).ToExpression();
+
             return await PostIcons(0);
         }
 
@@ -44,13 +45,24 @@ namespace DefaultMessager.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPartialPostIcons(int? id)
+        public async Task<ActionResult> GetPartialPostIcons(int? id,Guid? accountId)
         {
+            if (accountId != null)
+            {
+                _expression = new PostIconViewModelByCreaterId<PostIconViewModel>((Guid)accountId).ToExpression();
+            }
             var page = id ?? 0;
             var response = await _postService.GetPostIcons(page, StandartConst.countPostsOnOneLoad, _expression);
             if (response.StatusCode == Domain.Enums.StatusCode.PostRead)
             {
-                return PartialView("_posts", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("_posts", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
             }
             return RedirectToAction("Error");
         }

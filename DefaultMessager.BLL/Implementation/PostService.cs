@@ -6,6 +6,7 @@ using DefaultMessager.DAL.Repositories.PostRepositories;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.Response.Base;
+using DefaultMessager.Domain.Specification.CustomSpecification.PostSpecification;
 using DefaultMessager.Domain.ViewModel.PostModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -108,12 +109,27 @@ namespace DefaultMessager.BLL.Implementation
                 Post post=new Post(entity,accountId);
                 string[] filePath=new string[imgPath.Count];
                 post = (await Add((T)post)).Data;
-                for (int i = 0; i < imgPath.Count; i++)
+                string startUploadPath = $"{login}/{TypeSaveContent.posts}/{post.Title}{post.Id}/";
+                try
                 {
-                    MemoryStream memoryStreams = new MemoryStream();
-                    await imgPath[i].CopyToAsync(memoryStreams);
-                    var fileId=await client.UploadObjectFromStreamAsync(bucketName.Data, login + "/" + post.Id + "/" + i, memoryStreams);
-                    filePath[i] = client.GetFileLink(fileId);
+                    for (int i = 0; i < imgPath.Count; i++)
+                    {
+                        MemoryStream memoryStreams = new MemoryStream();
+                        await imgPath[i].CopyToAsync(memoryStreams);
+                        var fileId = await client.UploadObjectFromStreamAsync(bucketName.Data, $"{post.Id}{imgPath[i].FileName}"
+                            , memoryStreams, login
+                            , $"{startUploadPath}{DateTime.Now.Ticks}{imgPath[i].FileName}");
+                        filePath[i] = client.GetFileLink(fileId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await Delete(x=>x.Id==post.Id);
+                    return new StandartResponse<Post>()
+                    {
+                        Description = ex.Message,
+                        StatusCode = StatusCode.FileUploadFailed,
+                    };
                 }
                 post.PathPictures= filePath;
                 post = (await Update((T)post)).Data;

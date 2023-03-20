@@ -1,9 +1,10 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.BLL.Interfaces;
 using DefaultMessager.Domain.Entities;
+using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.DescriptionAccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.DescriptionAccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,7 @@ namespace DefaultMessager.Controllers
         public IActionResult LogOut()
         {
             Response.Cookies.removeJwtCookie();
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -78,6 +80,18 @@ namespace DefaultMessager.Controllers
             if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
             {
                 return View(response.Data);
+            }
+            return RedirectToAction("Error");
+        }
+
+        public async Task<IActionResult> IndexById(Guid? id = null)
+        {
+            id = id?? new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+            var accountByLogin = new AccountProfileById<AccountProfileViewModel>((Guid)id);
+            var response = await _accountService.GetProfile(accountByLogin.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return View("Index",response.Data);
             }
             return RedirectToAction("Error");
         }
@@ -119,6 +133,19 @@ namespace DefaultMessager.Controllers
             if (response.StatusCode == Domain.Enums.StatusCode.FileUpload)
             {
                 return RedirectToAction("Index");
+            }
+            return RedirectToAction("Error");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> GetAccountIconViewModel(Guid? accountId)
+        {
+            accountId = accountId ?? new Guid(User.Identities.First().FindFirst(CustomClaimType.AccountId).Value);
+            var accountIconById=new AccountIconViewModelById<AccountIconViewModel>((Guid)accountId);
+            var response = await _accountService.GetAccountIconViewModel(accountIconById.ToExpression());
+            if (response.StatusCode == Domain.Enums.StatusCode.AccountRead)
+            {
+                return PartialView("~/Views/Chatting/_companion.cshtml",response.Data);
             }
             return RedirectToAction("Error");
         }

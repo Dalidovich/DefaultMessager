@@ -10,19 +10,27 @@
                         <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
                             <img src="@Model.Description.PathAvatar"
                                  alt="Generic placeholder image" class="img-fluid rounded-circle img-thumbnail mt-4 mb-2"
-                                 style="width: 150px; z-index: 1">
+                                 style="width: 150px; z-index: 1" id="forDropZone">
                             @if(Model.Login==User.Identity.Name)
                             {
-                                <form name="inputAvatarFile" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
-                                    <label for="inputField" style="cursor: pointer;" name="inputField"><u>Сhoose avatar</u></label>
-                                    <input onchange="SubmitForm(this,'inputAvatarFile');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
+                                <form name="inputForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
+                                    <label for="inputField" style="cursor: pointer;" name="inputField"><center><u>drag or click for new avatar</u></center></label>
+                                    <input onchange="SubmitForm(this,'inputForm');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
                                 </form>
                                 <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
                                     Edit profile
                                 </button>   
                             }
                         </div>
+                        
+                            
                         <div class="ms-3" style="margin-top: 100px;">
+                            @if (User.Identity.IsAuthenticated && Model.Login != User.Identity.Name)
+                            {
+                                <a class="text-white" asp-controller="Relations" asp-action="SetCorrespondenceWith" asp-route-accountId="@Model.Id">
+                                    send message
+                                </a>
+                            }
                             <h5>@Model.Login</h5>
                             <p>@Model.Description.Name @Model.Description.Surname @Model.Description.Patronymic</p>
                             <p class="text-secondary">@Model.Description.AccountStatus</p>
@@ -37,6 +45,7 @@
                         <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         </div>
                     }
+                    
                     <!-- About -->
                     <div class="card-body p-4 bg-secondary text-white">
                         <div class="mb-3">
@@ -52,7 +61,13 @@
                         <!-- Albums -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0">Albums</p>
-                            <p class="mb-0"><a href="#!" class="text-white">Show all</a></p>
+                            @if(User.Identity.Name==Model.Login)
+                            {
+                                <svg onclick="OpenModelWindow({url:'/ImageAlbum/CreateImageAlbum'})" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" data-bs-toggle="modal" data-bs-target="#AddPost" class="bi bi-plus-circle-fill ms-2 mt-1 me-auto" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>   
+                            }
+                            <p class="mb-0"><a asp-action="ImageAlbumsWithOneOwner" asp-controller="ImageAlbum" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
                         </div>
                         <div class="row">
                             @foreach (var item in Model.ImageAlbums)
@@ -68,6 +83,12 @@
                         <!-- Posts -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0 mt-2">Posts</p>
+                            @if(User.Identity.Name==Model.Login)
+                            {
+                                <svg onclick="OpenModelWindow({url:'/Post/CreatePost'})" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" data-bs-toggle="modal" data-bs-target="#AddPost" class="bi bi-plus-circle-fill ms-2 mt-1 me-auto" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>   
+                            }
                             <p class="mb-0"><a asp-action="PostsIconsWithOneOwner" asp-controller="Post" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
                         </div>
                         <div class="row">
@@ -88,3 +109,23 @@
         </div>
     </div>
 </section>
+@if (Model.Login == User.Identity.Name)
+{
+    <script>
+        window.addEventListener("dragenter", dragElementEnter, 0);
+        function dragElementEnter() {
+            document.getElementById("dropZone").style.display = "block";
+        }
+    </script>
+    @section dropZone {
+    <div id="dropZone"
+         ondrop="dropElement(event);event.stopPropagation(); event.preventDefault(); "
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondragleave="leaveElement();">
+            <img src="https://www.remove.bg/images/corner.svg" style="left:34px; top:34px; position:absolute;">
+            <img src="https://www.remove.bg/images/corner.svg" style="right:34px; top:34px; position:absolute; transform: rotate(90deg);">
+            <img src="https://www.remove.bg/images/corner.svg" style="left:34px; bottom:34px; position:absolute; transform: rotate(270deg);">
+            <img src="https://www.remove.bg/images/corner.svg" style="right:34px; bottom:34px; position:absolute; transform: rotate(180deg);">
+        </div>
+    }
+}

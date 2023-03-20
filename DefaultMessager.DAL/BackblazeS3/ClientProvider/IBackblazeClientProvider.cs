@@ -1,6 +1,4 @@
-﻿using DefaultMessager.DAL.SettingsAWSClient;
-
-namespace DefaultMessager.DAL.BackblazeS3.ClientProvider
+﻿namespace DefaultMessager.DAL.BackblazeS3.ClientProvider
 {
     public interface IBackblazeClientProvider
     {

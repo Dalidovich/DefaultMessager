@@ -7,14 +7,14 @@
     <div class="modal-content bg-dark">
         <div class="modal-header">
             <h5 class="modal-title text-white" id="staticBackdropLabel">@Model.Title</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="page=0" aria-label="Close"></button>
+            <button type="button" onclick="removeConnectFromGroup()" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="page=0" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="background: #383B40">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="container bg-dark mb-3" style="width: 100%; height: 420px; padding: 0;">
-                            <img src="@Model.PathPictures[0]" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
+                            <img src="@Model.PathPictures[0]" onload="startSignalR()" class="object-fit-scale" style="width: 100%; height: 100%;" alt="">
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
@@ -23,6 +23,7 @@
                             <a class="text-white" asp-controller="Account" asp-action="Index" asp-route-login="@Model.Account.Login">@Model.Account.Login</a>
                         </p>
                         <p id="postIdDiv" style="display:none">@Model.Id</p>
+                        <p id="UserName" style="display:none">@User.Identity.Name</p>
                         <p class="text-white">@Model.PostTextContent</p>
                         <div id="LikeCount" onclick="ChengeLike({data:'@Model.Id'})">
                             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="white" class="bi bi-heart my-2 ms-1 mt-1" viewBox="0 0 16 16">
@@ -36,9 +37,9 @@
                             id="scrolCommentList">
                             @await Html.PartialAsync("~/Views/Comment/_comments.cshtml",Model.Comments.OrderByDescending(x=>x.DatePublicate).Take(StandartConst.countCommentsOnOneLoad))
                         </div>
-                        <input onkeydown="sndBtnClk()" id="commentField" type="text" class="form-control mb-2 mt-3" placeholder="Add a comment" style="display: inline-block; width: 65%;" placeholder="Add a comment">
+                        <input onkeydown="sndBtnClk('sndCommBtn')" id="commentField" type="text" class="form-control mb-2 mt-3" placeholder="Add a comment" style="display: inline-block; width: 65%;">
                         <button id="sndCommBtn" type="button" class="btn btn-outline-dark text-white ms-3 mt-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-mdb-ripple-color="dark"
-                                style="z-index: 1;" onclick="CreateCommentOnPost({url:'/Comment/SendComment',data:'@Model.Id'})">
+                                style="z-index: 1;" onclick="CreateCommentOnPost({url:'/Comment/SendComment',data:'@Model.Id'});">
                             Add a comment
                         </button>
                     </div>
@@ -50,3 +51,4 @@
 <script>
     GetLikes({data:'@Model.Id'});
 </script>
+<script src="~/js/SignalRComments.js"></script>

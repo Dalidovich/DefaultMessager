@@ -19,7 +19,7 @@
     <header>
       <div class="navbar navbar-expand-sm navbar-dark bg-dark mb-0">
           <div class="container" style="max-width: 100%;">
-              <a href="" class="navbar-brand">DefaultMessanger</a>
+              <a asp-controller="Home" asp-action="Index" class="navbar-brand">DefaultMessanger</a>
               <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
@@ -27,7 +27,7 @@
               <div class="collapse navbar-collapse" id="navbarContent">
                   <ul class="navbar-nav me-auto mb-2">
                       <li class="nav-item">
-                        <a href="#" class="nav-link">Messages</a>
+                        <a asp-controller="Chatting" asp-action="Index" class="nav-link">Messages</a>
                       </li>
                       <li class="nav-item">
                         <a href="#" class="nav-link">Friends</a>
@@ -68,23 +68,31 @@
             }
             
       </div>
-  </header
-    <div class="container">
+  </header>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="~/js/infinityScrollPosts.js"></script>
+    <script src="~/js/infinityScrollImageAlbum.js"></script>
+    <script src="~/js/infinityScrollImageAlbumPhoto.js"></script>
+    <script src="~/js/infinityScrollComments.js"></script>
+    <script src="~/js/infinityScrollConpanionList.js"></script>
+    <script src="~/js/modalWindow.js"></script>
+    <script src="~/js/CreateEntity.js"></script>
+    <script src="~/js/LikeControl.js"></script>
+    <script src="~/js/EntityControl.js"></script>
+    <script src="~/js/DropZone.js"></script>
+    <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
     @RenderSection("modalWindow",false)
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="~/js/infinityScrollPosts.js"></script>
-    <script src="~/js/infinityScrollComments.js"></script>
-    <script src="~/js/modalWindow.js"></script>
-    <script src="~/js/CreateEntity.js"></script>
-    <script src="~/js/LikeControl.js"></script>
+    @RenderSection("dropZone",false)
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,17 @@
+﻿@model (Guid,string)
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark">
+        <div class="modal-header">
+        <h5 class="modal-title text-white" id="staticBackdropLabel">Are you sure you want to delete the album?</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <form>
+            <div class="d-flex justify-content-end mb-1">
+                <button onclick="CloseModelWindow()" type="button" class="btn btn-outline-secondary">No</button>
+                <a asp-action="DeletePhotoInImageAlbum" asp-controller="ImageAlbum" asp-route-imageAlbumId="@Model.Item1" asp-route-photoId="@Model.Item2" type="button" class="btn btn-outline-secondary ms-3">Yes, i want to delete</a>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

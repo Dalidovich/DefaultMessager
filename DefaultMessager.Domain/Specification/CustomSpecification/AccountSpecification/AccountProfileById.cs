@@ -1,16 +1,16 @@
-﻿using DefaultMessager.Domain.SpecificationPattern.Base;
+﻿using DefaultMessager.Domain.Specification.Base;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification
+namespace DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification
 {
-    public class AccountProfileByLogin<T> : Specification<AccountProfileViewModel>
+    public class AccountProfileById<T> : Specification<AccountProfileViewModel>
     {
-        private readonly string _login;
-        public AccountProfileByLogin(string login)
+        private readonly Guid _id;
+        public AccountProfileById(Guid id)
         {
-            _login = login;
-            expression = x => x.Login == _login;
+            _id= id;
+            expression = x => x.Id == _id;
         }
         public override Expression<Func<AccountProfileViewModel, bool>> ToExpression()
         {

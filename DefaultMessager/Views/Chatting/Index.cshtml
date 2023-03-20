@@ -1,0 +1,51 @@
+﻿@using DefaultMessager.Domain.Enums;
+@using DefaultMessager.Domain.ViewModel.ChattingModel;
+@model ChattingViewModel
+
+<script src="~/js/SignalRMessages.js"></script>
+<p id="chatId" style="display:none"></p>
+<div class="container-fluid bg-secondary">
+    <div class="row">
+        <div class="col-md-4 bg-dark d-flex justify-content-center">
+            <input type="text" class="form-control mt-2 mb-2 bg-secondary border-0 text-white" id="exampleFormControlInput1" placeholder="Search">
+        </div>
+        <div class="col-md-8 bg-dark d-flex justify-content-start">
+            <div class="navbar navbar-secondary" id="companionDiv">
+                @if(Model.Companion!=null)
+                {
+                    //@await Html.PartialAsync("_companion",Model.Companion)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 bg-dark overflow-auto scr" style="height: 80vh;  scrollbar-width: none;" onscroll="loadAccountIconsItems()"
+             id="scrolAccountIconsList">
+            @await Html.PartialAsync("_accountChatList",Model.AccountIconInCorrespondenceViewsModels)
+        </div>
+        <div class="col-md-8 bg-secondary" style="height: 80vh;">
+            <div class="row">
+                <div class="col-md-12 bg-dark overflow-auto scr" style="height: 73vh;" id="scrolMessageList">
+                    @*@await Html.PartialAsync("_messagesBetween",Model.MessageOfCurrentCorrespondenceViewModels)*@
+                </div>
+                <div id="loading">
+                    <img src='@Url.Content(StandartPath.loadGif)' style="display:none">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 bg-dark" style="height: 7vh;">
+                    <div class="input-group mt-2 mb-2">
+                        <button class="btn btn-outline-light" type="button" id="button-addon1">+</button>
+                        <input onkeydown="sndBtnClk('sndMessBtn')" id="messageField" type="text" class="form-control" placeholder="" style="display: inline-block; width: 65%;" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        <button id="sndMessBtn" type="button" class="btn btn-outline-dark text-white ms-3 mt-0" data-mdb-ripple-color="dark"
+                                style="z-index: 1;" onclick="CreateMessage({url:'/Message/SendMessage'});">
+                            Send a message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/infinityScrollMessages.js"></script>

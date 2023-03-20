@@ -44,7 +44,7 @@ function OpenEditDescriptionModelWindow(parametrs) {
         }
     });
 }
-function OpenCreatePostModelWindow(parametrs) {
+function OpenModelWindow(parametrs) {
     const url = parametrs.url;
     const modal = $('#modal');
     if (url == undefined ) {
@@ -65,4 +65,55 @@ function OpenCreatePostModelWindow(parametrs) {
             console.log(response.responseText);
         }
     });
+}
+function OpenDeleteImageAlbumModelWindow(parametrs) {
+    const url = parametrs.url;
+    const imageAlbumId = parametrs.data;
+    const modal = $('#modal');
+    if (url == undefined || imageAlbumId == undefined) {
+        alert('model or url undefined')
+    }
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: { "imageAlbumId": imageAlbumId },
+        success: function (response) {
+            modal.html(response);
+            modal.modal('show')
+        },
+        failure: function () {
+            modal.modal('hide')
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    });
+}
+function OpenDeletePhotoInImageAlbumModelWindow(parametrs) {
+    const url = parametrs.url;
+    const imageAlbumId = parametrs.imageAlbumId;
+    const photoId = parametrs.photoId;
+    const modal = $('#modal');
+    if (url == undefined || imageAlbumId == undefined || photoId == undefined) {
+        alert('model or url undefined')
+    }
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: { "imageAlbumId": imageAlbumId, "photoId": photoId },
+        success: function (response) {
+            modal.html(response);
+            modal.modal('show')
+        },
+        failure: function () {
+            modal.modal('hide')
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    });
+}
+function CloseModelWindow() {
+    $('#modal').html('');
+    $('#modal').modal('hide')
 }

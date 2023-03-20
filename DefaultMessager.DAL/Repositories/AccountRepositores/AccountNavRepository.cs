@@ -23,6 +23,17 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
             return _db.Accounts.ProjectToType<AccountAuthenticateViewModel>().Where(whereExpression);
         }
 
+        public IQueryable<AccountIconViewModel> GetAccountsIconViewModel(Expression<Func<AccountIconViewModel, bool>>? whereExpression)
+        {
+            var content = _db.Accounts.Select(a => new AccountIconViewModel()
+            {
+                Id = a.Id,
+                Login = a.Login,
+                PathAvatar = new DescriptionPathAvatarAccountViewModel(a.Description.PathAvatar)
+            });
+            return whereExpression is null ? content : content.Where(whereExpression);
+        }
+
         public IQueryable<AccountProfileViewModel> GetProfiles(Expression<Func<AccountProfileViewModel, bool>>? whereExpression = null)
         {
             var content = _db.Accounts.Select(c => new AccountProfileViewModel()
@@ -45,7 +56,7 @@ namespace DefaultMessager.DAL.Repositories.AccountRepositores
                         PathAvatar = new DescriptionPathAvatarAccountViewModel(c2.Account.Description.PathAvatar)
                     }
                 }).OrderBy(x => x.SendDateTime).Take(2).ToList()),
-                RelationsFrom = new List<RelationViewModel>(c.RelationsTo.Select(c2 => new RelationViewModel()
+                RelationsFrom = new List<RelationsViewModel>(c.RelationsTo.Select(c2 => new RelationsViewModel()
                 {
                     AccountId1 = c2.AccountId1,
                     AccountId2 = c2.AccountId2,

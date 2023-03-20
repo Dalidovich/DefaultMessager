@@ -85,5 +85,33 @@ namespace DefaultMessager.BLL.Implementation
                 };
             }
         }
+        public async Task<BaseResponse<AccountIconViewModel>> GetAccountIconViewModel(Expression<Func<AccountIconViewModel, bool>>? expression=null)
+        {
+            try
+            {
+                var entity = await _navAccountRepository.GetAccountsIconViewModel(expression).SingleOrDefaultAsync();
+                if (entity == null)
+                {
+                    return new StandartResponse<AccountIconViewModel>()
+                    {
+                        Description = "entity not found"
+                    };
+                }
+                return new StandartResponse<AccountIconViewModel>()
+                {
+                    Data = entity,
+                    StatusCode = StatusCode.AccountRead
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetAccountIconViewModel] : {ex.Message}");
+                return new StandartResponse<AccountIconViewModel>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError,
+                };
+            }
+        }
     }
 }

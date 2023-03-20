@@ -1,10 +1,13 @@
-﻿$(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height())
-    {
-        loadPostItems();
-    }
-});
-$('div#loading').hide();
+﻿var accountId
+function setPostScrollEvent(parametrs) {
+    $('div#loading').hide();
+    accountId = parametrs.accountId;
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            loadPostItems();
+        }
+    });
+}
 var page = 0;
 var _inCallback = false;
 function loadPostItems() {
@@ -15,7 +18,7 @@ function loadPostItems() {
         $.ajax({
             type: 'GET',
             url: '/Post/GetPartialPostIcons',
-            data: { "id": page },
+            data: { "id": page, "accountId": accountId },
             success: function (data, textstatus)
             {
                 if (data != '') {

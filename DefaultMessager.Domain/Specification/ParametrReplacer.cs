@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DefaultMessager.Domain.SpecificationPattern
+namespace DefaultMessager.Domain.Specification
 {
     internal class ParameterReplacer : ExpressionVisitor
     {

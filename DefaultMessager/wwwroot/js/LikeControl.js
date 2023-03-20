@@ -3,7 +3,7 @@
     $.ajax({
         type: 'GET',
         url: '/Like/ManipulateLikeOnPost',
-        data: { "postId": postId},
+        data: { "postId": postId },
         success: function (data) {
             document.getElementById("LikeCount").innerHTML = (data);
         }

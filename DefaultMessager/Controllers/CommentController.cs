@@ -1,7 +1,8 @@
 ﻿using DefaultMessager.BLL.Implementation;
 using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.CommentSpecification;
+using DefaultMessager.Domain.Specification.CompositeSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.CommentSpecification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,14 @@ namespace DefaultMessager.Controllers
             var response = await _commentService.GetFullComments(page, commentByPost.ToExpression());
             if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
             {
-                return PartialView("_comments", response.Data);
+                if (response.Data.Count() != 0)
+                {
+                    return PartialView("_comments", response.Data);
+                }
+                else
+                {
+                    return PartialView("~/Views/_ViewImports.cshtml");
+                }
             }
             return RedirectToAction("Error");
         }
@@ -44,11 +52,29 @@ namespace DefaultMessager.Controllers
                     var response = await _commentService.GetFullComments(0, commentById.ToExpression());
                     if (response.StatusCode == Domain.Enums.StatusCode.CommentRead)
                     {
-                        return PartialView("_comments", response.Data);
+                        if (response.Data.Count() != 0)
+                        {
+                            return PartialView("_comments", response.Data);
+                        }
+                        else
+                        {
+                            return PartialView("~/Views/_ViewImports.cshtml");
+                        }
+                        
                     }
                 }
             }
             return RedirectToAction("Error");
+        }
+
+        public async Task<IActionResult> GetComment(Guid postId, string login)
+        {
+            var commentByPostId = new CommentByPostId<Comment>(postId);
+            var commentByAccountLogin = new CommentByAccountLogin<Comment>(login);
+            var andSpec=new AndSpecification<Comment>(commentByAccountLogin, commentByPostId);
+            var response=await _commentService.GetFullComments(0, andSpec.ToExpression(),1);
+
+            return PartialView("_comments", response.Data);
         }
     }
 }

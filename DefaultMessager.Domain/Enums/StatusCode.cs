@@ -23,6 +23,7 @@
         ImageAlbumUpdate = 31,
         ImageAlbumDelete = 32,
         ImageAlbumRead = 33,
+        PhotoDelete = 34,
 
         LikeCreate = 40,
         LikeUpdate = 41,
@@ -48,8 +49,18 @@
         FileUpload=80,
         FileUploadFailed=81,
 
+        RelationCreate = 90,
+        RelationUpdate = 91,
+        RelationDelete = 92,
+        RelationRead = 93,
+
+        ChattingModelCreate = 100,
+        ChattingModelUpdate = 101,
+        ChattingModelDelete = 102,
+        ChattingModelRead = 103,
+
         OK = 200,
         OKNoContent = 204,
-        InternalServerError = 500
+        InternalServerError = 500,
     }
 }

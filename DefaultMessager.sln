@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultMessager.DAL", "Defa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultMessager.BLL", "DefaultMessager.BLL\DefaultMessager.BLL.csproj", "{E60D2937-4D9F-4214-8EE6-CFA00632E824}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultMessager.ChatAPI", "DefaultMessager.ChatAPI\DefaultMessager.ChatAPI\DefaultMessager.ChatAPI.csproj", "{699DE233-162E-4ECA-ABF9-BDE305EA1C7C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6341BE46-E4D5-42FC-BE25-0F34A10452B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{E60D2937-4D9F-4214-8EE6-CFA00632E824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E60D2937-4D9F-4214-8EE6-CFA00632E824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E60D2937-4D9F-4214-8EE6-CFA00632E824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699DE233-162E-4ECA-ABF9-BDE305EA1C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699DE233-162E-4ECA-ABF9-BDE305EA1C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699DE233-162E-4ECA-ABF9-BDE305EA1C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699DE233-162E-4ECA-ABF9-BDE305EA1C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6341BE46-E4D5-42FC-BE25-0F34A10452B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6341BE46-E4D5-42FC-BE25-0F34A10452B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6341BE46-E4D5-42FC-BE25-0F34A10452B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6341BE46-E4D5-42FC-BE25-0F34A10452B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

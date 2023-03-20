@@ -1,0 +1,17 @@
+﻿@using DefaultMessager.Domain.ViewModel.AccountModel;
+@model IEnumerable<AccountIconViewModel>
+<script>GetRelationId({ companionId: '@Model.FirstOrDefault().Id' });</script>
+@foreach(var acc in Model)
+{
+    <div class="row bg-secondary">
+        <div class="col-md-12" >
+            <div class="navbar navbar-secondary" onclick="disconnect();GetCompanion({accountId:'@acc.Id'}); GetCorrespondence({accountId:'@acc.Id'}); cleanPage();GetRelationId({companionId:'@acc.Id'});">
+                <a class="navbar-brand" style="text-decoration:none">
+                    <img src="@acc.PathAvatar.PathAvatar" class="rounded-circle me-1" alt="avatar image" height="42" width="42">
+                    @acc.Login
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-1 mt-1 border-bottom"></div>
+}

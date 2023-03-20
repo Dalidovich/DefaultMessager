@@ -4,7 +4,7 @@ using DefaultMessager.Domain.Entities;
 using DefaultMessager.Domain.Enums;
 using DefaultMessager.Domain.JWT;
 using DefaultMessager.Domain.Response.Base;
-using DefaultMessager.Domain.SpecificationPattern.CustomSpecification.AccountSpecification;
+using DefaultMessager.Domain.Specification.CustomSpecification.AccountSpecification;
 using DefaultMessager.Domain.ViewModel.AccountModel;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -52,10 +52,7 @@ namespace DefaultMessager.BLL.Implementation
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
                 newAccount = (await _accountService.Add(newAccount)).Data;
-
-                var accountBucket = _accountService.GetAccountBucket(newAccount.Login);
                 var standartBucketName = "Standart";
-
                 var client = await _BackblazeClientProvider.GetClient();
                 var avatarLink = await client.GetFileLink(standartBucketName, @"standartAvatar.png");
                 await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, avatarLink));
@@ -126,7 +123,6 @@ namespace DefaultMessager.BLL.Implementation
                         Description = "token not found"
                     };
                 }
-
                 var account = (await _accountService.GetOne(x => x.Id == accountId)).Data;
                 LogInAccountViewModel viewModel = new LogInAccountViewModel(account);
                 return new StandartResponse<(string, string, Guid)>()
@@ -162,7 +158,7 @@ namespace DefaultMessager.BLL.Implementation
                     issuer: _options.Issuer,
                     audience: _options.Audience,
                     claims: claims,
-                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(1)),
+                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(StandartConst.StartJWTTokenLifeTime)),
                     notBefore: DateTime.Now,
                     signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );
@@ -173,6 +169,7 @@ namespace DefaultMessager.BLL.Implementation
         public string GetRefreshToken()
         {
             var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
             return refreshToken;
         }
 
@@ -190,6 +187,7 @@ namespace DefaultMessager.BLL.Implementation
             using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(Password));
+
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
