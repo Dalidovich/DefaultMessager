@@ -24,16 +24,16 @@ namespace DefaultMessager.DAL.BackblazeS3
             , string? uploadPath = null)
         {
             var objectPath = $"{login}{DateTime.Now.Ticks}{objectName}";
-            if (!Directory.Exists($"wwwroot\\BufferFileZone"))
+            if (!Directory.Exists($"wwwroot/BufferFileZone"))
             {
-                Directory.CreateDirectory($"wwwroot\\BufferFileZone");
+                Directory.CreateDirectory($"wwwroot/BufferFileZone");
             }
-            var totalPath = $"wwwroot\\BufferFileZone\\{objectPath}";
+            var totalPath = $"wwwroot/BufferFileZone/{objectPath}";
             using (FileStream fs = new FileStream(totalPath, FileMode.OpenOrCreate))
             {
                 await fs.WriteAsync(content.ToArray());
             }
-            totalPath = Directory.GetCurrentDirectory() + "\\" + totalPath;
+            totalPath = Directory.GetCurrentDirectory() + "/" + totalPath;
             content.Dispose();
             CancellationToken ct = new();
             objectName = uploadPath ?? $"{login}/{objectName}";

@@ -21,6 +21,10 @@ namespace DefaultMessager.DAL
             Database.EnsureDeleted();
             Database.Migrate();
             StandartFill();
+
+            Console.WriteLine("____________________________________________________");
+            Console.WriteLine("reload");
+            Console.WriteLine("____________________________________________________");
         }
 
         private void StandartFill()
