@@ -24,6 +24,10 @@ namespace DefaultMessager.DAL.BackblazeS3
             , string? uploadPath = null)
         {
             var objectPath = $"{login}{DateTime.Now.Ticks}{objectName}";
+            if (!Directory.Exists($"wwwroot\\BufferFileZone"))
+            {
+                Directory.CreateDirectory($"wwwroot\\BufferFileZone");
+            }
             var totalPath = $"wwwroot\\BufferFileZone\\{objectPath}";
             using (FileStream fs = new FileStream(totalPath, FileMode.OpenOrCreate))
             {
