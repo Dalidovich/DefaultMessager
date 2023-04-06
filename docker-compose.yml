@@ -15,8 +15,8 @@ services:
       dockerfile: DefaultMessager/Dockerfile
     environment:
       - ConnectionStrings__NpgConnectionString=User Id=postgres; Password=Messager54321; Server=app_db; Port=5432; Database=Messager; IntegratedSecurity=true; Pooling=true;
-      - BackblazeClientOptions__AccsesKey=36b673b37143
-      - BackblazeClientOptions__SecretKey=005c65aa2772f9f9d122f2d8eb1b753ad4c7e03aef
+      - BackblazeClientOptions__AccsesKey=a8ac046ab51b
+      - BackblazeClientOptions__SecretKey=00557c23045634e8bbf6aa733c3d8dd3a2bc38fa8b
     networks:
       - dev
   

@@ -24,7 +24,7 @@ namespace DefaultMessager.BLL.Implementation
         {
             return new StandartResponse<string>()
             {
-                Data = "Messager" + ((byte)login.Last()) % 2
+                Data = "DefMessager" + ((byte)login.Last()) % 2
             };
         }
 

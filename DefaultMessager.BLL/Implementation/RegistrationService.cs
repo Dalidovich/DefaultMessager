@@ -52,16 +52,24 @@ namespace DefaultMessager.BLL.Implementation
                 CreatePasswordHash(viewModel.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 var newAccount = new Account(viewModel, Convert.ToBase64String(passwordSalt), Convert.ToBase64String(passwordHash));
                 newAccount = (await _accountService.Add(newAccount)).Data;
-                var standartBucketName = "Standart";
-                var client = await _BackblazeClientProvider.GetClient();
-                var avatarLink = await client.GetFileLink(standartBucketName, @"standartAvatar.png");
-                await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, avatarLink));
-                await _refreshTokenService.Add(new RefreshToken((Guid)newAccount.Id, "none"));
-                return new StandartResponse<(string, string, Guid)>()
+                try
                 {
-                    Data = (await Authenticate(new LogInAccountViewModel(viewModel))).Data,
-                    StatusCode = StatusCode.AccountCreate
-                };
+                    var client = await _BackblazeClientProvider.GetClient();
+                    var avatarLink = await client.GetFileLink(StandartConst.StandartBucketName, @"standartAvatar.png");
+                    await _descriptionAccountService.Add(new DescriptionAccount((Guid)newAccount.Id, avatarLink));
+                    await _refreshTokenService.Add(new RefreshToken((Guid)newAccount.Id, "none"));
+                    return new StandartResponse<(string, string, Guid)>()
+                    {
+                        Data = (await Authenticate(new LogInAccountViewModel(viewModel))).Data,
+                        StatusCode = StatusCode.AccountCreate
+                    };
+                }
+                catch (Exception)
+                {
+                    await _accountService.Delete(x => x.Id == newAccount.Id);
+                    throw;
+                }
+                
             }
             catch (Exception ex)
             {
