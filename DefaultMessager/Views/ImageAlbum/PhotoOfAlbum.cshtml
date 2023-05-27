@@ -1,7 +1,7 @@
 ﻿@using DefaultMessager.Domain.Enums;
 @model (IEnumerable<string>,bool,Guid)
 <div class="navbar navbar-secondary">
-    <p class="h2 mt-2 ms-4 text-white">Album photo</p>
+    <p class="h2 mt-2 ms-4 text-white">Фото</p>
     @if (Model.Item2)
     {
         <form asp-action="AddPhotoToImageAlbum" asp-route-imageAlbumId="@Model.Item3" asp-controller="ImageAlbum" name="inputPhotoFileIntoAlbumForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" style="z-index: 1;">

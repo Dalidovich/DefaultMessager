@@ -9,7 +9,7 @@ services:
     image: ${DOCKER_REGISTRY-}defaultmessager
     depends_on: 
       - app_db
-    container_name: defaultmessager
+    container_name: defaultmessager 
     build:
       context: .
       dockerfile: DefaultMessager/Dockerfile

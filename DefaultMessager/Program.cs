@@ -1,3 +1,4 @@
+using DefaultMessager.BLL.Hubs;
 using DefaultMessager.BLL.Middleware;
 using DefaultMessager.DAL;
 using DefaultMessager.Domain.Enums;
@@ -21,6 +22,26 @@ namespace DefaultMessager
             builder.AddRepositores();
             builder.AddServices();
             builder.AddJWT();
+
+            builder.Services.AddSignalR();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:7150")
+                            .AllowAnyHeader()
+                            .WithMethods("GET", "POST")
+                            .AllowCredentials();
+                        builder.WithOrigins("https://localhost:7150")
+                            .AllowAnyHeader()
+                            .WithMethods("GET", "POST")
+                            .AllowCredentials();
+                    });
+            });
+
+            builder.Services.AddSingleton<ChatManager>();
+
             var app = builder.Build();
             app.UseCookiePolicy();
             app.UseMiddleware<JWTMiddleware>();
@@ -31,7 +52,9 @@ namespace DefaultMessager
                 app.UseHsts();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
+            app.MapHub<CommunicationCommentHub>("/comment");
             app.UseStaticFiles();
 
             app.UseRouting();

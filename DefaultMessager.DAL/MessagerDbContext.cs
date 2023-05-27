@@ -29,7 +29,38 @@ namespace DefaultMessager.DAL
 
         private void StandartFill()
         {
-            const int countFill = 100;
+            string[] images = new string[]
+            {
+                "https://www.w3schools.com/w3images/fjords.jpg",
+                "https://www.w3schools.com/w3images/rocks.jpg",
+                "https://www.w3schools.com/w3images/lights.jpg",
+                "https://www.w3schools.com/w3images/nature.jpg",
+                "https://www.w3schools.com/w3images/mountains.jpg",
+                "https://www.w3schools.com/w3images/forest.jpg",
+                "https://avavatar.ru/images/avatars/21/avatar_WOETp5TLwXTdgLcg.jpg",
+                "https://avavatar.ru/images/avatars/20/avatar_wVqHRFAuOeDDajWc.jpg",
+                "https://avavatar.ru/images/avatars/28/avatar_jUAJBQpnoIhZoKbV.jpg",
+                "https://www.w3schools.com/w3images/paris.jpg",
+                "https://www.w3schools.com/w3images/newyork.jpg",
+                "https://www.w3schools.com/w3images/sanfran.jpg",
+                "https://www.w3schools.com/w3images/wedding.jpg",
+                "https://www.w3schools.com/w3images/p3.jpg",
+                "https://www.w3schools.com/w3images/p4.jpg",
+                "https://www.w3schools.com/w3images/p5.jpg",
+                "https://www.w3schools.com/w3images/underwater.jpg",
+                "https://www.w3schools.com/w3images/p6.jpg",
+                "https://www.w3schools.com/w3images/p7.jpg",
+                "https://www.w3schools.com/w3images/coffee.jpg",
+                "https://www.w3schools.com/w3images/p8.jpg",
+                "https://avavatar.ru/images/avatars/4/avatar_7hRoFoCmwzVxVuMh.jpg",
+                "https://www.w3schools.com/w3images/p1.jpg",
+                "https://www.w3schools.com/w3images/p2.jpg",
+                "https://avavatar.ru/images/avatars/7/avatar_eYjGUfegeuEhbgWf.jpg",
+                "https://avavatar.ru/images/avatars/6/avatar_4JxC6qW2ZNWhoDP3.jpg",
+                
+            };
+
+            int countFill = images.Length;
             List<Account> accounts = new List<Account>();
             for (int i = 0; i < countFill; i++)
             {
@@ -41,7 +72,7 @@ namespace DefaultMessager.DAL
             List<DescriptionAccount> descriptionAccounts = new List<DescriptionAccount>();
             for (int i = 0; i < countFill; i++)
             {
-                descriptionAccounts.Add(new DescriptionAccount((Guid)accounts[i].Id, StandartPath.defaultAvatarImage));
+                descriptionAccounts.Add(new DescriptionAccount((Guid)accounts[i].Id, images[i]));
             };
             this.DescriptionAccounts.AddRange(descriptionAccounts);
             this.SaveChanges();
@@ -49,14 +80,7 @@ namespace DefaultMessager.DAL
             List<Post> posts = new List<Post>();
             for (int i = 0; i < countFill; i++)
             {
-                posts.Add(new Post((Guid)accounts[i].Id, new[] { StandartPath.defaultAvatarImage }, "text1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
-            }
-            this.Posts.AddRange(posts);
-            this.SaveChanges();
-            posts = new List<Post>();
-            for (int i = 0; i < countFill; i++)
-            {
-                posts.Add(new Post((Guid)accounts[0].Id, new[] { StandartPath.defaultAvatarImage }, "text_1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
+                posts.Add(new Post((Guid)accounts[i].Id, new[] { images[i] }, "text1", "post " + i.ToString(), new[] { "none" }, DateTime.Now));
             }
             this.Posts.AddRange(posts);
             this.SaveChanges();

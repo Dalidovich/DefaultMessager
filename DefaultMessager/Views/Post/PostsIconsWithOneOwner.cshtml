@@ -2,7 +2,7 @@
 @using DefaultMessager.Domain.ViewModel.PostModel;
 @model IEnumerable<PostIconViewModel>
 <div class="navbar navbar-secondary">
-    <p class="h2 mt-2 ms-4 text-white">Posts</p>
+    <p class="h2 mt-2 ms-4 text-white">Посты</p>
     @if (Model.FirstOrDefault() != null && Model.First().AccountViewModel.Login == User.Identity.Name)
     {
         <svg onclick="OpenModelWindow({url:'/Post/CreatePost'})" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" data-bs-target="#AddPost" class="bi bi-plus-circle-fill me-4" viewBox="0 0 16 16">

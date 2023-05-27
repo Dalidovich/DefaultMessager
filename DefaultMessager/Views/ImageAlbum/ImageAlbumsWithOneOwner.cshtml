@@ -3,7 +3,7 @@
 @model IEnumerable<ImageAlbum>
 
 <div class="navbar navbar-secondary">
-    <p class="h2 mt-2 ms-4 text-white">Albums</p>
+    <p class="h2 mt-2 ms-4 text-white">Альбомы</p>
     @if (Model.FirstOrDefault() != null && Model.First().Account.Login == User.Identity.Name)
     {
         <svg onclick="OpenModelWindow({url:'/ImageAlbum/CreateImageAlbum'})" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" data-bs-toggle="modal" data-bs-target="#AddAlbum" class="bi bi-plus-circle-fill me-4" viewBox="0 0 16 16">

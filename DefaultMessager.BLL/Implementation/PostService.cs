@@ -37,12 +37,12 @@ namespace DefaultMessager.BLL.Implementation
                 IEnumerable<PostIconViewModel> contents;
                 if (expression != null)
                 {
-                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
+                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderByDescending(x => x.SendDateTime)
                     .Where(expression).Skip(skipCount * countPost).Take(countPost).ToListAsync();
                 }
                 else
                 {
-                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderBy(x => x.SendDateTime)
+                    contents = await _navPostRepository.GetIncludePostIconViewModel().OrderByDescending(x => x.SendDateTime)
                     .Skip(skipCount * countPost).Take(countPost).ToListAsync();
                 }
                     

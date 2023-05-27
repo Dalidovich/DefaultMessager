@@ -19,7 +19,7 @@
     <header>
       <div class="navbar navbar-expand-sm navbar-dark bg-dark mb-0">
           <div class="container" style="max-width: 100%;">
-              <a asp-controller="Home" asp-action="Index" class="navbar-brand">DefaultMessanger</a>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">ИД</a>
               <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
               <span class="navbar-toggler-icon"></span>
               </button>
@@ -27,9 +27,9 @@
               <div class="collapse navbar-collapse" id="navbarContent">
                   <ul class="navbar-nav me-auto mb-2">
                       <li class="nav-item">
-                        <a asp-controller="Chatting" asp-action="Index" class="nav-link">Messages</a>
+                        <a asp-controller="Chatting" asp-action="Index" class="nav-link">Сообщения</a>
                       </li>
-                      <li class="nav-item">
+                      @*<li class="nav-item">
                         <a href="#" class="nav-link">Friends</a>
                       </li>
                       <li class="nav-item">
@@ -37,14 +37,14 @@
                       </li>
                       <li class="nav-item">
                         <a class="nav-link">AnonChat</a>
-                      </li>
+                      </li>*@
                   </ul>
               </div>                
                 @if (User.Identity is null || !User.Identity.IsAuthenticated)
                 {
                     <div class="d-flex">
-                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="LogIn">Log in</a>
-                        <a class="btn btn-outline-secondary ms-3" asp-controller="Account" asp-action="Registration">Register</a>
+                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="LogIn">Вход</a>
+                        <a class="btn btn-outline-secondary ms-3" asp-controller="Account" asp-action="Registration">Регистрация</a>
                     </div>
                 }
           </div>
@@ -58,9 +58,9 @@
                             @User.Identity.Name
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Index">Profile</a></li>
-                            <li><a class="dropdown-item">Settings</a></li>
-                            <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="LogOut">Sign out</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Index">Профиль</a></li>
+                            @*<li><a class="dropdown-item">Settings</a></li>*@
+                            <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="LogOut">Выход</a></li>
                         </ul>
                         </li>
                     </ul>

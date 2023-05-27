@@ -14,11 +14,11 @@
                             @if(Model.Login==User.Identity.Name)
                             {
                                 <form name="inputForm" method="post" class="d-flex justify-content-center" enctype="multipart/form-data" asp-controller="Account" asp-action="chengeAvatar"  style="z-index: 1;">
-                                    <label for="inputField" style="cursor: pointer;" name="inputField"><center><u>drag or click for new avatar</u></center></label>
+                                    <label for="inputField" style="cursor: pointer;" name="inputField"><center><u>новый аватар</u></center></label>
                                     <input onchange="SubmitForm(this,'inputForm');" name="inputField" hidden id="inputField" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" type="file">
                                 </form>
                                 <button onclick="OpenEditDescriptionModelWindow({url:'/Account/EditDescription',data:'@Model.Description.Id'})" type="button" class="btn btn-outline-dark text-white mt-2" style="z-index: 1;">
-                                    Edit profile
+                                    Изменить
                                 </button>   
                             }
                         </div>
@@ -28,7 +28,7 @@
                             @if (User.Identity.IsAuthenticated && Model.Login != User.Identity.Name)
                             {
                                 <a class="text-white" asp-controller="Relations" asp-action="SetCorrespondenceWith" asp-route-accountId="@Model.Id">
-                                    send message
+                                    отправить сообщение
                                 </a>
                             }
                             <h5>@Model.Login</h5>
@@ -49,25 +49,25 @@
                     <!-- About -->
                     <div class="card-body p-4 bg-secondary text-white">
                         <div class="mb-3">
-                            <p class="lead fw-normal mb-1 mt-5">About</p>
+                            <p class="lead fw-normal mb-1 mt-5">О мне</p>
                             <div class="p-4 bg-secondary" style="background-color: #f8f9fa;">
-                                <p class="font-bold h5 mb-1">Date of birth</p>
+                                <p class="font-bold h5 mb-1">Дата рождения</p>
                                 <p class="font-italic mb-2">@Model.Description.Birthday.ToString()</p>
-                                <p class="font-bold h5 mb-1">Describe</p>
+                                <p class="font-bold h5 mb-1">Описание</p>
                                 <p class="font-italic mb-2">@Model.Description.Describe</p>
                             </div>
                         </div>
                         <!-- About -->
                         <!-- Albums -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <p class="lead fw-normal mb-0">Albums</p>
+                            <p class="lead fw-normal mb-0">Альбомы</p>
                             @if(User.Identity.Name==Model.Login)
                             {
                                 <svg onclick="OpenModelWindow({url:'/ImageAlbum/CreateImageAlbum'})" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" data-bs-toggle="modal" data-bs-target="#AddPost" class="bi bi-plus-circle-fill ms-2 mt-1 me-auto" viewBox="0 0 16 16">
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                 </svg>   
                             }
-                            <p class="mb-0"><a asp-action="ImageAlbumsWithOneOwner" asp-controller="ImageAlbum" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
+                            <p class="mb-0"><a asp-action="ImageAlbumsWithOneOwner" asp-controller="ImageAlbum" asp-route-accountId="@Model.Id" class="text-white">Все альбомы</a></p>
                         </div>
                         <div class="row">
                             @foreach (var item in Model.ImageAlbums)
@@ -82,14 +82,14 @@
                         <!-- Albums -->
                         <!-- Posts -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <p class="lead fw-normal mb-0 mt-2">Posts</p>
+                            <p class="lead fw-normal mb-0 mt-2">Посты</p>
                             @if(User.Identity.Name==Model.Login)
                             {
                                 <svg onclick="OpenModelWindow({url:'/Post/CreatePost'})" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" data-bs-toggle="modal" data-bs-target="#AddPost" class="bi bi-plus-circle-fill ms-2 mt-1 me-auto" viewBox="0 0 16 16">
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                 </svg>   
                             }
-                            <p class="mb-0"><a asp-action="PostsIconsWithOneOwner" asp-controller="Post" asp-route-accountId="@Model.Id" class="text-white">Show all</a></p>
+                            <p class="mb-0"><a asp-action="PostsIconsWithOneOwner" asp-controller="Post" asp-route-accountId="@Model.Id" class="text-white">Все посты</a></p>
                         </div>
                         <div class="row">
                             @foreach (var item in Model.Posts)

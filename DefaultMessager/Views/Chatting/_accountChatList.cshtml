@@ -1,6 +1,9 @@
 ﻿@using DefaultMessager.Domain.ViewModel.AccountModel;
 @model IEnumerable<AccountIconViewModel>
-<script>GetRelationId({ companionId: '@Model.FirstOrDefault().Id' });</script>
+@if (@Model.FirstOrDefault().Id!=null)
+{
+    <script>GetRelationId({ companionId: '@Model.FirstOrDefault().Id' });</script>
+}
 @foreach(var acc in Model)
 {
     <div class="row bg-secondary">
