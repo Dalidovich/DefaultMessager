@@ -19,9 +19,12 @@ namespace DefaultMessager.Controllers
             return RedirectToAction("PostIcons", "Post");
         }
 
-        public IActionResult ReloadBD()
+        public IActionResult ReloadBD([FromQuery] string p)
         {
-            HttpContext.RequestServices.GetService<MessagerDbContext>().UpdateDatabase();
+            if (p == "pg")
+            {
+                HttpContext.RequestServices.GetService<MessagerDbContext>().UpdateDatabase();
+            }
 
             return RedirectToAction("PostIcons", "Post");
         }
