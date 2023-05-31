@@ -1,7 +1,7 @@
 ﻿let _connection,chatUrl,groupId;
 
 function startSignalR(){
-    chatUrl = "http://localhost:7150/comment";
+    chatUrl = "https://docker-app-prod-mmvjxavifa-nn.a.run.app/comment";
     groupId = document.getElementById("chatId").innerHTML;
 
     buildConnection();
